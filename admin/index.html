@@ -29,6 +29,7 @@
           productos.map(function(p, i) {
             var foto = p.getIn(['fotos', 0]) || '';
             if (foto && foto.charAt(0) !== '/') foto = '/' + foto;
+            var linea = (p.get('numero') || '') + ' ' + (p.get('nombre') || '') + ' — ' + (p.get('categoria') || '') + ' — ' + (p.get('precio') || '') + ' — ' + (p.get('descripcion') || '');
             return h('div', {
               key: i,
               style: {
@@ -42,13 +43,9 @@
               h('img', {
                 key: 'img',
                 src: foto,
-                style: { width: '55px', height: '55px', objectFit: 'cover', borderRadius: '4px', flexShrink: 0 }
+                style: { width: '45px', height: '45px', objectFit: 'cover', borderRadius: '4px', flexShrink: 0 }
               }),
-              h('div', { key: 'info' }, [
-                h('div', { key: 'l1', style: { fontWeight: 'bold' } }, (p.get('numero') || '') + ' ' + (p.get('nombre') || '')),
-                h('div', { key: 'l2' }, 'Categoría: ' + (p.get('categoria') || '') + ' — Precio: ' + (p.get('precio') || '')),
-                h('div', { key: 'l3', style: { color: '#666', fontSize: '13px' } }, p.get('descripcion') || '')
-              ])
+              h('div', { key: 'info', style: { fontSize: '13px' } }, linea)
             ]);
           }).toArray()
         );
