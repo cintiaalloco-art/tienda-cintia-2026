@@ -18,7 +18,7 @@ collections:
           - label: "Gorras"
             name: "productos"
             widget: "list"
-            summary: "{{fields.nombre}} - {{fields.precio}}"
+            summary: "{{fields.nombre}} — {{fields.categoria}} — {{fields.precio}} — {{fields.descripcion}}"
             fields:
               - {label: "Número (Nº)", name: "numero", widget: "string", required: false}
               - {label: "Nombre", name: "nombre", widget: "string"}
