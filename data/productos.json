@@ -363,7 +363,8 @@
       "categoria": "Airbag",
       "descripcion": "Con tachas",
       "precio": "31000",
-      "fotos": []
+      "fotos": [],
+      "foto1": "/images/368.jpg"
     }
   ]
 }
