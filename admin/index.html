@@ -19,5 +19,42 @@
       });
     }
   </script>
+  <script>
+    var CatalogoPreview = createClass({
+      render: function() {
+        var entry = this.props.entry;
+        var productos = entry.getIn(['data', 'productos']);
+        if (!productos) return h('div', {}, 'Sin productos');
+        return h('div', { style: { fontFamily: 'sans-serif', padding: '10px' } },
+          productos.map(function(p, i) {
+            var foto = p.getIn(['fotos', 0]) || '';
+            if (foto && foto.charAt(0) !== '/') foto = '/' + foto;
+            return h('div', {
+              key: i,
+              style: {
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                borderBottom: '1px solid #ddd',
+                padding: '8px 0'
+              }
+            }, [
+              h('img', {
+                key: 'img',
+                src: foto,
+                style: { width: '55px', height: '55px', objectFit: 'cover', borderRadius: '4px', flexShrink: 0 }
+              }),
+              h('div', { key: 'info' }, [
+                h('div', { key: 'l1', style: { fontWeight: 'bold' } }, (p.get('numero') || '') + ' ' + (p.get('nombre') || '')),
+                h('div', { key: 'l2' }, 'Categoría: ' + (p.get('categoria') || '') + ' — Precio: ' + (p.get('precio') || '')),
+                h('div', { key: 'l3', style: { color: '#666', fontSize: '13px' } }, p.get('descripcion') || '')
+              ])
+            ]);
+          }).toArray()
+        );
+      }
+    });
+    CMS.registerPreviewTemplate('productos', CatalogoPreview);
+  </script>
 </body>
 </html>
