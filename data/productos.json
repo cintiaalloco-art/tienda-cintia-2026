@@ -356,17 +356,6 @@
         "images/ciro-3.jpg",
         "images/ciro-4.jpg"
       ]
-    },
-    {
-      "numero": "6",
-      "nombre": "airbag",
-      "categoria": "Airbag",
-      "descripcion": "Con tachas",
-      "precio": "31000",
-      "fotos": [
-        "/images/449.png"
-      ],
-      "foto1": "/images/368.jpg"
     }
   ]
 }
