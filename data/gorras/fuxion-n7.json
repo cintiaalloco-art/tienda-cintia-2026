@@ -1,0 +1,12 @@
+{
+  "numero": "N029",
+  "nombre": "Fuxion Nº7",
+  "categoria": "Fuxion",
+  "descripcion": "Con strass turquesa.",
+  "precio": "$29.000",
+  "fotos": [
+    "images/fuxion-no7-1.jpg",
+    "images/fuxion-no7-2.jpg",
+    "images/fuxion-no7-3.jpg"
+  ]
+}

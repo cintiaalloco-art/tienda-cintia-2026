@@ -1,0 +1,12 @@
+{
+  "numero": "N006",
+  "nombre": "Fuxion Nº1",
+  "categoria": "Fuxion",
+  "descripcion": "Denim azul vintage con aplique X en strass plateado.",
+  "precio": "$35.000",
+  "fotos": [
+    "images/fuxion-no1-1.jpg",
+    "images/fuxion-no1-2.jpg",
+    "images/fuxion-no1-3.jpg"
+  ]
+}

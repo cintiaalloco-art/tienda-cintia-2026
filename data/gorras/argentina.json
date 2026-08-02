@@ -1,0 +1,12 @@
+{
+  "numero": "N020",
+  "nombre": "Argentina",
+  "categoria": "Otras",
+  "descripcion": "Jean vintage azul con cordón de strass y strass.",
+  "precio": "$32.000",
+  "fotos": [
+    "images/argentina-1.jpg",
+    "images/argentina-2.jpg",
+    "images/argentina-3.jpg"
+  ]
+}

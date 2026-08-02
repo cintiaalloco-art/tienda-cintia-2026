@@ -1,0 +1,12 @@
+{
+  "numero": "N026",
+  "nombre": "Jaz Nº1",
+  "categoria": "Otras",
+  "descripcion": "Con strass ss16 Hotfix.",
+  "precio": "$30.000",
+  "fotos": [
+    "images/jaz-no1-1.jpg",
+    "images/jaz-no1-2.jpg",
+    "images/jaz-no1-3.jpg"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "numero": "N028",
+  "nombre": "Bugué Nº13",
+  "categoria": "Otras",
+  "descripcion": "Con galón de strass y perlas.",
+  "precio": "$33.000",
+  "fotos": [
+    "images/bugue-no13-1.jpg",
+    "images/bugue-no13-2.jpg",
+    "images/bugue-no13-3.jpg"
+  ]
+}

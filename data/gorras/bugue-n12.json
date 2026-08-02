@@ -1,0 +1,12 @@
+{
+  "numero": "N015",
+  "nombre": "Bugué Nº12",
+  "categoria": "Otras",
+  "descripcion": "Denim celeste con strass navette Hotfix.",
+  "precio": "$35.000",
+  "fotos": [
+    "images/bugue-no12-1.jpg",
+    "images/bugue-no12-2.jpg",
+    "images/bugue-no12-3.jpg"
+  ]
+}

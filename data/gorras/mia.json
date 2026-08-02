@@ -1,0 +1,11 @@
+{
+  "numero": "N021",
+  "nombre": "Mia",
+  "categoria": "Otras",
+  "descripcion": "Jean azul con aplique M en strass.",
+  "precio": "$29.000",
+  "fotos": [
+    "images/mia-1.jpg",
+    "images/mia-2.jpg"
+  ]
+}

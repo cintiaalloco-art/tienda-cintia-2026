@@ -1,0 +1,12 @@
+{
+  "numero": "N004",
+  "nombre": "Mika Nº2",
+  "categoria": "Otras",
+  "descripcion": "Gris vintage con cinta rota negra, tachas plateadas y strass.",
+  "precio": "$33.000",
+  "fotos": [
+    "images/mika-no2-1.jpg",
+    "images/mika-no2-2.jpg",
+    "images/mika-no2-3.jpg"
+  ]
+}

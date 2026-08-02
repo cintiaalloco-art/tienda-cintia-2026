@@ -1,0 +1,12 @@
+{
+  "numero": "N003",
+  "nombre": "Myla",
+  "categoria": "Otras",
+  "descripcion": "Denim azul con galón de corazones rojos y plateados y strass.",
+  "precio": "$30.000",
+  "fotos": [
+    "images/myla-1.jpg",
+    "images/myla-2.jpg",
+    "images/myla-3.jpg"
+  ]
+}

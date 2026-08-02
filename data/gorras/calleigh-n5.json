@@ -1,0 +1,12 @@
+{
+  "numero": "N014",
+  "nombre": "Calleigh Nº5",
+  "categoria": "Otras",
+  "descripcion": "Denim vintage color verde musgo, con tachas, medias perlas y strass en tonos verdes.",
+  "precio": "$35.000",
+  "fotos": [
+    "images/calleigh-no5-1.jpg",
+    "images/calleigh-no5-2.jpg",
+    "images/calleigh-no5-3.jpg"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "numero": "N002",
+  "nombre": "Vanna (niña)",
+  "categoria": "Niño",
+  "descripcion": "Violeta con aplique de mariposa en tul y galón de strass.",
+  "precio": "$25.000",
+  "fotos": [
+    "images/vanna-nina-1.jpg",
+    "images/vanna-nina-2.jpg",
+    "images/vanna-nina-3.jpg"
+  ]
+}

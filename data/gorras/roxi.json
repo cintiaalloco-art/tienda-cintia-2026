@@ -1,0 +1,12 @@
+{
+  "numero": "N005",
+  "nombre": "Roxi",
+  "categoria": "Otras",
+  "descripcion": "Rosa con aplique de lazo en strass y strass multicolor.",
+  "precio": "$30.000",
+  "fotos": [
+    "images/roxi-1.jpg",
+    "images/roxi-2.jpg",
+    "images/roxi-3.jpg"
+  ]
+}

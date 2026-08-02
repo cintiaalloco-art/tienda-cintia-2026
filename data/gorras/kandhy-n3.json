@@ -1,0 +1,12 @@
+{
+  "numero": "N017",
+  "nombre": "Kandhy Nº3",
+  "categoria": "Otras",
+  "descripcion": "Denim gris oscuro con strass en tira y strass cuadrado.",
+  "precio": "$30.000",
+  "fotos": [
+    "images/kandhy-no3-1.jpg",
+    "images/kandhy-no3-2.jpg",
+    "images/kandhy-no3-3.jpg"
+  ]
+}

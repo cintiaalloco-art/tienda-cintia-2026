@@ -1,0 +1,12 @@
+{
+  "numero": "N012",
+  "nombre": "Kandhy Nº2",
+  "categoria": "Otras",
+  "descripcion": "Denim claro con strass en tira y strass sueltos.",
+  "precio": "$33.000",
+  "fotos": [
+    "images/kandhy-no2-1.jpg",
+    "images/kandhy-no2-2.jpg",
+    "images/kandhy-no2-3.jpg"
+  ]
+}

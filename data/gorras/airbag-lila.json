@@ -1,0 +1,12 @@
+{
+  "numero": "N009",
+  "nombre": "Airbag Lila",
+  "categoria": "Airbag",
+  "descripcion": "Denim lila con parche AIRBAG en strass plateado.",
+  "precio": "$32.000",
+  "fotos": [
+    "images/airbag-lila-1.jpg",
+    "images/airbag-lila-2.jpg",
+    "images/airbag-lila-3.jpg"
+  ]
+}

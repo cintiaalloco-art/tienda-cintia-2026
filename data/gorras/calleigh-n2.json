@@ -1,0 +1,12 @@
+{
+  "numero": "N023",
+  "nombre": "Calleigh Nº2",
+  "categoria": "Otras",
+  "descripcion": "Jean azul con mariposa de medias perlas, tachas y strass en tonos rosa.",
+  "precio": "$42.000",
+  "fotos": [
+    "images/calleigh-no2-1.jpg",
+    "images/calleigh-no2-2.jpg",
+    "images/calleigh-no2-3.jpg"
+  ]
+}

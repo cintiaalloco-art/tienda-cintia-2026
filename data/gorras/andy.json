@@ -1,0 +1,10 @@
+{
+  "numero": "N025",
+  "nombre": "Andy",
+  "categoria": "Otras",
+  "descripcion": "Con tachas cuadradas.",
+  "precio": "$26.000",
+  "fotos": [
+    "images/andy-1.jpg"
+  ]
+}

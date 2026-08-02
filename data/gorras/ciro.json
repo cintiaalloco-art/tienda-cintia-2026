@@ -1,0 +1,13 @@
+{
+  "numero": "N030",
+  "nombre": "Ciro",
+  "categoria": "Otras",
+  "descripcion": "Con nombre \"Ciro\" en strass boreal.",
+  "precio": "$29.000",
+  "fotos": [
+    "images/ciro-1.jpg",
+    "images/ciro-2.jpg",
+    "images/ciro-3.jpg",
+    "images/ciro-4.jpg"
+  ]
+}

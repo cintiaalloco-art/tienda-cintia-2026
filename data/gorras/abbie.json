@@ -1,0 +1,12 @@
+{
+  "numero": "N001",
+  "nombre": "Abbie",
+  "categoria": "Otras",
+  "descripcion": "Rosa customizada con corazones multicolor y tachas Hotfix.",
+  "precio": "$25.000",
+  "fotos": [
+    "images/abbie-1.jpg",
+    "images/abbie-2.jpg",
+    "images/abbie-3.jpg"
+  ]
+}

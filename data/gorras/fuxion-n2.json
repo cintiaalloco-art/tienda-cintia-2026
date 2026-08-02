@@ -1,0 +1,12 @@
+{
+  "numero": "N016",
+  "nombre": "Fuxion Nº2",
+  "categoria": "Fuxion",
+  "descripcion": "Denim azul con aplique X en strass.",
+  "precio": "$29.000",
+  "fotos": [
+    "images/fuxion-no2-1.jpg",
+    "images/fuxion-no2-2.jpg",
+    "images/fuxion-no2-3.jpg"
+  ]
+}

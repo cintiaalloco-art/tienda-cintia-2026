@@ -1,0 +1,12 @@
+{
+  "numero": "N007",
+  "nombre": "Linda",
+  "categoria": "Otras",
+  "descripcion": "Gris vintage con estrellas y strass plateados Hotfix dispersos.",
+  "precio": "$29.000",
+  "fotos": [
+    "images/linda-1.jpg",
+    "images/linda-2.jpg",
+    "images/linda-3.jpg"
+  ]
+}

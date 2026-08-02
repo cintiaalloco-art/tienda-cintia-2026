@@ -1,0 +1,12 @@
+{
+  "numero": "N027",
+  "nombre": "Fuxion Nº4",
+  "categoria": "Fuxion",
+  "descripcion": "Con strass 2mm.",
+  "precio": "$30.000",
+  "fotos": [
+    "images/fuxion-no4-1.jpg",
+    "images/fuxion-no4-2.jpg",
+    "images/fuxion-no4-3.jpg"
+  ]
+}
