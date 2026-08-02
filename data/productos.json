@@ -1,0 +1,369 @@
+{
+  "productos": [
+    {
+      "numero": "N001",
+      "nombre": "Abbie",
+      "categoria": "Otras",
+      "descripcion": "Rosa customizada con corazones multicolor y tachas Hotfix.",
+      "precio": "$25.000",
+      "fotos": [
+        "images/abbie-1.jpg",
+        "images/abbie-2.jpg",
+        "images/abbie-3.jpg"
+      ]
+    },
+    {
+      "numero": "N002",
+      "nombre": "Vanna (niña)",
+      "categoria": "Niño",
+      "descripcion": "Violeta con aplique de mariposa en tul y galón de strass.",
+      "precio": "$25.000",
+      "fotos": [
+        "images/vanna-nina-1.jpg",
+        "images/vanna-nina-2.jpg",
+        "images/vanna-nina-3.jpg"
+      ]
+    },
+    {
+      "numero": "N003",
+      "nombre": "Myla",
+      "categoria": "Otras",
+      "descripcion": "Denim azul con galón de corazones rojos y plateados y strass.",
+      "precio": "$30.000",
+      "fotos": [
+        "images/myla-1.jpg",
+        "images/myla-2.jpg",
+        "images/myla-3.jpg"
+      ]
+    },
+    {
+      "numero": "N004",
+      "nombre": "Mika Nº2",
+      "categoria": "Otras",
+      "descripcion": "Gris vintage con cinta rota negra, tachas plateadas y strass.",
+      "precio": "$33.000",
+      "fotos": [
+        "images/mika-no2-1.jpg",
+        "images/mika-no2-2.jpg",
+        "images/mika-no2-3.jpg"
+      ]
+    },
+    {
+      "numero": "N005",
+      "nombre": "Roxi",
+      "categoria": "Otras",
+      "descripcion": "Rosa con aplique de lazo en strass y strass multicolor.",
+      "precio": "$30.000",
+      "fotos": [
+        "images/roxi-1.jpg",
+        "images/roxi-2.jpg",
+        "images/roxi-3.jpg"
+      ]
+    },
+    {
+      "numero": "N006",
+      "nombre": "Fuxion Nº1",
+      "categoria": "Fuxion",
+      "descripcion": "Denim azul vintage con aplique X en strass plateado.",
+      "precio": "$35.000",
+      "fotos": [
+        "images/fuxion-no1-1.jpg",
+        "images/fuxion-no1-2.jpg",
+        "images/fuxion-no1-3.jpg"
+      ]
+    },
+    {
+      "numero": "N007",
+      "nombre": "Linda",
+      "categoria": "Otras",
+      "descripcion": "Gris vintage con estrellas y strass plateados Hotfix dispersos.",
+      "precio": "$29.000",
+      "fotos": [
+        "images/linda-1.jpg",
+        "images/linda-2.jpg",
+        "images/linda-3.jpg"
+      ]
+    },
+    {
+      "numero": "N008",
+      "nombre": "Niamh",
+      "categoria": "Otras",
+      "descripcion": "Marrón vintage con tachas Hotfix dispersas y strass.",
+      "precio": "$27.000",
+      "fotos": [
+        "images/niamh-1.jpg",
+        "images/niamh-2.jpg",
+        "images/niamh-3.jpg"
+      ]
+    },
+    {
+      "numero": "N009",
+      "nombre": "Airbag Lila",
+      "categoria": "Airbag",
+      "descripcion": "Denim lila con parche AIRBAG en strass plateado.",
+      "precio": "$32.000",
+      "fotos": [
+        "images/airbag-lila-1.jpg",
+        "images/airbag-lila-2.jpg",
+        "images/airbag-lila-3.jpg"
+      ]
+    },
+    {
+      "numero": "N010",
+      "nombre": "Eylul Nº1",
+      "categoria": "Otras",
+      "descripcion": "Celeste con aplique LOVE en strass y strass Hotfix.",
+      "precio": "$34.000",
+      "fotos": [
+        "images/eylul-no1-1.jpg",
+        "images/eylul-no1-2.jpg"
+      ]
+    },
+    {
+      "numero": "N011",
+      "nombre": "Airbag Sardelli 96",
+      "categoria": "Airbag",
+      "descripcion": "Negro vintage con letras SARDELLI 96 en strass boreal Hotfix.",
+      "precio": "$33.000",
+      "fotos": [
+        "images/airbag-sardelli-96-1.jpg",
+        "images/airbag-sardelli-96-2.jpg",
+        "images/airbag-sardelli-96-3.jpg"
+      ]
+    },
+    {
+      "numero": "N012",
+      "nombre": "Kandhy Nº2",
+      "categoria": "Otras",
+      "descripcion": "Denim claro con strass en tira y strass sueltos.",
+      "precio": "$33.000",
+      "fotos": [
+        "images/kandhy-no2-1.jpg",
+        "images/kandhy-no2-2.jpg",
+        "images/kandhy-no2-3.jpg"
+      ]
+    },
+    {
+      "numero": "N013",
+      "nombre": "Zeinep Nº4",
+      "categoria": "Otras",
+      "descripcion": "Denim celeste con aplique de guipur negro y strass.",
+      "precio": "$33.000",
+      "fotos": [
+        "images/zeinep-no4-1.jpg",
+        "images/zeinep-no4-2.jpg",
+        "images/zeinep-no4-3.jpg"
+      ]
+    },
+    {
+      "numero": "N014",
+      "nombre": "Calleigh Nº5",
+      "categoria": "Otras",
+      "descripcion": "Denim vintage color verde musgo, con tachas, medias perlas y strass en tonos verdes.",
+      "precio": "$35.000",
+      "fotos": [
+        "images/calleigh-no5-1.jpg",
+        "images/calleigh-no5-2.jpg",
+        "images/calleigh-no5-3.jpg"
+      ]
+    },
+    {
+      "numero": "N015",
+      "nombre": "Bugué Nº12",
+      "categoria": "Otras",
+      "descripcion": "Denim celeste con strass navette Hotfix.",
+      "precio": "$35.000",
+      "fotos": [
+        "images/bugue-no12-1.jpg",
+        "images/bugue-no12-2.jpg",
+        "images/bugue-no12-3.jpg"
+      ]
+    },
+    {
+      "numero": "N016",
+      "nombre": "Fuxion Nº2",
+      "categoria": "Fuxion",
+      "descripcion": "Denim azul con aplique X en strass.",
+      "precio": "$29.000",
+      "fotos": [
+        "images/fuxion-no2-1.jpg",
+        "images/fuxion-no2-2.jpg",
+        "images/fuxion-no2-3.jpg"
+      ]
+    },
+    {
+      "numero": "N017",
+      "nombre": "Kandhy Nº3",
+      "categoria": "Otras",
+      "descripcion": "Denim gris oscuro con strass en tira y strass cuadrado.",
+      "precio": "$30.000",
+      "fotos": [
+        "images/kandhy-no3-1.jpg",
+        "images/kandhy-no3-2.jpg",
+        "images/kandhy-no3-3.jpg"
+      ]
+    },
+    {
+      "numero": "N018",
+      "nombre": "Airbag Sardelli 96 Nº2",
+      "categoria": "Airbag",
+      "descripcion": "Negro vintage con letras SARDELLI 96 en tachas lilas Hotfix 2mm.",
+      "precio": "$33.000",
+      "fotos": [
+        "images/airbag-sardelli-96-no2-1.jpg",
+        "images/airbag-sardelli-96-no2-2.jpg",
+        "images/airbag-sardelli-96-no2-3.jpg"
+      ]
+    },
+    {
+      "numero": "N019",
+      "nombre": "Layca Nº3",
+      "categoria": "Otras",
+      "descripcion": "Lila con aplique \"Sweet\" en strass y galón.",
+      "precio": "$32.000",
+      "fotos": [
+        "images/layca-no3-1.jpg",
+        "images/layca-no3-2.jpg",
+        "images/layca-no3-3.jpg"
+      ]
+    },
+    {
+      "numero": "N020",
+      "nombre": "Argentina",
+      "categoria": "Otras",
+      "descripcion": "Jean vintage azul con cordón de strass y strass.",
+      "precio": "$32.000",
+      "fotos": [
+        "images/argentina-1.jpg",
+        "images/argentina-2.jpg",
+        "images/argentina-3.jpg"
+      ]
+    },
+    {
+      "numero": "N021",
+      "nombre": "Mia",
+      "categoria": "Otras",
+      "descripcion": "Jean azul con aplique M en strass.",
+      "precio": "$29.000",
+      "fotos": [
+        "images/mia-1.jpg",
+        "images/mia-2.jpg"
+      ]
+    },
+    {
+      "numero": "N022",
+      "nombre": "Eylul Nº2",
+      "categoria": "Otras",
+      "descripcion": "Rosa con aplique LOVE en strass.",
+      "precio": "$34.000",
+      "fotos": [
+        "images/eylul-no2-1.jpg",
+        "images/eylul-no2-2.jpg",
+        "images/eylul-no2-3.jpg"
+      ]
+    },
+    {
+      "numero": "N023",
+      "nombre": "Calleigh Nº2",
+      "categoria": "Otras",
+      "descripcion": "Jean azul con mariposa de medias perlas, tachas y strass en tonos rosa.",
+      "precio": "$42.000",
+      "fotos": [
+        "images/calleigh-no2-1.jpg",
+        "images/calleigh-no2-2.jpg",
+        "images/calleigh-no2-3.jpg"
+      ]
+    },
+    {
+      "numero": "N024",
+      "nombre": "Meera",
+      "categoria": "Otras",
+      "descripcion": "Aplique LOVE en strass negro y plateado, con galón y strass.",
+      "precio": "$38.500",
+      "fotos": [
+        "images/meera-1.jpg",
+        "images/meera-2.jpg",
+        "images/meera-3.jpg"
+      ]
+    },
+    {
+      "numero": "N025",
+      "nombre": "Andy",
+      "categoria": "Otras",
+      "descripcion": "Con tachas cuadradas.",
+      "precio": "$26.000",
+      "fotos": [
+        "images/andy-1.jpg"
+      ]
+    },
+    {
+      "numero": "N026",
+      "nombre": "Jaz Nº1",
+      "categoria": "Otras",
+      "descripcion": "Con strass ss16 Hotfix.",
+      "precio": "$30.000",
+      "fotos": [
+        "images/jaz-no1-1.jpg",
+        "images/jaz-no1-2.jpg",
+        "images/jaz-no1-3.jpg"
+      ]
+    },
+    {
+      "numero": "N027",
+      "nombre": "Fuxion Nº4",
+      "categoria": "Fuxion",
+      "descripcion": "Con strass 2mm.",
+      "precio": "$30.000",
+      "fotos": [
+        "images/fuxion-no4-1.jpg",
+        "images/fuxion-no4-2.jpg",
+        "images/fuxion-no4-3.jpg"
+      ]
+    },
+    {
+      "numero": "N028",
+      "nombre": "Bugué Nº13",
+      "categoria": "Otras",
+      "descripcion": "Con galón de strass y perlas.",
+      "precio": "$33.000",
+      "fotos": [
+        "images/bugue-no13-1.jpg",
+        "images/bugue-no13-2.jpg",
+        "images/bugue-no13-3.jpg"
+      ]
+    },
+    {
+      "numero": "N029",
+      "nombre": "Fuxion Nº7",
+      "categoria": "Fuxion",
+      "descripcion": "Con strass turquesa.",
+      "precio": "$29.000",
+      "fotos": [
+        "images/fuxion-no7-1.jpg",
+        "images/fuxion-no7-2.jpg",
+        "images/fuxion-no7-3.jpg"
+      ]
+    },
+    {
+      "numero": "N030",
+      "nombre": "Ciro",
+      "categoria": "Otras",
+      "descripcion": "Con nombre \"Ciro\" en strass boreal.",
+      "precio": "$29.000",
+      "fotos": [
+        "images/ciro-1.jpg",
+        "images/ciro-2.jpg",
+        "images/ciro-3.jpg",
+        "images/ciro-4.jpg"
+      ]
+    },
+    {
+      "numero": "6",
+      "nombre": "airbag",
+      "categoria": "Airbag",
+      "descripcion": "Con tachas",
+      "precio": "31000",
+      "fotos": []
+    }
+  ]
+}
