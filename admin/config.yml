@@ -1,1 +1,37 @@
+backend:
+  name: github
+  repo: cintiaalloco-art/tienda-cintia-2026
+  branch: main
+  base_url: https://obrashechasconamor.com.ar
+  auth_endpoint: .netlify/functions/auth
 
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "productos"
+    label: "Gorras"
+    label_singular: "Gorra"
+    delete: true
+    files:
+      - name: "catalogo"
+        label: "Catálogo de gorras"
+        file: "data/productos.json"
+        fields:
+          - label: "Gorras"
+            name: "productos"
+            widget: "list"
+            summary: "{{fields.nombre}} - {{fields.precio}}"
+            fields:
+              - {label: "Número (Nº)", name: "numero", widget: "string", required: false}
+              - {label: "Nombre", name: "nombre", widget: "string"}
+              - label: "Categoría"
+                name: "categoria"
+                widget: "select"
+                options: ["Airbag", "Fuxion", "Niño", "Otras"]
+              - {label: "Descripción", name: "descripcion", widget: "text", required: false}
+              - {label: "Precio", name: "precio", widget: "string"}
+              - label: "Fotos"
+                name: "fotos"
+                widget: "list"
+                field: {label: "Foto", name: "foto", widget: "image"}
