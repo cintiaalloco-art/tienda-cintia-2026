@@ -52,7 +52,18 @@
       }
     });
     CMS.registerPreviewTemplate('catalogo', CatalogoPreview);
-    CMS.registerLocale('en', { editor: { editorToolbar: { deleteEntry: 'Eliminar catálogo' } } });
+  </script>
+  <script>
+    function renombrarBotonEliminar() {
+      document.querySelectorAll('button').forEach(function(btn) {
+        if (btn.textContent.trim() === 'Delete entry') {
+          btn.textContent = 'Eliminar catálogo';
+        }
+      });
+    }
+    var observador = new MutationObserver(renombrarBotonEliminar);
+    observador.observe(document.body, { childList: true, subtree: true });
+    renombrarBotonEliminar();
   </script>
 </body>
 </html>
