@@ -2,6 +2,8 @@ backend:
   name: git-gateway
   branch: main
 
+publish_mode: editorial_workflow
+
 media_folder: "images"
 public_folder: "images"
 
@@ -24,8 +26,11 @@ collections:
               - {label: "Nombre", name: "nombre", widget: "string"}
               - label: "Categoría"
                 name: "categoria"
-                widget: "select"
-                options: ["Airbag", "Otras", "Niño", "Fuxion"]
+                widget: "relation"
+                collection: "categorias"
+                search_fields: ["nombre"]
+                value_field: "nombre"
+                display_fields: ["nombre"]
               - {label: "Descripción", name: "descripcion", widget: "text", required: false}
               - {label: "Precio", name: "precio", widget: "string"}
               - label: "Fotos"
@@ -37,6 +42,8 @@ collections:
     label: "Categorías"
     label_singular: "Categoría"
     folder: "data/categorias"
+    extension: "json"
+    format: "json"
     create: true
     delete: true
     slug: "{{slug}}"
