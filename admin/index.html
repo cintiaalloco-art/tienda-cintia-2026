@@ -54,5 +54,32 @@
     CMS.registerPreviewTemplate('catalogo', CatalogoPreview);
   </script>
   <script>
-    function renombrarBotonEliminar() {
-      document.que
+    var TRADUCCIONES = {
+      'Ahorrar': 'Guardar',
+      'Save': 'Guardar',
+      'Delete entry': 'Eliminar catálogo',
+      'Eliminar entrada': 'Eliminar catálogo',
+      'Eliminar entrada publicada': 'Eliminar catálogo',
+      'Escritos en la colección de Gorras': 'En Catálogo de Gorras',
+      'Writing in Gorras collection': 'En Catálogo de Gorras'
+    };
+
+    function aplicarTraducciones(nodo) {
+      var caminar = document.createTreeWalker(nodo, NodeFilter.SHOW_TEXT, null);
+      var textoActual;
+      while ((textoActual = caminar.nextNode())) {
+        var limpio = textoActual.nodeValue.trim();
+        if (TRADUCCIONES.hasOwnProperty(limpio)) {
+          textoActual.nodeValue = textoActual.nodeValue.replace(limpio, TRADUCCIONES[limpio]);
+        }
+      }
+    }
+
+    var observadorTextos = new MutationObserver(function() {
+      aplicarTraducciones(document.body);
+    });
+    observadorTextos.observe(document.body, { childList: true, subtree: true, characterData: true });
+    aplicarTraducciones(document.body);
+  </script>
+</body>
+</html>
