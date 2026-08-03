@@ -102,5 +102,30 @@
     aplicarTraducciones(document.body);
     setInterval(function() { aplicarTraducciones(document.body); }, 800);
   </script>
+  <script>
+    function crearBotonInicio() {
+      if (document.getElementById('boton-inicio-panel')) return;
+      var boton = document.createElement('a');
+      boton.id = 'boton-inicio-panel';
+      boton.href = '/admin/#/collections/productos/entries/catalogo';
+      boton.textContent = '← Volver al catálogo';
+      boton.style.position = 'fixed';
+      boton.style.bottom = '18px';
+      boton.style.right = '18px';
+      boton.style.zIndex = '9999';
+      boton.style.background = '#3B2A2C';
+      boton.style.color = '#FBF3F0';
+      boton.style.padding = '12px 18px';
+      boton.style.borderRadius = '30px';
+      boton.style.fontFamily = 'sans-serif';
+      boton.style.fontSize = '14px';
+      boton.style.fontWeight = 'bold';
+      boton.style.textDecoration = 'none';
+      boton.style.boxShadow = '0 6px 16px rgba(0,0,0,0.3)';
+      document.body.appendChild(boton);
+    }
+    crearBotonInicio();
+    setInterval(crearBotonInicio, 1000);
+  </script>
 </body>
 </html>
