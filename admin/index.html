@@ -8,6 +8,7 @@
 <body>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
   <script>
     if (window.netlifyIdentity) {
       window.netlifyIdentity.on("init", user => {
@@ -19,60 +20,25 @@
       });
     }
   </script>
+
   <script>
-    var CatalogoPreview = createClass({
-      render: function() {
-        var entry = this.props.entry;
-        var productos = entry.getIn(['data', 'productos']);
-        if (!productos) return h('div', {}, 'Sin productos');
-        return h('div', { style: { fontFamily: 'sans-serif', padding: '10px' } },
-          productos.map(function(p, i) {
-            var foto = p.getIn(['fotos', 0]) || '';
-            if (foto && foto.charAt(0) !== '/') foto = '/' + foto;
-            var linea = (p.get('numero') || '') + ' ' + (p.get('nombre') || '') + ' — ' + (p.get('categoria') || '') + ' — ' + (p.get('precio') || '') + ' — ' + (p.get('descripcion') || '');
-            return h('div', {
-              key: i,
-              style: {
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                borderBottom: '1px solid #ddd',
-                padding: '8px 0'
-              }
-            }, [
-              h('img', {
-                key: 'img',
-                src: foto,
-                style: { width: '45px', height: '45px', objectFit: 'cover', borderRadius: '4px', flexShrink: 0 }
-              }),
-              h('div', { key: 'info', style: { fontSize: '13px' } }, linea)
-            ]);
-          }).toArray()
-        );
-      }
-    });
-    CMS.registerPreviewTemplate('catalogo', CatalogoPreview);
-  </script>
-  <script>
+    // Traducciones de la interfaz.
+    // IMPORTANTE: sin MutationObserver. La version anterior recorria todo el DOM
+    // en cada mutacion, lo que congelaba el navegador al abrir el catalogo.
     var TRADUCCIONES = {
       'Ahorrar': 'Guardar',
       'Save': 'Guardar',
-      'Guardar': 'Guardar',
       'Delete entry': 'Eliminar catálogo',
       'Delete published entry': 'Eliminar catálogo',
       'Eliminar entrada': 'Eliminar catálogo',
       'Eliminar entrada publicada': 'Eliminar catálogo',
       'Published': 'Publicado',
-      'Publicado': 'Publicado',
       'CHANGES SAVED': 'CAMBIOS GUARDADOS',
-      'CAMBIOS GUARDADOS': 'CAMBIOS GUARDADOS',
       'Add gorras': 'Agregar gorras',
-      'Agregar gorras': 'Agregar gorras',
       'Check for Preview': 'Comprobar vista previa',
       'Comprobar la vista previa': 'Comprobar vista previa',
       'Escritos en la colección de Gorras': 'En Catálogo de Gorras',
       'Writing in Gorras collection': 'En Catálogo de Gorras',
-      'En Catálogo de Gorras': 'En Catálogo de Gorras',
       'Contents': 'Contenido',
       'Workflow': 'Flujo editorial',
       'Media': 'Archivos',
@@ -84,49 +50,51 @@
       'Quick add': 'Agregar rápido'
     };
 
-    function aplicarTraducciones(nodo) {
-      var caminar = document.createTreeWalker(nodo, NodeFilter.SHOW_TEXT, null);
-      var textoActual;
-      while ((textoActual = caminar.nextNode())) {
-        var limpio = textoActual.nodeValue.trim();
-        if (TRADUCCIONES.hasOwnProperty(limpio) && textoActual.nodeValue !== TRADUCCIONES[limpio]) {
-          textoActual.nodeValue = textoActual.nodeValue.replace(limpio, TRADUCCIONES[limpio]);
+    function aplicarTraducciones() {
+      try {
+        var caminar = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+        var nodo;
+        while ((nodo = caminar.nextNode())) {
+          var limpio = nodo.nodeValue.trim();
+          if (limpio.length > 40) continue;
+          if (TRADUCCIONES.hasOwnProperty(limpio) && nodo.nodeValue !== TRADUCCIONES[limpio]) {
+            nodo.nodeValue = nodo.nodeValue.replace(limpio, TRADUCCIONES[limpio]);
+          }
         }
+      } catch (e) {
+        console.warn('Traducciones:', e);
       }
     }
 
-    var observadorTextos = new MutationObserver(function() {
-      aplicarTraducciones(document.body);
-    });
-    observadorTextos.observe(document.body, { childList: true, subtree: true, characterData: true });
-    aplicarTraducciones(document.body);
-    setInterval(function() { aplicarTraducciones(document.body); }, 800);
+    // Un solo recorrido cada 2.5 segundos, en tiempo ocioso del navegador.
+    function programarTraducciones() {
+      if (window.requestIdleCallback) {
+        window.requestIdleCallback(aplicarTraducciones, { timeout: 1000 });
+      } else {
+        aplicarTraducciones();
+      }
+    }
+    setInterval(programarTraducciones, 2500);
   </script>
+
   <script>
+    // Boton para volver al catalogo.
     function crearBotonInicio() {
       if (document.getElementById('boton-inicio-panel')) return;
       var boton = document.createElement('a');
       boton.id = 'boton-inicio-panel';
       boton.href = '/admin/#/collections/productos/entries/catalogo';
       boton.textContent = '← Volver al catálogo';
-      boton.style.position = 'fixed';
-      boton.style.top = '70px';
-      boton.style.right = '18px';
-      boton.style.bottom = 'auto';
-      boton.style.zIndex = '9999';
-      boton.style.background = '#3B2A2C';
-      boton.style.color = '#FBF3F0';
-      boton.style.padding = '12px 18px';
-      boton.style.borderRadius = '30px';
-      boton.style.fontFamily = 'sans-serif';
-      boton.style.fontSize = '14px';
-      boton.style.fontWeight = 'bold';
-      boton.style.textDecoration = 'none';
-      boton.style.boxShadow = '0 6px 16px rgba(0,0,0,0.3)';
+      boton.style.cssText =
+        'position:fixed;top:70px;right:18px;z-index:9999;' +
+        'background:#3B2A2C;color:#FBF3F0;padding:12px 18px;' +
+        'border-radius:30px;font-family:sans-serif;font-size:14px;' +
+        'font-weight:bold;text-decoration:none;' +
+        'box-shadow:0 6px 16px rgba(0,0,0,0.3)';
       document.body.appendChild(boton);
     }
     crearBotonInicio();
-    setInterval(crearBotonInicio, 1000);
+    setInterval(crearBotonInicio, 3000);
   </script>
 </body>
 </html>
