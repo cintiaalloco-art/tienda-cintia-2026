@@ -36,7 +36,7 @@ collections:
                 widget: "list"
                 field: {label: "Foto", name: "foto", widget: "image"}
 
-- name: "categorias"
+  - name: "categorias"
     label: "Categorías"
     label_singular: "Categoría"
     folder: "data/categorias"
