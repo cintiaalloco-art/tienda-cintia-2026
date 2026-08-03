@@ -57,11 +57,22 @@
     var TRADUCCIONES = {
       'Ahorrar': 'Guardar',
       'Save': 'Guardar',
+      'Guardar': 'Guardar',
       'Delete entry': 'Eliminar catálogo',
+      'Delete published entry': 'Eliminar catálogo',
       'Eliminar entrada': 'Eliminar catálogo',
       'Eliminar entrada publicada': 'Eliminar catálogo',
+      'Published': 'Publicado',
+      'Publicado': 'Publicado',
+      'CHANGES SAVED': 'CAMBIOS GUARDADOS',
+      'CAMBIOS GUARDADOS': 'CAMBIOS GUARDADOS',
+      'Add gorras': 'Agregar gorras',
+      'Agregar gorras': 'Agregar gorras',
+      'Check for Preview': 'Comprobar vista previa',
+      'Comprobar la vista previa': 'Comprobar vista previa',
       'Escritos en la colección de Gorras': 'En Catálogo de Gorras',
-      'Writing in Gorras collection': 'En Catálogo de Gorras'
+      'Writing in Gorras collection': 'En Catálogo de Gorras',
+      'En Catálogo de Gorras': 'En Catálogo de Gorras'
     };
 
     function aplicarTraducciones(nodo) {
@@ -69,7 +80,7 @@
       var textoActual;
       while ((textoActual = caminar.nextNode())) {
         var limpio = textoActual.nodeValue.trim();
-        if (TRADUCCIONES.hasOwnProperty(limpio)) {
+        if (TRADUCCIONES.hasOwnProperty(limpio) && textoActual.nodeValue !== TRADUCCIONES[limpio]) {
           textoActual.nodeValue = textoActual.nodeValue.replace(limpio, TRADUCCIONES[limpio]);
         }
       }
@@ -80,6 +91,7 @@
     });
     observadorTextos.observe(document.body, { childList: true, subtree: true, characterData: true });
     aplicarTraducciones(document.body);
+    setInterval(function() { aplicarTraducciones(document.body); }, 800);
   </script>
 </body>
 </html>
