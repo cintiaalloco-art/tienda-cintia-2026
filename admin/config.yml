@@ -24,11 +24,8 @@ collections:
               - {label: "Nombre", name: "nombre", widget: "string"}
               - label: "Categoría"
                 name: "categoria"
-                widget: "relation"
-                collection: "categorias"
-                search_fields: ["nombre"]
-                value_field: "nombre"
-                display_fields: ["nombre"]
+                widget: "select"
+                options: ["Airbag", "Otras", "Niña", "Fuxion"]
               - {label: "Descripción", name: "descripcion", widget: "text", required: false}
               - {label: "Precio", name: "precio", widget: "string"}
               - label: "Fotos"
