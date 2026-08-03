@@ -25,7 +25,7 @@ collections:
               - label: "Categoría"
                 name: "categoria"
                 widget: "select"
-                options: ["Airbag", "Otras", "Niña", "Fuxion"]
+                options: ["Airbag", "Otras", "Niño", "Fuxion"]
               - {label: "Descripción", name: "descripcion", widget: "text", required: false}
               - {label: "Precio", name: "precio", widget: "string"}
               - label: "Fotos"
