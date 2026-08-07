@@ -356,6 +356,15 @@
         "images/ciro-3.jpg",
         "images/ciro-4.jpg"
       ]
+    },
+    {
+      "nombre": "Gorra \" Airbag\" N° 3",
+      "categoria": "Airbag",
+      "descripcion": "Con tachas rojas Hotfix. ",
+      "precio": "31000",
+      "fotos": [
+        "images/512093.jpg"
+      ]
     }
   ]
 }
