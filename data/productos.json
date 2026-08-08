@@ -333,18 +333,6 @@
       ]
     },
     {
-      "numero": "N029",
-      "nombre": "Fuxion Nº7",
-      "categoria": "Fuxion",
-      "descripcion": "Con strass turquesa.",
-      "precio": "$29.000",
-      "fotos": [
-        "images/fuxion-no7-1.jpg",
-        "images/fuxion-no7-2.jpg",
-        "images/fuxion-no7-3.jpg"
-      ]
-    },
-    {
       "numero": "N030",
       "nombre": "Ciro",
       "categoria": "Otras",
@@ -358,6 +346,18 @@
       ]
     },
     {
+      "numero": "N029",
+      "nombre": "Fuxion Nº7",
+      "categoria": "Fuxion",
+      "descripcion": "Con strass turquesa.",
+      "precio": "$29.000",
+      "fotos": [
+        "images/fuxion-no7-1.jpg",
+        "images/fuxion-no7-2.jpg",
+        "images/fuxion-no7-3.jpg"
+      ]
+    },
+    {
       "nombre": "Gorra \" Airbag\" N° 3",
       "categoria": "Airbag",
       "descripcion": "Con tachas rojas Hotfix. ",
@@ -365,6 +365,17 @@
       "fotos": [
         "images/512093.jpg",
         "images/512615.jpg"
+      ]
+    },
+    {
+      "nombre": "Gorra \"Airbag\" N° 4",
+      "categoria": "Airbag",
+      "descripcion": "Con tachas plateadas Hotfix",
+      "precio": "$310000",
+      "fotos": [
+        "images/405703.png",
+        "images/512768.png",
+        "images/512766.png"
       ]
     }
   ]
