@@ -377,6 +377,17 @@
         "images/512768.png",
         "images/512766.png"
       ]
+    },
+    {
+      "nombre": "Gorra \"Airbag: Sardelli 96\" N° 1",
+      "categoria": "Airbag",
+      "descripcion": "Con strass boreal Hotfix ",
+      "precio": "$33000",
+      "fotos": [
+        "images/512764.png",
+        "images/512765.png",
+        "images/512763.png"
+      ]
     }
   ]
 }
