@@ -388,6 +388,17 @@
         "images/405579.jpg",
         "images/405577.jpg"
       ]
+    },
+    {
+      "nombre": "Gorra \"Airbag N° 4\"",
+      "categoria": "Airbag",
+      "descripcion": "Gorra negra + tachas plateadas ",
+      "precio": "$31000",
+      "fotos": [
+        "images/405567.jpg",
+        "images/405565.jpg",
+        "images/405569.jpg"
+      ]
     }
   ]
 }
