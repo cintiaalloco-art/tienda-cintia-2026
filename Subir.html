@@ -95,6 +95,15 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 12px; color: var(--rose);
   }
+  .thumb .removeBtn {
+    position: absolute; top: 4px; left: 4px;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: rgba(176,58,46,0.85);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: bold;
+    cursor: pointer;
+  }
   .group {
     border: 1px solid #f0dcd4;
     border-radius: 12px;
@@ -288,7 +297,9 @@ function renderPool() {
   unassigned.forEach(p => {
     const div = document.createElement('div');
     div.className = 'thumb' + (p.selected ? ' selected' : '');
-    div.innerHTML = `<img src="${p.dataUrl}"><div class="check">${p.selected ? '✓' : ''}</div>`;
+    div.innerHTML = `<img src="${p.dataUrl}"><div class="check">${p.selected ? '✓' : ''}</div><div class="removeBtn">✕</div>`;
+    div.querySelector('.check').onclick = (e) => { e.stopPropagation(); p.selected = !p.selected; renderPool(); };
+    div.querySelector('.removeBtn').onclick = (e) => { e.stopPropagation(); removePhoto(p.id); };
     div.onclick = () => { p.selected = !p.selected; renderPool(); };
     el.appendChild(div);
   });
@@ -296,6 +307,11 @@ function renderPool() {
   document.getElementById('poolActions').style.display = unassigned.length ? 'block' : 'none';
   document.getElementById('selCount').textContent = selCount ? `${selCount} seleccionadas` : 'Tocá las fotos de un mismo modelo';
   updateFooter();
+}
+
+function removePhoto(id) {
+  pool = pool.filter(p => p.id !== id);
+  renderPool();
 }
 
 function createGroupFromSelection() {
