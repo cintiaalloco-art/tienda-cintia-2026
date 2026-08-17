@@ -40,4 +40,40 @@ collections:
 
   - name: "gorras"
     label: "Gorras"
-    labe
+    label_singular: "Gorra"
+    folder: "data/gorras"
+    extension: "json"
+    format: "json"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    summary: "{{nombre}} - {{categoria}} - {{precio}}"
+    fields:
+      - {label: "Numero (N)", name: "numero", widget: "string", required: false}
+      - {label: "Nombre", name: "nombre", widget: "string"}
+      - label: "Categoria"
+        name: "categoria"
+        widget: "select"
+        options: ["Airbag", "Fuxion", "Nino", "Otras"]
+      - {label: "Descripcion", name: "descripcion", widget: "text", required: false}
+      - {label: "Precio", name: "precio", widget: "string"}
+      - label: "Foto principal (para vista previa en el panel)"
+        name: "foto_principal"
+        widget: "image"
+        required: false
+      - label: "Fotos"
+        name: "fotos"
+        widget: "list"
+        field: {label: "Foto", name: "foto", widget: "image"}
+
+  - name: "categorias"
+    label: "Categorias"
+    label_singular: "Categoria"
+    folder: "data/categorias"
+    extension: "json"
+    format: "json"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Nombre", name: "nombre", widget: "string"}
