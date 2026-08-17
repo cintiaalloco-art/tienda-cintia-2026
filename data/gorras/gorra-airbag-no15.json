@@ -1,0 +1,17 @@
+{
+  "numero": "",
+  "nombre": "Gorra Airbag Nº15",
+  "categoria": "Airbag",
+  "descripcion": "Con Strass Azul  Hotfix",
+  "precio": "$31.000",
+  "foto_principal": "/images/gorra-airbag-no15-1.jpg",
+  "fotos": [
+    "/images/gorra-airbag-no15-1.jpg",
+    "/images/gorra-airbag-no15-2.jpg",
+    "/images/gorra-airbag-no15-3.jpg",
+    "/images/gorra-airbag-no15-4.jpg",
+    "/images/gorra-airbag-no15-5.jpg",
+    "/images/gorra-airbag-no15-6.jpg",
+    "/images/gorra-airbag-no15-7.jpg"
+  ]
+}

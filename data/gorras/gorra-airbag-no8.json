@@ -1,0 +1,13 @@
+{
+  "numero": "",
+  "nombre": "Gorra Airbag Nº8",
+  "categoria": "Airbag",
+  "descripcion": "Con tachas negras 2mm. Hotfix",
+  "precio": "$32.000",
+  "foto_principal": "/images/gorra-airbag-no8-1.jpg",
+  "fotos": [
+    "/images/gorra-airbag-no8-1.jpg",
+    "/images/gorra-airbag-no8-2.jpg",
+    "/images/gorra-airbag-no8-3.jpg"
+  ]
+}

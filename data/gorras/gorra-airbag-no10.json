@@ -1,0 +1,13 @@
+{
+  "numero": "",
+  "nombre": "Gorra Airbag Nº10",
+  "categoria": "Airbag",
+  "descripcion": "Con Strass Rojo 2mm Hotfix",
+  "precio": "$32.000",
+  "foto_principal": "/images/gorra-airbag-no10-1.jpg",
+  "fotos": [
+    "/images/gorra-airbag-no10-1.jpg",
+    "/images/gorra-airbag-no10-2.jpg",
+    "/images/gorra-airbag-no10-3.jpg"
+  ]
+}

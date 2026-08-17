@@ -1,0 +1,13 @@
+{
+  "numero": "",
+  "nombre": "Gorra Airbag Nº9",
+  "categoria": "Airbag",
+  "descripcion": "Con Strass ss10 Hotfix",
+  "precio": "$30.000",
+  "foto_principal": "/images/gorra-airbag-no9-1.jpg",
+  "fotos": [
+    "/images/gorra-airbag-no9-1.jpg",
+    "/images/gorra-airbag-no9-2.jpg",
+    "/images/gorra-airbag-no9-3.jpg"
+  ]
+}

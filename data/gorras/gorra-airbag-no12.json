@@ -1,0 +1,13 @@
+{
+  "numero": "",
+  "nombre": "Gorra Airbag Nº12",
+  "categoria": "Airbag",
+  "descripcion": "Con Tachas Violetas Hotfix",
+  "precio": "$31.000",
+  "foto_principal": "/images/gorra-airbag-no12-1.jpg",
+  "fotos": [
+    "/images/gorra-airbag-no12-1.jpg",
+    "/images/gorra-airbag-no12-2.jpg",
+    "/images/gorra-airbag-no12-3.jpg"
+  ]
+}

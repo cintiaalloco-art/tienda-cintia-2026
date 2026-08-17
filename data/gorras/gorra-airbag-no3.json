@@ -1,0 +1,13 @@
+{
+  "numero": "",
+  "nombre": "Gorra Airbag Nº3",
+  "categoria": "Airbag",
+  "descripcion": "Con Tachas Rojas Hotfix",
+  "precio": "$31.000",
+  "foto_principal": "/images/gorra-airbag-no3-1.jpg",
+  "fotos": [
+    "/images/gorra-airbag-no3-1.jpg",
+    "/images/gorra-airbag-no3-2.jpg",
+    "/images/gorra-airbag-no3-3.jpg"
+  ]
+}

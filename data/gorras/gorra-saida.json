@@ -1,0 +1,11 @@
+{
+  "numero": "",
+  "nombre": "Gorra Saida",
+  "categoria": "Otras",
+  "descripcion": "Con Tachas Hotfix",
+  "precio": "$35.000",
+  "foto_principal": "/images/gorra-saida-1.jpg",
+  "fotos": [
+    "/images/gorra-saida-1.jpg"
+  ]
+}

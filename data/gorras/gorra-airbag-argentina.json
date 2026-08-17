@@ -1,0 +1,13 @@
+{
+  "numero": "",
+  "nombre": "Gorra Airbag Argentina",
+  "categoria": "Airbag",
+  "descripcion": "Con Strass Hotfix",
+  "precio": "$32.000",
+  "foto_principal": "/images/gorra-airbag-argentina-1.jpg",
+  "fotos": [
+    "/images/gorra-airbag-argentina-1.jpg",
+    "/images/gorra-airbag-argentina-2.jpg",
+    "/images/gorra-airbag-argentina-3.jpg"
+  ]
+}

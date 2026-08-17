@@ -1,0 +1,13 @@
+{
+  "numero": "",
+  "nombre": "Gorra Airbag Kallash Nº1",
+  "categoria": "Airbag",
+  "descripcion": "Con Tachas Plateadas Hotfix",
+  "precio": "$32.000",
+  "foto_principal": "/images/gorra-airbag-kallash-no1-1.jpg",
+  "fotos": [
+    "/images/gorra-airbag-kallash-no1-1.jpg",
+    "/images/gorra-airbag-kallash-no1-2.jpg",
+    "/images/gorra-airbag-kallash-no1-3.jpg"
+  ]
+}

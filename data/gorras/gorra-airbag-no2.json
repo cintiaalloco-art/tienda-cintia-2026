@@ -1,0 +1,13 @@
+{
+  "numero": "",
+  "nombre": "Gorra Airbag Nº2",
+  "categoria": "Airbag",
+  "descripcion": "Gorra vintage negra con tachas lilas",
+  "precio": "$31.000",
+  "foto_principal": "/images/gorra-airbag-no2-1.jpg",
+  "fotos": [
+    "/images/gorra-airbag-no2-1.jpg",
+    "/images/gorra-airbag-no2-2.jpg",
+    "/images/gorra-airbag-no2-3.jpg"
+  ]
+}

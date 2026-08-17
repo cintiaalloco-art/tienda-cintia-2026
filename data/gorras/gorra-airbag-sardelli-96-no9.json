@@ -1,0 +1,15 @@
+{
+  "numero": "",
+  "nombre": "Gorra Airbag Sardelli 96 Nº9",
+  "categoria": "Airbag",
+  "descripcion": "Con Tachas Tornasoladas Hotfix",
+  "precio": "$33.000",
+  "foto_principal": "/images/gorra-airbag-sardelli-96-no9-1.jpg",
+  "fotos": [
+    "/images/gorra-airbag-sardelli-96-no9-1.jpg",
+    "/images/gorra-airbag-sardelli-96-no9-2.jpg",
+    "/images/gorra-airbag-sardelli-96-no9-3.jpg",
+    "/images/gorra-airbag-sardelli-96-no9-4.jpg",
+    "/images/gorra-airbag-sardelli-96-no9-5.jpg"
+  ]
+}

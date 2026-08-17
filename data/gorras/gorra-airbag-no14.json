@@ -1,0 +1,13 @@
+{
+  "numero": "",
+  "nombre": "Gorra Airbag Nº14",
+  "categoria": "Airbag",
+  "descripcion": "Con Tachas Plateadas Hotfix",
+  "precio": "$32.000",
+  "foto_principal": "/images/gorra-airbag-no14-1.jpg",
+  "fotos": [
+    "/images/gorra-airbag-no14-1.jpg",
+    "/images/gorra-airbag-no14-2.jpg",
+    "/images/gorra-airbag-no14-3.jpg"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "numero": "",
+  "nombre": "Gorra Airbag Nº16",
+  "categoria": "Airbag",
+  "descripcion": "Con Strass Boreal Hotfix",
+  "precio": "$32.000",
+  "foto_principal": "/images/gorra-airbag-no16-1.jpg",
+  "fotos": [
+    "/images/gorra-airbag-no16-1.jpg",
+    "/images/gorra-airbag-no16-2.jpg",
+    "/images/gorra-airbag-no16-3.jpg",
+    "/images/gorra-airbag-no16-4.jpg"
+  ]
+}

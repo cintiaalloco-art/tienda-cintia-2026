@@ -1,0 +1,14 @@
+{
+  "numero": "",
+  "nombre": "Gorra Airbag Nº7",
+  "categoria": "Airbag",
+  "descripcion": "Gorra Vintage negra con tachas rojas Hotfix",
+  "precio": "$31.000",
+  "foto_principal": "/images/gorra-airbag-no7-1.jpg",
+  "fotos": [
+    "/images/gorra-airbag-no7-1.jpg",
+    "/images/gorra-airbag-no7-2.jpg",
+    "/images/gorra-airbag-no7-3.jpg",
+    "/images/gorra-airbag-no7-4.jpg"
+  ]
+}
