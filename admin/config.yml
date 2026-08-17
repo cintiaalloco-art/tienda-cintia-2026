@@ -9,29 +9,29 @@ public_folder: "images"
 
 collections:
   - name: "productos"
-    label: "CatÃ¡logo antiguo"
+    label: "Catalogo antiguo"
     label_singular: "Gorra (antigua)"
     delete: true
     files:
       - name: "catalogo"
-        label: "CatÃ¡logo de gorras (viejo)"
+        label: "Catalogo de gorras (viejo)"
         file: "data/productos.json"
         fields:
           - label: "Gorras"
             name: "productos"
             widget: "list"
-            summary: "{{fields.numero}} {{fields.nombre}} â€” {{fields.categoria}} â€” {{fields.precio}} â€” {{fields.descripcion}}"
+            summary: "{{fields.numero}} {{fields.nombre}} - {{fields.categoria}} - {{fields.precio}} - {{fields.descripcion}}"
             fields:
-              - {label: "NÃºmero (NÂº)", name: "numero", widget: "string", required: false}
+              - {label: "Numero (N)", name: "numero", widget: "string", required: false}
               - {label: "Nombre", name: "nombre", widget: "string"}
-              - label: "CategorÃ­a"
+              - label: "Categoria"
                 name: "categoria"
                 widget: "relation"
                 collection: "categorias"
                 search_fields: ["nombre"]
                 value_field: "nombre"
                 display_fields: ["nombre"]
-              - {label: "DescripciÃ³n", name: "descripcion", widget: "text", required: false}
+              - {label: "Descripcion", name: "descripcion", widget: "text", required: false}
               - {label: "Precio", name: "precio", widget: "string"}
               - label: "Fotos"
                 name: "fotos"
@@ -45,15 +45,15 @@ collections:
     create: true
     delete: true
     slug: "{{slug}}"
-    summary: "{{nombre}} â€” {{categoria}} â€” {{precio}}"
+    summary: "{{nombre}} - {{categoria}} - {{precio}}"
     fields:
-      - {label: "NÃºmero (NÂº)", name: "numero", widget: "string", required: false}
+      - {label: "Numero (N)", name: "numero", widget: "string", required: false}
       - {label: "Nombre", name: "nombre", widget: "string"}
-      - label: "CategorÃ­a"
+      - label: "Categoria"
         name: "categoria"
         widget: "select"
-        options: ["Airbag", "Fuxion", "NiÃ±o", "Otras"]
-      - {label: "DescripciÃ³n", name: "descripcion", widget: "text", required: false}
+        options: ["Airbag", "Fuxion", "Nino", "Otras"]
+      - {label: "Descripcion", name: "descripcion", widget: "text", required: false}
       - {label: "Precio", name: "precio", widget: "string"}
       - label: "Foto principal (para vista previa en el panel)"
         name: "foto_principal"
@@ -65,8 +65,8 @@ collections:
         field: {label: "Foto", name: "foto", widget: "image"}
 
   - name: "categorias"
-    label: "CategorÃ­as"
-    label_singular: "CategorÃ­a"
+    label: "Categorias"
+    label_singular: "Categoria"
     folder: "data/categorias"
     extension: "json"
     format: "json"
