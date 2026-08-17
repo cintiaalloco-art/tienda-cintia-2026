@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subir gorras — Obras hechas con Amor</title>
+<style>
+  :root {
+    --rose: #b76e79;
+    --rose-dark: #8f4f5a;
+    --cream: #f7ece6;
+    --mauve: #5c4033;
+    --bg: #fdf6f3;
+    --ok: #4a7c59;
+    --err: #b03a2e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--mauve);
+    margin: 0;
+    padding: 16px;
+    padding-bottom: 100px;
+  }
+  h1 {
+    font-size: 1.4rem;
+    color: var(--rose-dark);
+    margin: 0 0 4px;
+  }
+  .subtitle { color: #9c8478; font-size: 0.9rem; margin-bottom: 20px; }
+  .card {
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(183,110,121,0.12);
+  }
+  .card h2 {
+    font-size: 1rem;
+    margin: 0 0 12px;
+    color: var(--rose-dark);
+  }
+  label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    margin-top: 10px;
+    color: var(--mauve);
+  }
+  input[type=text], input[type=password], input[type=number], select, textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e4cfc6;
+    font-size: 0.95rem;
+    background: #fffaf8;
+  }
+  textarea { min-height: 60px; resize: vertical; }
+  button {
+    font-family: inherit;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-primary { background: var(--rose); color: white; }
+  .btn-primary:disabled { background: #ddb9bf; cursor: not-allowed; }
+  .btn-secondary { background: var(--cream); color: var(--rose-dark); }
+  .btn-small { padding: 6px 10px; font-size: 0.8rem; border-radius: 8px; }
+  .btn-danger { background: #fbeceb; color: var(--err); }
+  .thumbs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
+    margin: 12px 0;
+  }
+  .thumb {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    border: 3px solid transparent;
+    cursor: pointer;
+  }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .thumb.selected { border-color: var(--rose); }
+  .thumb .check {
+    position: absolute; top: 4px; right: 4px;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: rgba(255,255,255,0.85);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: var(--rose);
+  }
+  .group {
+    border: 1px solid #f0dcd4;
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 14px;
+    background: #fffdfc;
+  }
+  .group-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px;
+  }
+  .group-header span { font-weight: 700; color: var(--rose-dark); font-size: 0.9rem; }
+  .group .thumbs { grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .status-line {
+    font-size: 0.82rem;
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .status-line.ok { color: var(--ok); }
+  .status-line.err { color: var(--err); }
+  .status-line.pending { color: #9c8478; }
+  .hint { font-size: 0.78rem; color: #a7897d; margin-top: 4px; }
+  .footer-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: white;
+    padding: 12px 16px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+    display: flex; gap: 10px; align-items: center;
+  }
+  .footer-bar .count { font-size: 0.85rem; color: #9c8478; flex: 1; }
+  .badge {
+    display: inline-block;
+    background: var(--cream);
+    color: var(--rose-dark);
+    border-radius: 6px;
+    padding: 2px 6px;
+    font-size: 0.75rem;
+    margin-left: 6px;
+  }
+  #logBox {
+    max-height: 220px;
+    overflow-y: auto;
+    background: #fff8f6;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+  }
+  .toggle-config {
+    background: none; border: none; color: var(--rose-dark);
+    font-size: 0.82rem; text-decoration: underline; padding: 0;
+  }
+</style>
+</head>
+<body>
+
+<h1>🧢 Subir gorras nuevas</h1>
+<div class="subtitle">Obras hechas con Amor — carga directa al catálogo</div>
+
+<div class="card" id="configCard">
+  <h2>⚙️ Configuración (una sola vez)</h2>
+  <label>Token de GitHub</label>
+  <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+  <div class="hint">
+    Se guarda solo en este navegador. Para generarlo: GitHub → foto de perfil → Settings →
+    Developer settings → Personal access tokens → Tokens (classic) → Generate new token →
+    marcá el permiso <b>repo</b> → Generate. Copiá el código que empieza con "ghp_" y pegalo acá.
+  </div>
+  <label>Usuario/organización de GitHub</label>
+  <input type="text" id="ghOwner" placeholder="cintiaalloco-art">
+  <label>Nombre del repositorio</label>
+  <input type="text" id="ghRepo" placeholder="tienda-cintia-2026">
+  <button class="btn-primary" style="margin-top:14px" onclick="saveConfig()">Guardar configuración</button>
+  <button class="btn-secondary" style="margin-top:14px" onclick="startDemo()">Probar el funcionamiento (modo demo, sin conectar)</button>
+  <div id="configStatus" class="hint"></div>
+</div>
+<div class="card" id="demoBanner" style="display:none; background:#fff4e6; border:1px solid #f0c98a;">
+  <b>🧪 Modo demo</b> — estás probando cómo funciona, sin conectar a GitHub todavía. Al tocar "Publicar" se simula el resultado, no se sube nada de verdad.
+</div>
+
+<div class="card" id="uploadCard" style="display:none">
+  <h2>1️⃣ Elegí las fotos de esta tanda</h2>
+  <input type="file" id="fileInput" accept="image/*" multiple onchange="handleFiles(event)">
+  <div class="hint">Podés elegir todas las fotos de una vez, aunque sean de varios modelos distintos.</div>
+  <div class="thumbs" id="pool"></div>
+  <div id="poolActions" style="display:none; margin-top:10px;">
+    <button class="btn-primary btn-small" onclick="createGroupFromSelection()">Agrupar seleccionadas en un modelo</button>
+    <span class="hint" id="selCount"></span>
+  </div>
+</div>
+
+<div class="card" id="groupsCard" style="display:none">
+  <h2>2️⃣ Completá los datos de cada modelo</h2>
+  <div id="groupsContainer"></div>
+</div>
+
+<div class="card" id="logCard" style="display:none">
+  <h2>📋 Progreso</h2>
+  <div id="logBox"></div>
+</div>
+
+<div class="footer-bar" id="footerBar" style="display:none">
+  <div class="count" id="footerCount">0 fotos sin agrupar</div>
+  <button class="btn-primary" id="publishBtn" onclick="publishAll()" disabled>Publicar catálogo</button>
+</div>
+
+<script>
+const CATEGORIAS = ["Airbag", "Fuxion", "Niño", "Otras"];
+let pool = [];        // {id, file, dataUrl}
+let groups = [];      // {id, photoIds:[], nombre, categoria, precio, detalle}
+let nextId = 1;
+let nextGroupId = 1;
+let demoMode = false;
+
+function startDemo() {
+  demoMode = true;
+  document.getElementById('demoBanner').style.display = 'block';
+  document.getElementById('uploadCard').style.display = 'block';
+  document.getElementById('footerBar').style.display = 'flex';
+  document.getElementById('configCard').style.display = 'none';
+  window.scrollTo({ top: document.getElementById('uploadCard').offsetTop - 10, behavior: 'smooth' });
+}
+
+function loadConfig() {
+  const t = localStorage.getItem('gh_token');
+  const o = localStorage.getItem('gh_owner');
+  const r = localStorage.getItem('gh_repo');
+  if (t) document.getElementById('ghToken').value = t;
+  if (o) document.getElementById('ghOwner').value = o;
+  if (r) document.getElementById('ghRepo').value = r;
+  if (t && o && r) {
+    document.getElementById('uploadCard').style.display = 'block';
+    document.getElementById('footerBar').style.display = 'flex';
+    document.getElementById('configStatus').textContent = '✓ Configuración guardada.';
+  }
+}
+function saveConfig() {
+  const t = document.getElementById('ghToken').value.trim();
+  const o = document.getElementById('ghOwner').value.trim();
+  const r = document.getElementById('ghRepo').value.trim();
+  if (!t || !o || !r) {
+    document.getElementById('configStatus').textContent = 'Completá los 3 campos.';
+    return;
+  }
+  localStorage.setItem('gh_token', t);
+  localStorage.setItem('gh_owner', o);
+  localStorage.setItem('gh_repo', r);
+  document.getElementById('configStatus').textContent = '✓ Guardado. Ya podés subir fotos.';
+  document.getElementById('uploadCard').style.display = 'block';
+  document.getElementById('footerBar').style.display = 'flex';
+}
+
+// ---------- File handling & compression ----------
+function handleFiles(evt) {
+  const files = Array.from(evt.target.files);
+  let remaining = files.length;
+  files.forEach(file => {
+    compressImage(file, 1600, 0.85).then(dataUrl => {
+      pool.push({ id: nextId++, file, dataUrl, selected: false });
+      remaining--;
+      if (remaining === 0) renderPool();
+    });
+  });
+  evt.target.value = '';
+}
+
+function compressImage(file, maxDim, quality) {
+  return new Promise(resolve => {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = e => { img.src = e.target.result; };
+    img.onload = () => {
+      let w = img.width, h = img.height;
+      const scale = Math.min(1, maxDim / Math.max(w, h));
+      w = Math.round(w * scale); h = Math.round(h * scale);
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderPool() {
+  const el = document.getElementById('pool');
+  el.innerHTML = '';
+  const unassigned = pool.filter(p => !groups.some(g => g.photoIds.includes(p.id)));
+  unassigned.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'thumb' + (p.selected ? ' selected' : '');
+    div.innerHTML = `<img src="${p.dataUrl}"><div class="check">${p.selected ? '✓' : ''}</div>`;
+    div.onclick = () => { p.selected = !p.selected; renderPool(); };
+    el.appendChild(div);
+  });
+  const selCount = pool.filter(p => p.selected).length;
+  document.getElementById('poolActions').style.display = unassigned.length ? 'block' : 'none';
+  document.getElementById('selCount').textContent = selCount ? `${selCount} seleccionadas` : 'Tocá las fotos de un mismo modelo';
+  updateFooter();
+}
+
+function createGroupFromSelection() {
+  const selected = pool.filter(p => p.selected);
+  if (selected.length === 0) return;
+  groups.push({
+    id: nextGroupId++,
+    photoIds: selected.map(p => p.id),
+    nombre: '', categoria: 'Airbag', precio: '', detalle: ''
+  });
+  selected.forEach(p => p.selected = false);
+  renderPool();
+  renderGroups();
+}
+
+function renderGroups() {
+  const container = document.getElementById('groupsContainer');
+  const card = document.getElementById('groupsCard');
+  card.style.display = groups.length ? 'block' : 'none';
+  container.innerHTML = '';
+  groups.forEach(g => {
+    const photos = pool.filter(p => g.photoIds.includes(p.id));
+    const div = document.createElement('div');
+    div.className = 'group';
+    div.innerHTML = `
+      <div class="group-header">
+        <span>Modelo ${g.id} <span class="badge">${photos.length} fotos</span></span>
+        <button class="btn-danger btn-small" onclick="removeGroup(${g.id})">Quitar grupo</button>
+      </div>
+      <div class="thumbs">${photos.map(p => `<div class="thumb"><img src="${p.dataUrl}"></div>`).join('')}</div>
+      <label>Nombre</label>
+      <input type="text" value="${g.nombre}" oninput="updateGroup(${g.id},'nombre',this.value)" placeholder="Ej: Airbag Nº20">
+      <div class="row2">
+        <div>
+          <label>Categoría</label>
+          <select onchange="updateGroup(${g.id},'categoria',this.value)">
+            ${CATEGORIAS.map(c => `<option value="${c}" ${c===g.categoria?'selected':''}>${c}</option>`).join('')}
+          </select>
+        </div>
+        <div>
+          <label>Precio</label>
+          <input type="text" value="${g.precio}" oninput="updateGroup(${g.id},'precio',this.value)" placeholder="Ej: $32.000">
+        </div>
+      </div>
+      <label>Detalle</label>
+      <textarea oninput="updateGroup(${g.id},'detalle',this.value)" placeholder="Ej: Con strass boreal Hotfix">${g.detalle}</textarea>
+    `;
+    container.appendChild(div);
+  });
+  updateFooter();
+}
+
+function updateGroup(id, field, value) {
+  const g = groups.find(g => g.id === id);
+  if (g) g[field] = value;
+  updateFooter();
+}
+function removeGroup(id) {
+  groups = groups.filter(g => g.id !== id);
+  renderPool();
+  renderGroups();
+}
+
+function updateFooter() {
+  const unassigned = pool.filter(p => !groups.some(g => g.photoIds.includes(p.id))).length;
+  document.getElementById('footerCount').textContent =
+    groups.length ? `${groups.length} modelo(s) armados, ${unassigned} foto(s) sin agrupar` : `${unassigned} foto(s) sin agrupar`;
+  const allFilled = groups.length > 0 && groups.every(g => g.nombre && g.precio);
+  document.getElementById('publishBtn').disabled = !allFilled;
+}
+
+// ---------- Slug helper ----------
+function slugify(s) {
+  return s.toLowerCase()
+    .replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i')
+    .replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n').replace(/º/g,'')
+    .replace(/[^a-z0-9]+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
+}
+
+// ---------- GitHub API ----------
+function ghHeaders() {
+  return {
+    'Authorization': 'token ' + localStorage.getItem('gh_token'),
+    'Accept': 'application/vnd.github+json'
+  };
+}
+function ghBase() {
+  return `https://api.github.com/repos/${localStorage.getItem('gh_owner')}/${localStorage.getItem('gh_repo')}`;
+}
+
+function log(msg, cls) {
+  const box = document.getElementById('logBox');
+  document.getElementById('logCard').style.display = 'block';
+  const line = document.createElement('div');
+  line.className = 'status-line ' + (cls || 'pending');
+  line.textContent = msg;
+  box.appendChild(line);
+  box.scrollTop = box.scrollHeight;
+}
+
+async function uploadImage(path, dataUrl) {
+  const base64 = dataUrl.split(',')[1];
+  const res = await fetch(`${ghBase()}/contents/${path}`, {
+    method: 'PUT',
+    headers: ghHeaders(),
+    body: JSON.stringify({
+      message: `Subir foto ${path}`,
+      content: base64
+    })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(`No se pudo subir ${path}: ${err.message || res.status}`);
+  }
+}
+
+async function getProductosJson() {
+  const res = await fetch(`${ghBase()}/contents/data/productos.json`, { headers: ghHeaders() });
+  if (!res.ok) throw new Error('No se pudo leer data/productos.json (revisá el token y el nombre del repo).');
+  const data = await res.json();
+  const content = decodeURIComponent(escape(atob(data.content)));
+  return { json: JSON.parse(content), sha: data.sha };
+}
+
+async function saveProductosJson(jsonObj, sha) {
+  const content = JSON.stringify(jsonObj, null, 2);
+  const base64 = btoa(unescape(encodeURIComponent(content)));
+  const res = await fetch(`${ghBase()}/contents/data/productos.json`, {
+    method: 'PUT',
+    headers: ghHeaders(),
+    body: JSON.stringify({
+      message: 'Agregar gorras nuevas desde el panel de carga',
+      content: base64,
+      sha: sha
+    })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error('No se pudo guardar productos.json: ' + (err.message || res.status));
+  }
+}
+
+function nextNumero(productos) {
+  let max = 0;
+  productos.forEach(p => {
+    if (p.numero) {
+      const n = parseInt(p.numero.replace(/\D/g, ''), 10);
+      if (!isNaN(n) && n > max) max = n;
+    }
+  });
+  return max;
+}
+
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function publishAllDemo() {
+  const btn = document.getElementById('publishBtn');
+  btn.disabled = true;
+  btn.textContent = 'Publicando (demo)...';
+  document.getElementById('logBox').innerHTML = '';
+  document.getElementById('logCard').style.display = 'block';
+
+  log('🧪 DEMO — no se conecta a GitHub, es solo una simulación', 'pending');
+  await wait(400);
+  log('Leyendo el catálogo actual...', 'pending');
+  await wait(500);
+
+  for (const g of groups) {
+    const photos = pool.filter(p => g.photoIds.includes(p.id));
+    for (let i = 0; i < photos.length; i++) {
+      log(`Subiendo foto ${i + 1} de "${g.nombre}"...`, 'pending');
+      await wait(250);
+    }
+    log(`✓ "${g.nombre}" — ${photos.length} fotos subidas`, 'ok');
+    await wait(200);
+  }
+
+  log('Actualizando el catálogo (productos.json)...', 'pending');
+  await wait(500);
+  log('✓ ¡Listo! (simulado) — así se vería con ' + groups.length + ' modelo(s) nuevo(s) publicados de verdad.', 'ok');
+  log('Para publicar en serio, cargá tu token real arriba en Configuración.', 'pending');
+
+  btn.disabled = false;
+  btn.textContent = 'Publicar catálogo';
+}
+
+async function publishAll() {
+  if (demoMode) { return publishAllDemo(); }
+  const btn = document.getElementById('publishBtn');
+  btn.disabled = true;
+  btn.textContent = 'Publicando...';
+  document.getElementById('logBox').innerHTML = '';
+  document.getElementById('logCard').style.display = 'block';
+
+  try {
+    log('Leyendo el catálogo actual...', 'pending');
+    const { json: catalogo, sha } = await getProductosJson();
+    let counter = nextNumero(catalogo.productos);
+
+    const newEntries = [];
+    for (const g of groups) {
+      counter++;
+      const numero = 'N' + String(counter).padStart(3, '0');
+      const slug = slugify(g.nombre) || 'modelo-' + g.id;
+      const photos = pool.filter(p => g.photoIds.includes(p.id));
+      const fotoPaths = [];
+
+      for (let i = 0; i < photos.length; i++) {
+        const path = `images/${slug}-${i + 1}.jpg`;
+        log(`Subiendo foto ${i + 1} de "${g.nombre}"...`, 'pending');
+        await uploadImage(path, photos[i].dataUrl);
+        fotoPaths.push(path);
+      }
+      log(`✓ "${g.nombre}" — ${photos.length} fotos subidas`, 'ok');
+
+      newEntries.push({
+        numero,
+        nombre: g.nombre,
+        categoria: g.categoria,
+        descripcion: g.detalle,
+        precio: g.precio,
+        fotos: fotoPaths
+      });
+    }
+
+    catalogo.productos = catalogo.productos.concat(newEntries);
+    log('Actualizando el catálogo (productos.json)...', 'pending');
+    await saveProductosJson(catalogo, sha);
+    log('✓ ¡Listo! El catálogo se actualizó con ' + newEntries.length + ' modelo(s) nuevo(s).', 'ok');
+    log('La web puede tardar uno o dos minutos en mostrar los cambios.', 'pending');
+
+    groups = [];
+    pool = [];
+    renderPool();
+    renderGroups();
+  } catch (err) {
+    log('✗ ' + err.message, 'err');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Publicar catálogo';
+  }
+}
+
+loadConfig();
+</script>
+</body>
+</html>
