@@ -826,6 +826,18 @@
         "images/gorra-akira-2.jpg",
         "images/gorra-akira-3.jpg"
       ]
+    },
+    {
+      "numero": "N065",
+      "nombre": "Gorra \"Triana\"",
+      "categoria": "Otras",
+      "descripcion": "Strass + espejitos",
+      "precio": "$30000",
+      "fotos": [
+        "images/gorra-triana-1.jpg",
+        "images/gorra-triana-2.jpg",
+        "images/gorra-triana-3.jpg"
+      ]
     }
   ]
 }
