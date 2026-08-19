@@ -814,6 +814,18 @@
         "images/gorra-airbag-no18-4.jpg",
         "images/gorra-airbag-no18-5.jpg"
       ]
+    },
+    {
+      "numero": "N064",
+      "nombre": "Gorra \"Akira\"",
+      "categoria": "Otras",
+      "descripcion": "Con strass",
+      "precio": "$35000",
+      "fotos": [
+        "images/gorra-akira-1.jpg",
+        "images/gorra-akira-2.jpg",
+        "images/gorra-akira-3.jpg"
+      ]
     }
   ]
 }
