@@ -838,6 +838,18 @@
         "images/gorra-triana-2.jpg",
         "images/gorra-triana-3.jpg"
       ]
+    },
+    {
+      "numero": "N066",
+      "nombre": "Gorra \"Keyla \"",
+      "categoria": "Otras",
+      "descripcion": "Con galón de tachas, strass y tachas Hotfix ",
+      "precio": "$26000",
+      "fotos": [
+        "images/gorra-keyla-1.jpg",
+        "images/gorra-keyla-2.jpg",
+        "images/gorra-keyla-3.jpg"
+      ]
     }
   ]
 }
