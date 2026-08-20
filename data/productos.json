@@ -850,6 +850,18 @@
         "images/gorra-keyla-2.jpg",
         "images/gorra-keyla-3.jpg"
       ]
+    },
+    {
+      "numero": "N067",
+      "nombre": "Gorra \"Fuxion\" N° 2 ",
+      "categoria": "Fuxion",
+      "descripcion": "Con strass Boreal 2mm. Hotfix ",
+      "precio": "$29000",
+      "fotos": [
+        "images/gorra-fuxion-n-2-1.jpg",
+        "images/gorra-fuxion-n-2-2.jpg",
+        "images/gorra-fuxion-n-2-3.jpg"
+      ]
     }
   ]
 }
