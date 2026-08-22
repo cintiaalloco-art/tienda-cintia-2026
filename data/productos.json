@@ -862,6 +862,18 @@
         "images/gorra-fuxion-n-2-2.jpg",
         "images/gorra-fuxion-n-2-3.jpg"
       ]
+    },
+    {
+      "numero": "N068",
+      "nombre": "Gorra \"Aziza\"",
+      "categoria": "Otras",
+      "descripcion": "Strass + Aplique ",
+      "precio": "$31000",
+      "fotos": [
+        "images/gorra-aziza-1.jpg",
+        "images/gorra-aziza-2.jpg",
+        "images/gorra-aziza-3.jpg"
+      ]
     }
   ]
 }
