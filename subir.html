@@ -670,14 +670,15 @@ function renderGroups() {
               <img src="${p.dataUrl}" draggable="false">
               <div class="dragTag">${pIdx + 1}</div>
             </div>
-            <div class="reorderRow">
-              <button class="arrowBtn" ${pIdx === 0 ? 'disabled' : ''} onclick="movePhotoWithinGroup(${g.id}, ${p.id}, -1)">◀</button>
-              <button class="arrowBtn" ${pIdx === photos.length - 1 ? 'disabled' : ''} onclick="movePhotoWithinGroup(${g.id}, ${p.id}, 1)">▶</button>
-            </div>
-            <select class="moveSelect" onchange="movePhoto(${p.id}, this.value, ${g.id})">
+            <select class="moveSelect" onchange="movePhotoCombined(${p.id}, this.value, ${g.id})">
               <option value="">Mover a...</option>
-              <option value="__pool__">Sin agrupar</option>
-              ${groups.map((og, ogIdx) => og.id === g.id ? '' : `<option value="${og.id}">Grupo ${ogIdx + 1}</option>`).join('')}
+              <optgroup label="Posición en este grupo">
+                ${photos.map((_, i) => i === pIdx ? '' : `<option value="pos:${i}">Posición ${i + 1}</option>`).join('')}
+              </optgroup>
+              <optgroup label="Otro grupo">
+                <option value="pool">Sin agrupar</option>
+                ${groups.map((og, ogIdx) => og.id === g.id ? '' : `<option value="grp:${og.id}">Grupo ${ogIdx + 1}</option>`).join('')}
+              </optgroup>
             </select>
           </div>
         `).join('')}
@@ -703,6 +704,44 @@ function renderGroups() {
   });
   updateFooter();
   attachDragHandlers();
+}
+
+function movePhotoCombined(photoId, value, fromGroupId) {
+  if (!value) return;
+
+  if (value.startsWith('pos:')) {
+    // mover a una posición dentro del MISMO grupo
+    const targetIdx = parseInt(value.split(':')[1], 10);
+    const g = groups.find(gr => gr.id === fromGroupId);
+    if (!g) return;
+    const fromIdx = g.photoIds.indexOf(photoId);
+    if (fromIdx === -1) return;
+    g.photoIds.splice(fromIdx, 1);
+    g.photoIds.splice(targetIdx, 0, photoId);
+    renderGroups();
+    return;
+  }
+
+  if (value === 'pool') {
+    const fromGroup = groups.find(g => g.id === fromGroupId);
+    if (fromGroup) fromGroup.photoIds = fromGroup.photoIds.filter(id => id !== photoId);
+    groups = groups.filter(g => g.photoIds.length > 0);
+    renderPool();
+    renderGroups();
+    return;
+  }
+
+  if (value.startsWith('grp:')) {
+    const toGroupId = parseInt(value.split(':')[1], 10);
+    const fromGroup = groups.find(g => g.id === fromGroupId);
+    if (fromGroup) fromGroup.photoIds = fromGroup.photoIds.filter(id => id !== photoId);
+    const toGroup = groups.find(g => g.id === toGroupId);
+    if (toGroup) toGroup.photoIds.push(photoId);
+    groups = groups.filter(g => g.photoIds.length > 0);
+    renderPool();
+    renderGroups();
+    return;
+  }
 }
 
 function movePhoto(photoId, destination, fromGroupId) {
