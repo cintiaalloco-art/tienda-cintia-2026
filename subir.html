@@ -578,6 +578,7 @@ function attachDragHandlers() {
       items.forEach(it => it.querySelector('.thumb').classList.remove('dropTarget'));
       if (targetItem && container.contains(targetItem)) {
         targetItem.querySelector('.thumb').classList.add('dropTarget');
+        dragState.lastTargetPhotoId = parseInt(targetItem.dataset.photoId, 10);
       }
     };
     handle.onpointerup = (e) => {
@@ -586,25 +587,35 @@ function attachDragHandlers() {
       const container = document.getElementById('thumbs-' + dragState.groupId);
       if (container) {
         container.querySelectorAll('.thumb').forEach(t => t.classList.remove('dropTarget'));
-        const elUnder = document.elementFromPoint(e.clientX, e.clientY);
-        const targetItem = elUnder ? elUnder.closest('.photoItem') : null;
-        if (targetItem && container.contains(targetItem)) {
-          const targetPhotoId = parseInt(targetItem.dataset.photoId, 10);
-          if (targetPhotoId !== dragState.photoId) {
-            const g = groups.find(gr => gr.id === dragState.groupId);
-            if (g) {
-              const fromIdx = g.photoIds.indexOf(dragState.photoId);
-              const toIdx = g.photoIds.indexOf(targetPhotoId);
-              if (fromIdx !== -1 && toIdx !== -1) {
-                g.photoIds.splice(fromIdx, 1);
-                g.photoIds.splice(toIdx, 0, dragState.photoId);
-                renderGroups();
-              }
+        let targetPhotoId = dragState.lastTargetPhotoId;
+        if (targetPhotoId == null) {
+          const elUnder = document.elementFromPoint(e.clientX, e.clientY);
+          const targetItem = elUnder ? elUnder.closest('.photoItem') : null;
+          if (targetItem && container.contains(targetItem)) {
+            targetPhotoId = parseInt(targetItem.dataset.photoId, 10);
+          }
+        }
+        if (targetPhotoId != null && targetPhotoId !== dragState.photoId) {
+          const g = groups.find(gr => gr.id === dragState.groupId);
+          if (g) {
+            const fromIdx = g.photoIds.indexOf(dragState.photoId);
+            const toIdx = g.photoIds.indexOf(targetPhotoId);
+            if (fromIdx !== -1 && toIdx !== -1) {
+              g.photoIds.splice(fromIdx, 1);
+              g.photoIds.splice(toIdx, 0, dragState.photoId);
+              renderGroups();
             }
           }
         }
       }
       dragState = null;
+    };
+    handle.onpointercancel = () => {
+      if (dragState) {
+        document.querySelectorAll('.thumb.dropTarget').forEach(t => t.classList.remove('dropTarget'));
+        handle.classList.remove('dragging');
+        dragState = null;
+      }
     };
   });
 }
