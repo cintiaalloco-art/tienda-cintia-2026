@@ -128,7 +128,7 @@
     color: var(--rose-dark);
   }
   .photoItem { position: relative; }
-  .thumb { cursor: pointer; }
+  .thumb { cursor: pointer; touch-action: manipulation; }
   .thumb.swapSelected { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(183,110,121,0.4); }
   .dragTag {
     position: absolute; bottom: 4px; left: 4px;
@@ -137,11 +137,17 @@
   }
   .reorderRow { display: flex; gap: 3px; margin-top: 3px; }
   .arrowBtn {
-    flex: 1; padding: 4px 0; font-size: 0.72rem;
+    flex: 1; padding: 10px 0; font-size: 0.9rem; font-weight: 700;
     border-radius: 5px; border: 1px solid #e4cfc6;
     background: #fffaf8; color: var(--rose-dark);
+    touch-action: manipulation;
+    min-height: 38px;
   }
   .arrowBtn:disabled { opacity: 0.25; }
+  .thumb.dropTarget { outline: 3px dashed var(--rose); outline-offset: 2px; }
+  .dragHandle { cursor: grab; user-select: none; -webkit-user-select: none; -webkit-user-drag: none; -webkit-touch-callout: none; touch-action: none; }
+  .dragHandle img { -webkit-user-drag: none; user-drag: none; pointer-events: none; -webkit-touch-callout: none; }
+  .dragHandle.dragging { opacity: 0.4; transform: scale(0.95); }
   @media (max-width: 420px) {
     body { padding: 10px; padding-bottom: 90px; }
     h1 { font-size: 1.2rem; }
@@ -554,8 +560,72 @@ function movePhotoWithinGroup(groupId, photoId, direction) {
   renderGroups();
 }
 
-// ---------- Mover fotos dentro de un grupo: tocar una, tocar otra, se intercambian ----------
-let selectedForSwap = null; // {groupId, photoId}
+// ---------- Mover fotos dentro de un grupo: toque rápido = seleccionar/intercambiar, mantener y mover = arrastrar ----------
+let dragState = null;
+let selectedForSwap = null;
+const DRAG_THRESHOLD = 12; // píxeles de movimiento antes de considerarlo "arrastre" y no un toque
+
+function attachDragHandlers() {
+  document.querySelectorAll('.dragHandle').forEach(handle => {
+    handle.oncontextmenu = (e) => { e.preventDefault(); return false; };
+    handle.onpointerdown = (e) => {
+      const item = handle.closest('.photoItem');
+      const groupId = parseInt(item.dataset.groupId, 10);
+      const photoId = parseInt(item.dataset.photoId, 10);
+      dragState = { groupId, photoId, startX: e.clientX, startY: e.clientY, moved: false, lastTargetPhotoId: null };
+      handle.setPointerCapture(e.pointerId);
+    };
+    handle.onpointermove = (e) => {
+      if (!dragState || dragState.photoId !== parseInt(handle.closest('.photoItem').dataset.photoId, 10)) return;
+      const dx = e.clientX - dragState.startX;
+      const dy = e.clientY - dragState.startY;
+      if (!dragState.moved && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
+        dragState.moved = true;
+        handle.classList.add('dragging');
+      }
+      if (!dragState.moved) return;
+      const container = document.getElementById('thumbs-' + dragState.groupId);
+      if (!container) return;
+      const elUnder = document.elementFromPoint(e.clientX, e.clientY);
+      const targetItem = elUnder ? elUnder.closest('.photoItem') : null;
+      container.querySelectorAll('.thumb').forEach(t => t.classList.remove('dropTarget'));
+      if (targetItem && container.contains(targetItem)) {
+        targetItem.querySelector('.thumb').classList.add('dropTarget');
+        dragState.lastTargetPhotoId = parseInt(targetItem.dataset.photoId, 10);
+      }
+    };
+    function finishDrag() {
+      if (!dragState) return;
+      handle.classList.remove('dragging');
+      const container = document.getElementById('thumbs-' + dragState.groupId);
+      if (container) container.querySelectorAll('.thumb').forEach(t => t.classList.remove('dropTarget'));
+
+      if (dragState.moved) {
+        // fue un arrastre: intercambiar con la última foto sobre la que se soltó
+        const targetPhotoId = dragState.lastTargetPhotoId;
+        if (targetPhotoId != null && targetPhotoId !== dragState.photoId) {
+          swapPhotos(dragState.groupId, dragState.photoId, targetPhotoId);
+        }
+      } else {
+        // fue un toque rápido: seleccionar / intercambiar por toque
+        tapPhotoForSwap(dragState.groupId, dragState.photoId);
+      }
+      dragState = null;
+    }
+    handle.onpointerup = finishDrag;
+    handle.onpointercancel = finishDrag;
+  });
+}
+
+function swapPhotos(groupId, photoIdA, photoIdB) {
+  const g = groups.find(gr => gr.id === groupId);
+  if (!g) return;
+  const idxA = g.photoIds.indexOf(photoIdA);
+  const idxB = g.photoIds.indexOf(photoIdB);
+  if (idxA === -1 || idxB === -1) return;
+  [g.photoIds[idxA], g.photoIds[idxB]] = [g.photoIds[idxB], g.photoIds[idxA]];
+  renderGroups();
+}
 
 function tapPhotoForSwap(groupId, photoId) {
   if (selectedForSwap && selectedForSwap.groupId === groupId && selectedForSwap.photoId === photoId) {
@@ -564,16 +634,8 @@ function tapPhotoForSwap(groupId, photoId) {
     return;
   }
   if (selectedForSwap && selectedForSwap.groupId === groupId) {
-    const g = groups.find(gr => gr.id === groupId);
-    if (g) {
-      const fromIdx = g.photoIds.indexOf(selectedForSwap.photoId);
-      const toIdx = g.photoIds.indexOf(photoId);
-      if (fromIdx !== -1 && toIdx !== -1) {
-        [g.photoIds[fromIdx], g.photoIds[toIdx]] = [g.photoIds[toIdx], g.photoIds[fromIdx]];
-      }
-    }
+    swapPhotos(groupId, selectedForSwap.photoId, photoId);
     selectedForSwap = null;
-    renderGroups();
     return;
   }
   selectedForSwap = { groupId, photoId };
@@ -604,7 +666,7 @@ function renderGroups() {
       <div class="thumbs" id="thumbs-${g.id}">
         ${photos.map((p, pIdx) => `
           <div class="photoItem" data-photo-id="${p.id}" data-group-id="${g.id}">
-            <div class="thumb ${selectedForSwap && selectedForSwap.groupId === g.id && selectedForSwap.photoId === p.id ? 'swapSelected' : ''}" onclick="tapPhotoForSwap(${g.id}, ${p.id})">
+            <div class="thumb dragHandle ${selectedForSwap && selectedForSwap.groupId === g.id && selectedForSwap.photoId === p.id ? 'swapSelected' : ''}">
               <img src="${p.dataUrl}" draggable="false">
               <div class="dragTag">${pIdx + 1}</div>
             </div>
@@ -640,6 +702,7 @@ function renderGroups() {
     container.appendChild(div);
   });
   updateFooter();
+  attachDragHandlers();
 }
 
 function movePhoto(photoId, destination, fromGroupId) {
