@@ -127,6 +127,16 @@
     background: #fffaf8;
     color: var(--rose-dark);
   }
+  .posSelect {
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--rose);
+    background: #fff;
+    color: var(--rose-dark);
+    margin: 0 4px;
+  }
   @media (max-width: 420px) {
     body { padding: 10px; padding-bottom: 90px; }
     h1 { font-size: 1.2rem; }
@@ -544,6 +554,17 @@ function moveGroupDown(id) {
   }
 }
 
+function moveGroupToPosition(id, newPosOneBased) {
+  const fromIdx = groups.findIndex(g => g.id === id);
+  if (fromIdx === -1) return;
+  let toIdx = parseInt(newPosOneBased, 10) - 1;
+  if (isNaN(toIdx)) return;
+  toIdx = Math.max(0, Math.min(groups.length - 1, toIdx));
+  const [item] = groups.splice(fromIdx, 1);
+  groups.splice(toIdx, 0, item);
+  renderGroups();
+}
+
 function renderGroups() {
   const container = document.getElementById('groupsContainer');
   const card = document.getElementById('groupsCard');
@@ -563,12 +584,8 @@ function renderGroups() {
     div.className = 'group';
     div.innerHTML = `
       <div class="group-header">
-        <span>Posición ${gIdx + 1} — Modelo ${g.id} <span class="badge">${photos.length} fotos</span></span>
-        <div style="display:flex; gap:4px;">
-          <button class="btn-secondary btn-small" ${gIdx === 0 ? 'disabled style="opacity:.3"' : ''} onclick="moveGroupUp(${g.id})">⬆</button>
-          <button class="btn-secondary btn-small" ${gIdx === groups.length - 1 ? 'disabled style="opacity:.3"' : ''} onclick="moveGroupDown(${g.id})">⬇</button>
-          <button class="btn-danger btn-small" onclick="removeGroup(${g.id})">Quitar</button>
-        </div>
+        <span>Posición <select class="posSelect" onchange="moveGroupToPosition(${g.id}, this.value)">${groups.map((_,i)=>`<option value="${i+1}" ${i===gIdx?'selected':''}>${i+1}</option>`).join('')}</select> — Modelo ${g.id} <span class="badge">${photos.length} fotos</span></span>
+        <button class="btn-danger btn-small" onclick="removeGroup(${g.id})">Quitar</button>
       </div>
       <div class="thumbs">
         ${photos.map(p => `
