@@ -529,6 +529,21 @@ function createGroupFromSelection() {
   renderGroups();
 }
 
+function moveGroupUp(id) {
+  const idx = groups.findIndex(g => g.id === id);
+  if (idx > 0) {
+    [groups[idx - 1], groups[idx]] = [groups[idx], groups[idx - 1]];
+    renderGroups();
+  }
+}
+function moveGroupDown(id) {
+  const idx = groups.findIndex(g => g.id === id);
+  if (idx < groups.length - 1 && idx >= 0) {
+    [groups[idx + 1], groups[idx]] = [groups[idx], groups[idx + 1]];
+    renderGroups();
+  }
+}
+
 function renderGroups() {
   const container = document.getElementById('groupsContainer');
   const card = document.getElementById('groupsCard');
@@ -541,15 +556,19 @@ function renderGroups() {
     hint.textContent = '💡 Se agruparon de a 3 automáticamente. Si alguna foto quedó en el grupo equivocado, tocá "Mover" debajo de esa foto.';
     container.appendChild(hint);
   }
-  groups.forEach(g => {
+  groups.forEach((g, gIdx) => {
     const photos = pool.filter(p => g.photoIds.includes(p.id));
     const otherGroups = groups.filter(og => og.id !== g.id);
     const div = document.createElement('div');
     div.className = 'group';
     div.innerHTML = `
       <div class="group-header">
-        <span>Modelo ${g.id} <span class="badge">${photos.length} fotos</span></span>
-        <button class="btn-danger btn-small" onclick="removeGroup(${g.id})">Quitar grupo</button>
+        <span>Posición ${gIdx + 1} — Modelo ${g.id} <span class="badge">${photos.length} fotos</span></span>
+        <div style="display:flex; gap:4px;">
+          <button class="btn-secondary btn-small" ${gIdx === 0 ? 'disabled style="opacity:.3"' : ''} onclick="moveGroupUp(${g.id})">⬆</button>
+          <button class="btn-secondary btn-small" ${gIdx === groups.length - 1 ? 'disabled style="opacity:.3"' : ''} onclick="moveGroupDown(${g.id})">⬇</button>
+          <button class="btn-danger btn-small" onclick="removeGroup(${g.id})">Quitar</button>
+        </div>
       </div>
       <div class="thumbs">
         ${photos.map(p => `
