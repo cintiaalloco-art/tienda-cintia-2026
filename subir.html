@@ -127,16 +127,22 @@
     background: #fffaf8;
     color: var(--rose-dark);
   }
-  .posSelect {
-    font-size: 0.85rem;
-    font-weight: 700;
-    padding: 4px 8px;
-    border-radius: 6px;
-    border: 1px solid var(--rose);
-    background: #fff;
-    color: var(--rose-dark);
-    margin: 0 4px;
+  .photoItem { position: relative; }
+  .dragHandle { cursor: grab; user-select: none; -webkit-user-select: none; }
+  .dragHandle.dragging { opacity: 0.4; transform: scale(0.95); }
+  .dragTag {
+    position: absolute; bottom: 4px; left: 4px;
+    background: rgba(0,0,0,0.6); color: #fff;
+    font-size: 0.62rem; padding: 1px 6px; border-radius: 8px;
   }
+  .reorderRow { display: flex; gap: 3px; margin-top: 3px; }
+  .arrowBtn {
+    flex: 1; padding: 4px 0; font-size: 0.72rem;
+    border-radius: 5px; border: 1px solid #e4cfc6;
+    background: #fffaf8; color: var(--rose-dark);
+  }
+  .arrowBtn:disabled { opacity: 0.25; }
+  .thumb.dropTarget { outline: 3px dashed var(--rose); outline-offset: 2px; }
   @media (max-width: 420px) {
     body { padding: 10px; padding-bottom: 90px; }
     h1 { font-size: 1.2rem; }
@@ -539,30 +545,68 @@ function createGroupFromSelection() {
   renderGroups();
 }
 
-function moveGroupUp(id) {
-  const idx = groups.findIndex(g => g.id === id);
-  if (idx > 0) {
-    [groups[idx - 1], groups[idx]] = [groups[idx], groups[idx - 1]];
-    renderGroups();
-  }
-}
-function moveGroupDown(id) {
-  const idx = groups.findIndex(g => g.id === id);
-  if (idx < groups.length - 1 && idx >= 0) {
-    [groups[idx + 1], groups[idx]] = [groups[idx], groups[idx + 1]];
-    renderGroups();
-  }
+function movePhotoWithinGroup(groupId, photoId, direction) {
+  const g = groups.find(gr => gr.id === groupId);
+  if (!g) return;
+  const idx = g.photoIds.indexOf(photoId);
+  const newIdx = idx + direction;
+  if (newIdx < 0 || newIdx >= g.photoIds.length) return;
+  [g.photoIds[idx], g.photoIds[newIdx]] = [g.photoIds[newIdx], g.photoIds[idx]];
+  renderGroups();
 }
 
-function moveGroupToPosition(id, newPosOneBased) {
-  const fromIdx = groups.findIndex(g => g.id === id);
-  if (fromIdx === -1) return;
-  let toIdx = parseInt(newPosOneBased, 10) - 1;
-  if (isNaN(toIdx)) return;
-  toIdx = Math.max(0, Math.min(groups.length - 1, toIdx));
-  const [item] = groups.splice(fromIdx, 1);
-  groups.splice(toIdx, 0, item);
-  renderGroups();
+// ---------- Arrastrar fotos dentro de un mismo grupo (touch + mouse) ----------
+let dragState = null;
+
+function attachDragHandlers() {
+  document.querySelectorAll('.dragHandle').forEach(handle => {
+    handle.onpointerdown = (e) => {
+      const item = handle.closest('.photoItem');
+      const groupId = parseInt(item.dataset.groupId, 10);
+      const photoId = parseInt(item.dataset.photoId, 10);
+      dragState = { groupId, photoId, startX: e.clientX, startY: e.clientY };
+      handle.classList.add('dragging');
+      handle.setPointerCapture(e.pointerId);
+    };
+    handle.onpointermove = (e) => {
+      if (!dragState || dragState.photoId !== parseInt(handle.closest('.photoItem').dataset.photoId, 10)) return;
+      const container = document.getElementById('thumbs-' + dragState.groupId);
+      if (!container) return;
+      const items = [...container.querySelectorAll('.photoItem')];
+      const elUnder = document.elementFromPoint(e.clientX, e.clientY);
+      const targetItem = elUnder ? elUnder.closest('.photoItem') : null;
+      items.forEach(it => it.querySelector('.thumb').classList.remove('dropTarget'));
+      if (targetItem && container.contains(targetItem)) {
+        targetItem.querySelector('.thumb').classList.add('dropTarget');
+      }
+    };
+    handle.onpointerup = (e) => {
+      if (!dragState) return;
+      handle.classList.remove('dragging');
+      const container = document.getElementById('thumbs-' + dragState.groupId);
+      if (container) {
+        container.querySelectorAll('.thumb').forEach(t => t.classList.remove('dropTarget'));
+        const elUnder = document.elementFromPoint(e.clientX, e.clientY);
+        const targetItem = elUnder ? elUnder.closest('.photoItem') : null;
+        if (targetItem && container.contains(targetItem)) {
+          const targetPhotoId = parseInt(targetItem.dataset.photoId, 10);
+          if (targetPhotoId !== dragState.photoId) {
+            const g = groups.find(gr => gr.id === dragState.groupId);
+            if (g) {
+              const fromIdx = g.photoIds.indexOf(dragState.photoId);
+              const toIdx = g.photoIds.indexOf(targetPhotoId);
+              if (fromIdx !== -1 && toIdx !== -1) {
+                g.photoIds.splice(fromIdx, 1);
+                g.photoIds.splice(toIdx, 0, dragState.photoId);
+                renderGroups();
+              }
+            }
+          }
+        }
+      }
+      dragState = null;
+    };
+  });
 }
 
 function renderGroups() {
@@ -574,27 +618,33 @@ function renderGroups() {
     const hint = document.createElement('div');
     hint.className = 'hint';
     hint.style.marginBottom = '10px';
-    hint.textContent = '💡 Se agruparon de a 3 automáticamente. Si alguna foto quedó en el grupo equivocado, tocá "Mover" debajo de esa foto.';
+    hint.textContent = '💡 Los grupos quedan en el orden en que elegiste las fotos. Si alguna foto quedó en el grupo equivocado, tocá "Mover a..." debajo de esa foto.';
     container.appendChild(hint);
   }
   groups.forEach((g, gIdx) => {
     const photos = pool.filter(p => g.photoIds.includes(p.id));
-    const otherGroups = groups.filter(og => og.id !== g.id);
     const div = document.createElement('div');
     div.className = 'group';
     div.innerHTML = `
       <div class="group-header">
-        <span>Posición <select class="posSelect" onchange="moveGroupToPosition(${g.id}, this.value)">${groups.map((_,i)=>`<option value="${i+1}" ${i===gIdx?'selected':''}>${i+1}</option>`).join('')}</select> — Modelo ${g.id} <span class="badge">${photos.length} fotos</span></span>
-        <button class="btn-danger btn-small" onclick="removeGroup(${g.id})">Quitar</button>
+        <span>Grupo ${gIdx + 1} <span class="badge">${photos.length} fotos</span></span>
+        <button class="btn-danger btn-small" onclick="removeGroup(${g.id})">Quitar grupo</button>
       </div>
-      <div class="thumbs">
-        ${photos.map(p => `
-          <div>
-            <div class="thumb"><img src="${p.dataUrl}"></div>
+      <div class="thumbs" id="thumbs-${g.id}">
+        ${photos.map((p, pIdx) => `
+          <div class="photoItem" data-photo-id="${p.id}" data-group-id="${g.id}">
+            <div class="thumb dragHandle" style="touch-action:none">
+              <img src="${p.dataUrl}">
+              <div class="dragTag">⠿ ${pIdx + 1}</div>
+            </div>
+            <div class="reorderRow">
+              <button class="arrowBtn" ${pIdx === 0 ? 'disabled' : ''} onclick="movePhotoWithinGroup(${g.id}, ${p.id}, -1)">◀</button>
+              <button class="arrowBtn" ${pIdx === photos.length - 1 ? 'disabled' : ''} onclick="movePhotoWithinGroup(${g.id}, ${p.id}, 1)">▶</button>
+            </div>
             <select class="moveSelect" onchange="movePhoto(${p.id}, this.value, ${g.id})">
               <option value="">Mover a...</option>
               <option value="__pool__">Sin agrupar</option>
-              ${otherGroups.map(og => `<option value="${og.id}">Modelo ${og.id}</option>`).join('')}
+              ${groups.map((og, ogIdx) => og.id === g.id ? '' : `<option value="${og.id}">Grupo ${ogIdx + 1}</option>`).join('')}
             </select>
           </div>
         `).join('')}
@@ -619,6 +669,7 @@ function renderGroups() {
     container.appendChild(div);
   });
   updateFooter();
+  attachDragHandlers();
 }
 
 function movePhoto(photoId, destination, fromGroupId) {
