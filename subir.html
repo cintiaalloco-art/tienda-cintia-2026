@@ -128,7 +128,8 @@
     color: var(--rose-dark);
   }
   .photoItem { position: relative; }
-  .dragHandle { cursor: grab; user-select: none; -webkit-user-select: none; }
+  .dragHandle { cursor: grab; user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
+  .dragHandle img { -webkit-user-drag: none; user-drag: none; pointer-events: none; }
   .dragHandle.dragging { opacity: 0.4; transform: scale(0.95); }
   .dragTag {
     position: absolute; bottom: 4px; left: 4px;
@@ -645,7 +646,7 @@ function renderGroups() {
         ${photos.map((p, pIdx) => `
           <div class="photoItem" data-photo-id="${p.id}" data-group-id="${g.id}">
             <div class="thumb dragHandle" style="touch-action:none">
-              <img src="${p.dataUrl}">
+              <img src="${p.dataUrl}" draggable="false">
               <div class="dragTag">⠿ ${pIdx + 1}</div>
             </div>
             <div class="reorderRow">
