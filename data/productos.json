@@ -874,6 +874,18 @@
         "images/gorra-aziza-2.jpg",
         "images/gorra-aziza-3.jpg"
       ]
+    },
+    {
+      "numero": "N069",
+      "nombre": "Gorra \"Aria 2\"",
+      "categoria": "Otras",
+      "descripcion": "Ghjj\n\n\n\n\n\nCon tachas Hotfix \n",
+      "precio": "$29000",
+      "fotos": [
+        "images/gorra-aria-2-1.jpg",
+        "images/gorra-aria-2-2.jpg",
+        "images/gorra-aria-2-3.jpg"
+      ]
     }
   ]
 }
