@@ -886,6 +886,18 @@
         "images/gorra-aria-2-2.jpg",
         "images/gorra-aria-2-3.jpg"
       ]
+    },
+    {
+      "numero": "N070",
+      "nombre": "Gorra \"Calleigh\" N° 3",
+      "categoria": "Otras",
+      "descripcion": "Con aplique mariposa +strass ",
+      "precio": "$38000",
+      "fotos": [
+        "images/gorra-calleigh-n-3-1.jpg",
+        "images/gorra-calleigh-n-3-2.jpg",
+        "images/gorra-calleigh-n-3-3.jpg"
+      ]
     }
   ]
 }
