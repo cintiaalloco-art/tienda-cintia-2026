@@ -661,7 +661,7 @@ function renderGroups() {
     container.appendChild(hint);
   }
   groups.forEach((g, gIdx) => {
-    const photos = pool.filter(p => g.photoIds.includes(p.id));
+    const photos = g.photoIds.map(id => pool.find(p => p.id === id)).filter(Boolean);
     const div = document.createElement('div');
     div.className = 'group';
     div.innerHTML = `
@@ -887,7 +887,7 @@ async function publishAllDemo() {
   await wait(500);
 
   for (const g of groups) {
-    const photos = pool.filter(p => g.photoIds.includes(p.id));
+    const photos = g.photoIds.map(id => pool.find(p => p.id === id)).filter(Boolean);
     for (let i = 0; i < photos.length; i++) {
       log(`Subiendo foto ${i + 1} de "${g.nombre}"...`, 'pending');
       await wait(250);
@@ -961,7 +961,7 @@ async function publishAll() {
       counter++;
       const numero = 'N' + String(counter).padStart(3, '0');
       const slug = slugify(g.nombre) || 'modelo-' + g.id;
-      const photos = pool.filter(p => g.photoIds.includes(p.id));
+      const photos = g.photoIds.map(id => pool.find(p => p.id === id)).filter(Boolean);
       const fotoPaths = [];
 
       for (let i = 0; i < photos.length; i++) {
