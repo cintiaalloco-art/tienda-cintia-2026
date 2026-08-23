@@ -282,8 +282,8 @@
 
 <script>
 const CATEGORIAS = ["Airbag", "Fuxion", "Niño", "Otras"];
-let pool = [];        // {id, file, dataUrl}
-let groups = [];      // {id, photoIds:[], nombre, categoria, precio, detalle}
+let pool = [];
+let groups = [];
 let nextId = 1;
 let nextGroupId = 1;
 let demoMode = false;
@@ -313,24 +313,34 @@ function loadConfig() {
   }
 }
 function saveConfig() {
-  const t = document.getElementById('ghToken').value.trim();
+  // Saca CUALQUIER espacio o salto de línea, no solo al principio/final —
+  // por si al copiar en el celular se coló algo invisible en el medio
+  const t = document.getElementById('ghToken').value.replace(/\s+/g, '');
   const o = document.getElementById('ghOwner').value.trim();
   const r = document.getElementById('ghRepo').value.trim();
   if (!t || !o || !r) {
     document.getElementById('configStatus').textContent = 'Completá los 3 campos.';
     return;
   }
+  document.getElementById('ghToken').value = t; // reflejar el token ya limpio en el campo
   localStorage.setItem('gh_token', t);
   localStorage.setItem('gh_owner', o);
   localStorage.setItem('gh_repo', r);
+
+  let formatWarning = '';
+  if (!t.startsWith('ghp_') && !t.startsWith('github_pat_')) {
+    formatWarning = '<br>⚠️ Este token no empieza con "ghp_" ni "github_pat_" — revisá que sea el código correcto.';
+  } else if (t.startsWith('ghp_') && t.length !== 40) {
+    formatWarning = `<br>⚠️ Un token "ghp_" clásico suele tener 40 caracteres exactos; el tuyo tiene ${t.length}. Puede faltar o sobrar algo al copiarlo.`;
+  }
+
   const preview = t.length > 12 ? t.slice(0, 8) + '...' + t.slice(-4) : '(muy corto, revisalo)';
   document.getElementById('configStatus').innerHTML =
-    `✓ Guardado. Token: <b>${preview}</b> (${t.length} caracteres) — comparalo con el que copiaste de GitHub.`;
+    `✓ Guardado. Token: <b>${preview}</b> (${t.length} caracteres) — comparalo con el que copiaste de GitHub.${formatWarning}`;
   document.getElementById('uploadCard').style.display = 'block';
   document.getElementById('footerBar').style.display = 'flex';
 }
 
-// ---------- Catálogo existente: ver / editar / eliminar ----------
 let catalogData = [];
 let catalogSha = null;
 let catalogDirty = false;
@@ -463,7 +473,6 @@ async function publishCatalogChanges() {
   }
 }
 
-// ---------- File handling & compression ----------
 function handleFiles(evt) {
   const files = Array.from(evt.target.files);
   let remaining = files.length;
@@ -479,7 +488,6 @@ function handleFiles(evt) {
 }
 
 function autoGroupNew(startIdx) {
-  // Agrupa automáticamente de a 3 las fotos recién agregadas, en el orden elegido
   const nuevas = pool.slice(startIdx);
   for (let i = 0; i < nuevas.length; i += 3) {
     const chunk = nuevas.slice(i, i + 3);
@@ -560,10 +568,9 @@ function movePhotoWithinGroup(groupId, photoId, direction) {
   renderGroups();
 }
 
-// ---------- Mover fotos dentro de un grupo: toque rápido = seleccionar/intercambiar, mantener y mover = arrastrar ----------
 let dragState = null;
 let selectedForSwap = null;
-const DRAG_THRESHOLD = 12; // píxeles de movimiento antes de considerarlo "arrastre" y no un toque
+const DRAG_THRESHOLD = 12;
 
 function attachDragHandlers() {
   document.querySelectorAll('.dragHandle').forEach(handle => {
@@ -601,13 +608,11 @@ function attachDragHandlers() {
       if (container) container.querySelectorAll('.thumb').forEach(t => t.classList.remove('dropTarget'));
 
       if (dragState.moved) {
-        // fue un arrastre: intercambiar con la última foto sobre la que se soltó
         const targetPhotoId = dragState.lastTargetPhotoId;
         if (targetPhotoId != null && targetPhotoId !== dragState.photoId) {
           swapPhotos(dragState.groupId, dragState.photoId, targetPhotoId);
         }
       } else {
-        // fue un toque rápido: seleccionar / intercambiar por toque
         tapPhotoForSwap(dragState.groupId, dragState.photoId);
       }
       dragState = null;
@@ -710,7 +715,6 @@ function movePhotoCombined(photoId, value, fromGroupId) {
   if (!value) return;
 
   if (value.startsWith('pos:')) {
-    // mover a una posición dentro del MISMO grupo
     const targetIdx = parseInt(value.split(':')[1], 10);
     const g = groups.find(gr => gr.id === fromGroupId);
     if (!g) return;
@@ -749,7 +753,6 @@ function movePhoto(photoId, destination, fromGroupId) {
   if (fromGroup) fromGroup.photoIds = fromGroup.photoIds.filter(id => id !== photoId);
 
   if (destination === '__pool__' || destination === '') {
-    // vuelve al pool sin agrupar
   } else {
     const toGroup = groups.find(g => g.id === parseInt(destination, 10));
     if (toGroup) toGroup.photoIds.push(photoId);
@@ -778,7 +781,6 @@ function updateFooter() {
   document.getElementById('publishBtn').disabled = !allFilled;
 }
 
-// ---------- Slug helper ----------
 function slugify(s) {
   return s.toLowerCase()
     .replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i')
@@ -786,7 +788,6 @@ function slugify(s) {
     .replace(/[^a-z0-9]+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
 }
 
-// ---------- GitHub API ----------
 function ghHeaders() {
   return {
     'Authorization': 'token ' + localStorage.getItem('gh_token'),
@@ -898,19 +899,23 @@ async function testConnection() {
   el.textContent = 'Probando conexión...';
   el.style.color = '#9c8478';
   try {
+    const savedToken = localStorage.getItem('gh_token') || '';
+    const savedOwner = localStorage.getItem('gh_owner') || '';
+    const savedRepo = localStorage.getItem('gh_repo') || '';
+    const diag = `[Guardado: token de ${savedToken.length} caracteres, owner="${savedOwner}", repo="${savedRepo}"]`;
+
     const res = await fetch(`${ghBase()}/contents/data/productos.json`, { headers: ghHeaders() });
     if (res.ok) {
       const data = await res.json();
-      el.textContent = `✓ Conexión OK. Se pudo leer el catálogo (${data.size} bytes).`;
+      el.innerHTML = `✓ Conexión OK. Se pudo leer el catálogo (${data.size} bytes).<br><span style="font-size:0.68rem">${diag}</span>`;
       el.style.color = '#4a7c59';
-    } else if (res.status === 401 || res.status === 403) {
-      el.textContent = '✗ El token no es válido o no tiene permiso. Revisalo o generá uno nuevo.';
-      el.style.color = '#b03a2e';
-    } else if (res.status === 404) {
-      el.textContent = '✗ No se encontró el repositorio o el archivo. Revisá usuario y nombre del repo.';
-      el.style.color = '#b03a2e';
     } else {
-      el.textContent = `✗ Error inesperado (código ${res.status}).`;
+      let githubMsg = '';
+      try {
+        const errBody = await res.json();
+        githubMsg = errBody.message || '';
+      } catch (e) {}
+      el.innerHTML = `✗ Error ${res.status}: ${githubMsg || '(sin mensaje)'}<br><span style="font-size:0.68rem">${diag}</span>`;
       el.style.color = '#b03a2e';
     }
   } catch (err) {
