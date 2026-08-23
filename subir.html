@@ -217,6 +217,7 @@
 
 <h1>🧢 Subir gorras nuevas</h1>
 <div class="subtitle">Obras hechas con Amor — carga directa al catálogo</div>
+<div id="debugPanel" style="display:none; background:#fff4e6; border:1px solid #f0c98a; border-radius:10px; padding:10px; margin-bottom:12px; font-size:0.78rem;"></div>
 
 <div class="card" id="configCard">
   <h2>⚙️ Configuración (una sola vez)</h2>
@@ -711,18 +712,28 @@ function renderGroups() {
   attachDragHandlers();
 }
 
+function debugLog(msg) {
+  const panel = document.getElementById('debugPanel');
+  panel.style.display = 'block';
+  panel.innerHTML += msg + '<br>';
+}
+
 function movePhotoCombined(photoId, value, fromGroupId) {
-  if (!value) return;
+  debugLog(`movePhotoCombined llamado: photoId=${photoId}, value="${value}", fromGroupId=${fromGroupId}`);
+  if (!value) { debugLog('→ value vacío, no hace nada.'); return; }
 
   if (value.startsWith('pos:')) {
     const targetIdx = parseInt(value.split(':')[1], 10);
     const g = groups.find(gr => gr.id === fromGroupId);
-    if (!g) return;
+    if (!g) { debugLog('→ ERROR: no se encontró el grupo ' + fromGroupId); return; }
     const fromIdx = g.photoIds.indexOf(photoId);
-    if (fromIdx === -1) return;
+    if (fromIdx === -1) { debugLog('→ ERROR: no se encontró la foto ' + photoId + ' en el grupo'); return; }
+    debugLog(`→ Moviendo foto de índice ${fromIdx} a índice ${targetIdx}. Antes: [${g.photoIds}]`);
     g.photoIds.splice(fromIdx, 1);
     g.photoIds.splice(targetIdx, 0, photoId);
+    debugLog(`→ Después: [${g.photoIds}]. Llamando renderGroups()...`);
     renderGroups();
+    debugLog('→ renderGroups() terminó sin errores.');
     return;
   }
 
@@ -990,6 +1001,16 @@ async function publishAll() {
 }
 
 loadConfig();
+
+// ---------- Mostrar cualquier error directo en pantalla (sin necesitar herramientas de desarrollador) ----------
+window.onerror = function(msg, url, line, col, error) {
+  const box = document.createElement('div');
+  box.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#b03a2e;color:white;padding:12px;font-size:0.8rem;font-family:monospace;max-height:40vh;overflow-y:auto;';
+  box.innerHTML = `<b>⚠️ ERROR DETECTADO</b><br>${msg}<br>Línea ${line}, columna ${col}<br><button onclick="this.parentElement.remove()" style="margin-top:8px;padding:4px 10px;">Cerrar</button>`;
+  document.body.prepend(box);
+  return false;
+};
+
 </script>
 </body>
 </html>
