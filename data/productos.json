@@ -920,6 +920,17 @@
       "fotos": [
         "images/gorra-gael-1.jpg"
       ]
+    },
+    {
+      "numero": "N073",
+      "nombre": "Gorra \"Anisa\"",
+      "categoria": "Otras",
+      "descripcion": "Aplique + galón + strass ",
+      "precio": "$32000",
+      "fotos": [
+        "images/gorra-anisa-1.jpg",
+        "images/gorra-anisa-2.jpg"
+      ]
     }
   ]
 }
