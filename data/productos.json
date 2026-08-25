@@ -910,6 +910,16 @@
         "images/gorra-xia-2.jpg",
         "images/gorra-xia-3.jpg"
       ]
+    },
+    {
+      "numero": "N072",
+      "nombre": "Gorra \"Gael\"",
+      "categoria": "Otras",
+      "descripcion": "Con tachas calavera + galón ",
+      "precio": "$29000",
+      "fotos": [
+        "images/gorra-gael-1.jpg"
+      ]
     }
   ]
 }
