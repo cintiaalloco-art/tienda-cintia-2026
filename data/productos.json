@@ -898,6 +898,18 @@
         "images/gorra-calleigh-n-3-2.jpg",
         "images/gorra-calleigh-n-3-3.jpg"
       ]
+    },
+    {
+      "numero": "N071",
+      "nombre": "Gorra \"Xía\"",
+      "categoria": "Otras",
+      "descripcion": "Con strass y tachas Hotfix ",
+      "precio": "$30000",
+      "fotos": [
+        "images/gorra-xia-1.jpg",
+        "images/gorra-xia-2.jpg",
+        "images/gorra-xia-3.jpg"
+      ]
     }
   ]
 }
