@@ -931,6 +931,18 @@
         "images/gorra-anisa-1.jpg",
         "images/gorra-anisa-2.jpg"
       ]
+    },
+    {
+      "numero": "N074",
+      "nombre": "Gorra \"Airbag\" N° 20",
+      "categoria": "Airbag",
+      "descripcion": "Con strass rojo Hotfix ",
+      "precio": "$34000",
+      "fotos": [
+        "images/gorra-airbag-n-20-1.jpg",
+        "images/gorra-airbag-n-20-2.jpg",
+        "images/gorra-airbag-n-20-3.jpg"
+      ]
     }
   ]
 }
