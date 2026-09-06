@@ -943,6 +943,18 @@
         "images/gorra-airbag-n-20-2.jpg",
         "images/gorra-airbag-n-20-3.jpg"
       ]
+    },
+    {
+      "numero": "N075",
+      "nombre": "Gorras \"Fuxion\" Nª 3",
+      "categoria": "Fuxion",
+      "descripcion": "Con strass turquesa Hotfix",
+      "precio": "$30000",
+      "fotos": [
+        "images/gorras-fuxion-n-3-1.jpg",
+        "images/gorras-fuxion-n-3-2.jpg",
+        "images/gorras-fuxion-n-3-3.jpg"
+      ]
     }
   ]
 }
