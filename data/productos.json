@@ -943,6 +943,18 @@
         "images/gorras-fuxion-n-3-2.jpg",
         "images/gorras-fuxion-n-3-3.jpg"
       ]
+    },
+    {
+      "numero": "N076",
+      "nombre": "Gorras \"Fuxion\" Nº 5",
+      "categoria": "Fuxion",
+      "descripcion": "Con tachas plateadas 2 mm.",
+      "precio": "$30000",
+      "fotos": [
+        "images/gorras-fuxion-n-5-1.jpg",
+        "images/gorras-fuxion-n-5-2.jpg",
+        "images/gorras-fuxion-n-5-3.jpg"
+      ]
     }
   ]
 }
