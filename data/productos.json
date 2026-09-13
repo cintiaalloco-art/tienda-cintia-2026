@@ -1023,6 +1023,18 @@
         "images/gorra-bela-2.jpg",
         "images/gorra-bela-3.jpg"
       ]
+    },
+    {
+      "numero": "N083",
+      "nombre": "Gorra \"Myna 2\"",
+      "categoria": "Otras",
+      "descripcion": "Con strass ss16 tornasolado ",
+      "precio": "$26000",
+      "fotos": [
+        "images/gorra-myna-2-1.jpg",
+        "images/gorra-myna-2-2.jpg",
+        "images/gorra-myna-2-3.jpg"
+      ]
     }
   ]
 }
