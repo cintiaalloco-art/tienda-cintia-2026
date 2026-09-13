@@ -1000,6 +1000,17 @@
       "fotos": [
         "images/gorra-arisha-1.jpg"
       ]
+    },
+    {
+      "numero": "N081",
+      "nombre": "Gorra AIRBAG N20",
+      "categoria": "Airbag",
+      "descripcion": "Con strass plata Hotfix ",
+      "precio": "$34000",
+      "fotos": [
+        "images/gorra-airbag-n20-1.jpg",
+        "images/gorra-airbag-n20-2.jpg"
+      ]
     }
   ]
 }
