@@ -1011,6 +1011,18 @@
         "images/gorra-airbag-n20-1.jpg",
         "images/gorra-airbag-n20-2.jpg"
       ]
+    },
+    {
+      "numero": "N082",
+      "nombre": "Gorra \"Bela\"",
+      "categoria": "Otras",
+      "descripcion": "Galón de strass + aplique + strass ss16",
+      "precio": "$41000",
+      "fotos": [
+        "images/gorra-bela-1.jpg",
+        "images/gorra-bela-2.jpg",
+        "images/gorra-bela-3.jpg"
+      ]
     }
   ]
 }
