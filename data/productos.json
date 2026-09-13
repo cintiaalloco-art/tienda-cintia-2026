@@ -966,6 +966,18 @@
         "images/gorra-fatma-1.jpg",
         "images/gorra-fatma-2.jpg"
       ]
+    },
+    {
+      "numero": "N078",
+      "nombre": "Gorra \"Almita\"",
+      "categoria": "Niño",
+      "descripcion": "Con aplique + tachas + cordón ",
+      "precio": "$31000",
+      "fotos": [
+        "images/gorra-almita-1.jpg",
+        "images/gorra-almita-2.jpg",
+        "images/gorra-almita-3.jpg"
+      ]
     }
   ]
 }
