@@ -955,6 +955,17 @@
         "images/gorras-fuxion-n-5-2.jpg",
         "images/gorras-fuxion-n-5-3.jpg"
       ]
+    },
+    {
+      "numero": "N077",
+      "nombre": "Gorra \"Fatma\"",
+      "categoria": "Niño",
+      "descripcion": "Con aplique + galón. (Última disponible)",
+      "precio": "$27000",
+      "fotos": [
+        "images/gorra-fatma-1.jpg",
+        "images/gorra-fatma-2.jpg"
+      ]
     }
   ]
 }
