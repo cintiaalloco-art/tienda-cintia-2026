@@ -990,6 +990,16 @@
         "images/gorra-noor-2-2.jpg",
         "images/gorra-noor-2-3.jpg"
       ]
+    },
+    {
+      "numero": "N080",
+      "nombre": "Gorra  \"Arisha\"",
+      "categoria": "Niño",
+      "descripcion": "Con aplique + galon + strass corazón ",
+      "precio": "$36000",
+      "fotos": [
+        "images/gorra-arisha-1.jpg"
+      ]
     }
   ]
 }
