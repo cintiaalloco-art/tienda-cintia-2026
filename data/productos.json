@@ -1080,6 +1080,18 @@
         "images/gorra-kandhy-4-2.jpg",
         "images/gorra-kandhy-4-3.jpg"
       ]
+    },
+    {
+      "numero": "N088",
+      "nombre": "Gorra \" Kandhy 2\"",
+      "categoria": "Otras",
+      "descripcion": "Con aplique + galón de strass ",
+      "precio": "$38000",
+      "fotos": [
+        "images/gorra-kandhy-2-1.jpg",
+        "images/gorra-kandhy-2-2.jpg",
+        "images/gorra-kandhy-2-3.jpg"
+      ]
     }
   ]
 }
