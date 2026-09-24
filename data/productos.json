@@ -1035,6 +1035,16 @@
         "images/gorra-myna-2-2.jpg",
         "images/gorra-myna-2-3.jpg"
       ]
+    },
+    {
+      "numero": "N084",
+      "nombre": "Gorra \"Aria1\"",
+      "categoria": "Otras",
+      "descripcion": "Con tachas Hotfix ",
+      "precio": "$29000",
+      "fotos": [
+        "images/gorra-aria1-1.jpg"
+      ]
     }
   ]
 }
