@@ -1045,6 +1045,17 @@
       "fotos": [
         "images/gorra-aria1-1.jpg"
       ]
+    },
+    {
+      "numero": "N085",
+      "nombre": "Gorra \"Zeinep 3\"",
+      "categoria": "Otras",
+      "descripcion": "Con strass y guipur",
+      "precio": "$30000",
+      "fotos": [
+        "images/gorra-zeinep-3-1.jpg",
+        "images/gorra-zeinep-3-2.jpg"
+      ]
     }
   ]
 }
