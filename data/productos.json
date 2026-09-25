@@ -1116,6 +1116,18 @@
         "images/gorra-meera-2-2.jpg",
         "images/gorra-meera-2-3.jpg"
       ]
+    },
+    {
+      "numero": "N091",
+      "nombre": "Gorra \"Katarina\"",
+      "categoria": "Otras",
+      "descripcion": "Con galón de tachas + tachas Hotfix ",
+      "precio": "$38000",
+      "fotos": [
+        "images/gorra-katarina-1.jpg",
+        "images/gorra-katarina-2.jpg",
+        "images/gorra-katarina-3.jpg"
+      ]
     }
   ]
 }
