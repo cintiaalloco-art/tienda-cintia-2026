@@ -1092,6 +1092,18 @@
         "images/gorra-kandhy-2-2.jpg",
         "images/gorra-kandhy-2-3.jpg"
       ]
+    },
+    {
+      "numero": "N089",
+      "nombre": "Gorra \"Mika\"",
+      "categoria": "Otras",
+      "descripcion": "Con aplique de jeans + tachas",
+      "precio": "$40000",
+      "fotos": [
+        "images/gorra-mika-1.jpg",
+        "images/gorra-mika-2.jpg",
+        "images/gorra-mika-3.jpg"
+      ]
     }
   ]
 }
