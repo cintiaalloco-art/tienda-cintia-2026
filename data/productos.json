@@ -1104,6 +1104,18 @@
         "images/gorra-mika-2.jpg",
         "images/gorra-mika-3.jpg"
       ]
+    },
+    {
+      "numero": "N090",
+      "nombre": "Gorra \"Meera 2\"",
+      "categoria": "Otras",
+      "descripcion": "Con galón + aplique ",
+      "precio": "$38500",
+      "fotos": [
+        "images/gorra-meera-2-1.jpg",
+        "images/gorra-meera-2-2.jpg",
+        "images/gorra-meera-2-3.jpg"
+      ]
     }
   ]
 }
