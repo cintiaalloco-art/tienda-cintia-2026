@@ -1141,6 +1141,17 @@
         "images/gorra-miwa-2.jpg",
         "images/gorra-miwa-3.jpg"
       ]
+    },
+    {
+      "numero": "N094",
+      "nombre": "Gorra \"Xiomara\"",
+      "categoria": "Otras",
+      "descripcion": "Con strass plata ",
+      "precio": "$45000",
+      "fotos": [
+        "images/gorra-xiomara-1.jpg",
+        "images/gorra-xiomara-2.jpg"
+      ]
     }
   ]
 }
