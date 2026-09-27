@@ -1129,6 +1129,18 @@
         "images/gorra-becca-n-2-1.jpg",
         "images/gorra-becca-n-2-2.jpg"
       ]
+    },
+    {
+      "numero": "N093",
+      "nombre": "Gorra \" Miwa\"",
+      "categoria": "Otras",
+      "descripcion": "Con strass 3 mm. Hotfix ",
+      "precio": "$49000",
+      "fotos": [
+        "images/gorra-miwa-1.jpg",
+        "images/gorra-miwa-2.jpg",
+        "images/gorra-miwa-3.jpg"
+      ]
     }
   ]
 }
