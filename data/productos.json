@@ -1118,6 +1118,17 @@
         "images/gorra-katarina-2.jpg",
         "images/gorra-katarina-3.jpg"
       ]
+    },
+    {
+      "numero": "N092",
+      "nombre": "Gorra \"Becca Nª 2\"",
+      "categoria": "Otras",
+      "descripcion": "Con tachas + apliques",
+      "precio": "$30000",
+      "fotos": [
+        "images/gorra-becca-n-2-1.jpg",
+        "images/gorra-becca-n-2-2.jpg"
+      ]
     }
   ]
 }
