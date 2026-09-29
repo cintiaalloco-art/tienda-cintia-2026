@@ -1152,6 +1152,18 @@
         "images/gorra-xiomara-1.jpg",
         "images/gorra-xiomara-2.jpg"
       ]
+    },
+    {
+      "numero": "N095",
+      "nombre": "Gorra Zeida\"",
+      "categoria": "Otras",
+      "descripcion": "Con tachas Hotfix ",
+      "precio": "$38000",
+      "fotos": [
+        "images/gorra-zeida-1.jpg",
+        "images/gorra-zeida-2.jpg",
+        "images/gorra-zeida-3.jpg"
+      ]
     }
   ]
 }
