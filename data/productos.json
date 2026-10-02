@@ -1175,6 +1175,18 @@
         "images/gorra-zali-1.jpg",
         "images/gorra-zali-2.jpg"
       ]
+    },
+    {
+      "numero": "N097",
+      "nombre": "Gorra de niña \"Sadie\"",
+      "categoria": "Niño",
+      "descripcion": "Aplique + strass resina + medias perlas",
+      "precio": "$31000",
+      "fotos": [
+        "images/gorra-de-nina-sadie-1.jpg",
+        "images/gorra-de-nina-sadie-2.jpg",
+        "images/gorra-de-nina-sadie-3.jpg"
+      ]
     }
   ]
 }
