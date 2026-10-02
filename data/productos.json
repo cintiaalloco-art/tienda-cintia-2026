@@ -2,7 +2,7 @@
   "productos": [
     {
       "numero": "N001",
-      "nombre": "Abbie",
+      "nombre": "Gorra de niña \"Abbie\"",
       "categoria": "Otras",
       "descripcion": "Rosa customizada con corazones multicolor y tachas Hotfix.",
       "precio": "$25.000",
@@ -14,7 +14,7 @@
     },
     {
       "numero": "N002",
-      "nombre": "Vanna (niña)",
+      "nombre": "Gorra de niña \"Vanna\"",
       "categoria": "Niño",
       "descripcion": "Violeta con aplique de mariposa en tul y galón de strass.",
       "precio": "$25.000",
@@ -948,7 +948,7 @@
     },
     {
       "numero": "N077",
-      "nombre": "Gorra \"Fatma\"",
+      "nombre": "Gorra de niña \"Fatma\"",
       "categoria": "Niño",
       "descripcion": "Con aplique + galón. (Última disponible)",
       "precio": "$27000",
@@ -959,7 +959,7 @@
     },
     {
       "numero": "N078",
-      "nombre": "Gorra \"Lua\"",
+      "nombre": "Gorra de niña \"Lua\"",
       "categoria": "Niño",
       "descripcion": "Con aplique + tachas ",
       "precio": "$29000",
@@ -971,7 +971,7 @@
     },
     {
       "numero": "N079",
-      "nombre": "Gorra \"Noor 1\"",
+      "nombre": "Gorra de niña \"Noor 1\"",
       "categoria": "Niño",
       "descripcion": "Con apliques",
       "precio": "$29000",
@@ -983,7 +983,7 @@
     },
     {
       "numero": "N080",
-      "nombre": "Gorra  \"Arisha\"",
+      "nombre": "Gorra  de niña \"Arisha\"",
       "categoria": "Niño",
       "descripcion": "Con aplique + galon + strass corazón ",
       "precio": "$36000",
@@ -1167,7 +1167,7 @@
     },
     {
       "numero": "N096",
-      "nombre": "Gorra \"Zali\"",
+      "nombre": "Gorra de niña \"Zali\"",
       "categoria": "Niño",
       "descripcion": "Con strass Hotfix",
       "precio": "$31000",
