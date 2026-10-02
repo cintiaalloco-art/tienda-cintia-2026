@@ -1187,6 +1187,17 @@
         "images/gorra-de-nina-sadie-2.jpg",
         "images/gorra-de-nina-sadie-3.jpg"
       ]
+    },
+    {
+      "numero": "N098",
+      "nombre": "Gorra de niña \"Saray\"",
+      "categoria": "Niño",
+      "descripcion": "Apliques + tachas + strass + cintas",
+      "precio": "$35000",
+      "fotos": [
+        "images/gorra-de-nina-saray-1.jpg",
+        "images/gorra-de-nina-saray-2.jpg"
+      ]
     }
   ]
 }
