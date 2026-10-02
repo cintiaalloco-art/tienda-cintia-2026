@@ -1164,6 +1164,17 @@
         "images/gorra-zeida-2.jpg",
         "images/gorra-zeida-3.jpg"
       ]
+    },
+    {
+      "numero": "N096",
+      "nombre": "Gorra \"Zali\"",
+      "categoria": "Niño",
+      "descripcion": "Con strass Hotfix",
+      "precio": "$31000",
+      "fotos": [
+        "images/gorra-zali-1.jpg",
+        "images/gorra-zali-2.jpg"
+      ]
     }
   ]
 }
