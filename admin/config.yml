@@ -53,8 +53,11 @@ collections:
       - {label: "Nombre", name: "nombre", widget: "string"}
       - label: "Categoria"
         name: "categoria"
-        widget: "select"
-        options: ["Airbag", "Fuxion", "Nino", "Otras"]
+        widget: "relation"
+        collection: "categorias"
+        search_fields: ["nombre"]
+        value_field: "nombre"
+        display_fields: ["nombre"]
       - {label: "Descripcion", name: "descripcion", widget: "text", required: false}
       - {label: "Precio", name: "precio", widget: "string"}
       - label: "Foto principal (para vista previa en el panel)"
