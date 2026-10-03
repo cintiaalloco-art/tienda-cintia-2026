@@ -28,7 +28,12 @@
     color: var(--rose-dark);
     margin: 0 0 4px;
   }
-  .subtitle { color: #9c8478; font-size: 0.9rem; margin-bottom: 20px; }
+  .subtitle { color: #9c8478; font-size: 0.9rem; margin-bottom: 14px; }
+  .admin-link {
+    display: inline-block; background: var(--cream); color: var(--rose-dark);
+    padding: 8px 14px; border-radius: 10px; font-size: 0.85rem; font-weight: 700;
+    text-decoration: none; margin-bottom: 16px;
+  }
   .card {
     background: white;
     border-radius: 14px;
@@ -181,9 +186,9 @@
     background: var(--cream);
     color: var(--rose-dark);
     border-radius: 6px;
-    padding: 2px 6px;
+    padding: 3px 8px;
     font-size: 0.75rem;
-    margin-left: 6px;
+    margin: 2px 4px 2px 0;
   }
   #logBox {
     max-height: 220px;
@@ -211,12 +216,19 @@
   .catEditForm { margin-top: 10px; }
   .catActions { display: flex; gap: 6px; flex-shrink: 0; }
   .deleted-row { opacity: 0.4; text-decoration: line-through; }
+  .photoAddTile {
+    width: 100%; height: 100%; min-height: 70px; border: 2px dashed #e4cfc6;
+    background: #fffaf8; color: var(--rose-dark); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; text-align: center; padding: 4px;
+  }
 </style>
 </head>
 <body>
 
 <h1>🧢 Subir gorras nuevas</h1>
 <div class="subtitle">Obras hechas con Amor — carga directa al catálogo</div>
+<a class="admin-link" href="/admin/" target="_blank">🛠️ Ir al administrador completo</a>
 <div id="debugPanel" style="display:none; background:#fff4e6; border:1px solid #f0c98a; border-radius:10px; padding:10px; margin-bottom:12px; font-size:0.78rem;"></div>
 
 <div class="card" id="configCard">
@@ -242,6 +254,16 @@
   <b>🧪 Modo demo</b> — estás probando cómo funciona, sin conectar a GitHub todavía. Al tocar "Publicar" se simula el resultado, no se sube nada de verdad.
 </div>
 
+<div class="card" id="categoriasCard" style="display:none">
+  <h2>🏷️ Categorías</h2>
+  <div class="hint" style="margin-bottom:8px;">Estas categorías aparecen en los desplegables de "Categoría" de abajo. Las que agregues acá quedan guardadas en este dispositivo/navegador.</div>
+  <div id="categoriasList" style="margin-bottom:10px;"></div>
+  <div style="display:flex; gap:8px;">
+    <input type="text" id="newCategoriaInput" placeholder="Nueva categoría, ej: Verano">
+    <button class="btn-primary btn-small" onclick="addCategoria()">Agregar</button>
+  </div>
+</div>
+
 <div class="card" id="uploadCard" style="display:none">
   <h2>1️⃣ Elegí las fotos de esta tanda</h2>
   <input type="file" id="fileInput" accept="image/*" multiple onchange="handleFiles(event)">
@@ -264,9 +286,12 @@
 </div>
 
 <div class="card" id="catalogCard" style="display:none">
-  <div class="group-header" style="margin-bottom:12px">
+  <div class="group-header" style="margin-bottom:12px; flex-wrap:wrap; gap:8px;">
     <h2 style="margin:0">3️⃣ Catálogo actual</h2>
-    <button class="btn-secondary btn-small" onclick="loadCatalog()">↻ Cargar / Actualizar</button>
+    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+      <button class="btn-secondary btn-small" onclick="renombrarNinoANinas()">🔄 "Niño" → "Niñas"</button>
+      <button class="btn-secondary btn-small" onclick="loadCatalog()">↻ Cargar / Actualizar</button>
+    </div>
   </div>
   <div id="catalogStatus" class="hint"></div>
   <div id="catalogList"></div>
@@ -282,7 +307,47 @@
 </div>
 
 <script>
-const CATEGORIAS = ["Airbag", "Fuxion", "Niño", "Otras"];
+const CATEGORIAS = ["Airbag", "Fuxion", "Niñas", "Otras"];
+let customCategorias = [];
+try { customCategorias = JSON.parse(localStorage.getItem('custom_categorias') || '[]'); } catch (e) { customCategorias = []; }
+
+function getAllCategorias() { return CATEGORIAS.concat(customCategorias); }
+
+function saveCustomCategorias() {
+  localStorage.setItem('custom_categorias', JSON.stringify(customCategorias));
+}
+
+function addCategoria() {
+  const input = document.getElementById('newCategoriaInput');
+  const val = input.value.trim();
+  if (!val) return;
+  const exists = getAllCategorias().some(c => c.toLowerCase() === val.toLowerCase());
+  if (exists) { alert('Esa categoría ya existe.'); return; }
+  customCategorias.push(val);
+  saveCustomCategorias();
+  input.value = '';
+  renderCategoriasList();
+  renderGroups();
+  renderCatalogList();
+}
+
+function removeCategoria(cat) {
+  if (!confirm(`¿Quitar la categoría "${cat}" de la lista? (Los productos que ya la tengan asignada no cambian)`)) return;
+  customCategorias = customCategorias.filter(c => c !== cat);
+  saveCustomCategorias();
+  renderCategoriasList();
+  renderGroups();
+  renderCatalogList();
+}
+
+function renderCategoriasList() {
+  const el = document.getElementById('categoriasList');
+  if (!el) return;
+  el.innerHTML =
+    CATEGORIAS.map(c => `<span class="badge">${c}</span>`).join('') +
+    customCategorias.map(c => `<span class="badge">${c} <span style="cursor:pointer;color:var(--err);font-weight:bold;" onclick="removeCategoria('${c.replace(/'/g, "\\'")}')">✕</span></span>`).join('');
+}
+
 let pool = [];
 let groups = [];
 let nextId = 1;
@@ -295,7 +360,9 @@ function startDemo() {
   document.getElementById('uploadCard').style.display = 'block';
   document.getElementById('footerBar').style.display = 'flex';
   document.getElementById('catalogCard').style.display = 'block';
+  document.getElementById('categoriasCard').style.display = 'block';
   document.getElementById('configCard').style.display = 'none';
+  renderCategoriasList();
   window.scrollTo({ top: document.getElementById('uploadCard').offsetTop - 10, behavior: 'smooth' });
 }
 
@@ -310,7 +377,9 @@ function loadConfig() {
     document.getElementById('uploadCard').style.display = 'block';
     document.getElementById('footerBar').style.display = 'flex';
     document.getElementById('catalogCard').style.display = 'block';
+    document.getElementById('categoriasCard').style.display = 'block';
     document.getElementById('configStatus').textContent = '✓ Configuración guardada.';
+    renderCategoriasList();
   }
 }
 function saveConfig() {
@@ -340,6 +409,8 @@ function saveConfig() {
     `✓ Guardado. Token: <b>${preview}</b> (${t.length} caracteres) — comparalo con el que copiaste de GitHub.${formatWarning}`;
   document.getElementById('uploadCard').style.display = 'block';
   document.getElementById('footerBar').style.display = 'flex';
+  document.getElementById('categoriasCard').style.display = 'block';
+  renderCategoriasList();
 }
 
 let catalogData = [];
@@ -373,6 +444,28 @@ async function loadCatalog() {
   }
 }
 
+function renombrarNinoANinas() {
+  if (!catalogData || !catalogData.length) {
+    alert('Primero tocá "Cargar / Actualizar" para traer el catálogo.');
+    return;
+  }
+  let changed = 0;
+  catalogData.forEach(p => {
+    if (p.categoria === 'Niño' || p.categoria === 'Nino' || p.categoria === 'niño' || p.categoria === 'nino') {
+      p.categoria = 'Niñas';
+      changed++;
+    }
+  });
+  if (changed === 0) {
+    alert('No se encontraron productos con categoría "Niño". Puede que ya estén todos como "Niñas".');
+    return;
+  }
+  catalogDirty = true;
+  renderCatalogList();
+  updateCatalogPublishBar();
+  alert(`Se actualizaron ${changed} producto(s) a "Niñas". Tocá "Publicar cambios en el catálogo" para guardarlo.`);
+}
+
 function renderCatalogList() {
   const container = document.getElementById('catalogList');
   container.innerHTML = '';
@@ -380,6 +473,7 @@ function renderCatalogList() {
     const wrap = document.createElement('div');
     const thumb = (p.fotos && p.fotos[0]) ? fotoUrl(p.fotos[0]) : '';
     if (expandedIndex === idx) {
+      const fotos = p.fotos || [];
       wrap.innerHTML = `
         <div class="catItem" style="align-items:flex-start; flex-direction:column;">
           <div style="display:flex; gap:10px; width:100%;">
@@ -390,13 +484,31 @@ function renderCatalogList() {
             </div>
           </div>
           <div class="catEditForm" style="width:100%;">
+            <label>Fotos</label>
+            <div class="thumbs" style="grid-template-columns:repeat(auto-fill, minmax(72px,1fr));">
+              ${fotos.map((foto, fIdx) => `
+                <div class="photoItem">
+                  <div class="thumb" style="cursor:default;">
+                    <img src="${fotoUrl(foto)}" onerror="this.style.opacity=0.2">
+                    <div class="removeBtn" onclick="removeCatalogPhoto(${idx},${fIdx})" title="Quitar foto">✕</div>
+                  </div>
+                  <div style="display:flex; gap:3px; margin-top:3px;">
+                    <a href="${fotoUrl(foto)}" download target="_blank" class="btn-secondary btn-small" style="flex:1; text-align:center; font-size:0.62rem; padding:4px 2px;">⬇ Bajar</a>
+                    <button class="btn-secondary btn-small" style="flex:1; font-size:0.62rem; padding:4px 2px;" onclick="triggerReplacePhoto(${idx},${fIdx})">🔄 Cambiar</button>
+                  </div>
+                </div>
+              `).join('')}
+              <div class="photoItem">
+                <button class="photoAddTile" onclick="triggerAddPhoto(${idx})">+ Agregar<br>foto</button>
+              </div>
+            </div>
             <label>Nombre</label>
             <input type="text" value="${p.nombre || ''}" oninput="updateCatalogField(${idx},'nombre',this.value)">
             <div class="row2">
               <div>
                 <label>Categoría</label>
                 <select onchange="updateCatalogField(${idx},'categoria',this.value)">
-                  ${CATEGORIAS.map(c => `<option value="${c}" ${c===p.categoria?'selected':''}>${c}</option>`).join('')}
+                  ${getAllCategorias().map(c => `<option value="${c}" ${c===p.categoria?'selected':''}>${c}</option>`).join('')}
                 </select>
               </div>
               <div>
@@ -447,6 +559,81 @@ function deleteCatalogItem(idx) {
   updateCatalogPublishBar();
 }
 
+function removeCatalogPhoto(idx, fotoIdx) {
+  if (!confirm('¿Quitar esta foto del producto? (La foto sigue existiendo en GitHub, pero deja de mostrarse en la web)')) return;
+  catalogData[idx].fotos.splice(fotoIdx, 1);
+  catalogDirty = true;
+  renderCatalogList();
+  updateCatalogPublishBar();
+}
+
+function triggerReplacePhoto(idx, fotoIdx) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    await doReplacePhoto(idx, fotoIdx, file);
+  };
+  input.click();
+}
+
+async function doReplacePhoto(idx, fotoIdx, file) {
+  const status = document.getElementById('catalogStatus');
+  status.textContent = 'Subiendo foto nueva...';
+  status.style.color = '#9c8478';
+  try {
+    const dataUrl = await compressImage(file, 1600, 0.85);
+    const path = catalogData[idx].fotos[fotoIdx];
+    let sha = null;
+    try { sha = await getFileSha(path); } catch (e) {}
+    await uploadImage(path, dataUrl, sha);
+    status.textContent = '✓ Foto reemplazada. Puede tardar uno o dos minutos en verse actualizada en la web.';
+    status.style.color = '#4a7c59';
+    renderCatalogList();
+  } catch (err) {
+    status.textContent = '✗ ' + err.message;
+    status.style.color = '#b03a2e';
+  }
+}
+
+function triggerAddPhoto(idx) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    await doAddPhoto(idx, file);
+  };
+  input.click();
+}
+
+async function doAddPhoto(idx, file) {
+  const status = document.getElementById('catalogStatus');
+  status.textContent = 'Subiendo foto nueva...';
+  status.style.color = '#9c8478';
+  try {
+    const dataUrl = await compressImage(file, 1600, 0.85);
+    const p = catalogData[idx];
+    const baseSlug = slugify(p.nombre || p.numero || ('producto-' + idx));
+    const n = (p.fotos ? p.fotos.length : 0) + 1;
+    const path = `images/${baseSlug}-extra-${n}-${Date.now()}.jpg`;
+    await uploadImage(path, dataUrl, null);
+    if (!p.fotos) p.fotos = [];
+    p.fotos.push(path);
+    catalogDirty = true;
+    status.textContent = '✓ Foto agregada. Tocá "Publicar cambios en el catálogo" para guardarla.';
+    status.style.color = '#4a7c59';
+    renderCatalogList();
+    updateCatalogPublishBar();
+  } catch (err) {
+    status.textContent = '✗ ' + err.message;
+    status.style.color = '#b03a2e';
+  }
+}
+
 function updateCatalogPublishBar() {
   const bar = document.getElementById('catalogPublishBar');
   bar.style.display = catalogDirty ? 'block' : 'none';
@@ -454,7 +641,7 @@ function updateCatalogPublishBar() {
 }
 
 async function publishCatalogChanges() {
-  if (!confirm('¿Publicar los cambios (ediciones/eliminaciones) en el catálogo ahora?')) return;
+  if (!confirm('¿Publicar los cambios (ediciones/fotos/eliminaciones) en el catálogo ahora?')) return;
   const btn = document.getElementById('catalogPublishBtn');
   btn.disabled = true;
   btn.textContent = 'Publicando...';
@@ -695,7 +882,7 @@ function renderGroups() {
         <div>
           <label>Categoría</label>
           <select onchange="updateGroup(${g.id},'categoria',this.value)">
-            ${CATEGORIAS.map(c => `<option value="${c}" ${c===g.categoria?'selected':''}>${c}</option>`).join('')}
+            ${getAllCategorias().map(c => `<option value="${c}" ${c===g.categoria?'selected':''}>${c}</option>`).join('')}
           </select>
         </div>
         <div>
@@ -719,21 +906,17 @@ function debugLog(msg) {
 }
 
 function movePhotoCombined(photoId, value, fromGroupId) {
-  debugLog(`movePhotoCombined llamado: photoId=${photoId}, value="${value}", fromGroupId=${fromGroupId}`);
-  if (!value) { debugLog('→ value vacío, no hace nada.'); return; }
+  if (!value) { return; }
 
   if (value.startsWith('pos:')) {
     const targetIdx = parseInt(value.split(':')[1], 10);
     const g = groups.find(gr => gr.id === fromGroupId);
-    if (!g) { debugLog('→ ERROR: no se encontró el grupo ' + fromGroupId); return; }
+    if (!g) return;
     const fromIdx = g.photoIds.indexOf(photoId);
-    if (fromIdx === -1) { debugLog('→ ERROR: no se encontró la foto ' + photoId + ' en el grupo'); return; }
-    debugLog(`→ Moviendo foto de índice ${fromIdx} a índice ${targetIdx}. Antes: [${g.photoIds}]`);
+    if (fromIdx === -1) return;
     g.photoIds.splice(fromIdx, 1);
     g.photoIds.splice(targetIdx, 0, photoId);
-    debugLog(`→ Después: [${g.photoIds}]. Llamando renderGroups()...`);
     renderGroups();
-    debugLog('→ renderGroups() terminó sin errores.');
     return;
   }
 
@@ -757,20 +940,6 @@ function movePhotoCombined(photoId, value, fromGroupId) {
     renderGroups();
     return;
   }
-}
-
-function movePhoto(photoId, destination, fromGroupId) {
-  const fromGroup = groups.find(g => g.id === fromGroupId);
-  if (fromGroup) fromGroup.photoIds = fromGroup.photoIds.filter(id => id !== photoId);
-
-  if (destination === '__pool__' || destination === '') {
-  } else {
-    const toGroup = groups.find(g => g.id === parseInt(destination, 10));
-    if (toGroup) toGroup.photoIds.push(photoId);
-  }
-  groups = groups.filter(g => g.photoIds.length > 0);
-  renderPool();
-  renderGroups();
 }
 
 function updateGroup(id, field, value) {
@@ -819,20 +988,29 @@ function log(msg, cls) {
   box.scrollTop = box.scrollHeight;
 }
 
-async function uploadImage(path, dataUrl) {
+async function uploadImage(path, dataUrl, sha) {
   const base64 = dataUrl.split(',')[1];
+  const body = {
+    message: `Subir foto ${path}`,
+    content: base64
+  };
+  if (sha) body.sha = sha;
   const res = await fetch(`${ghBase()}/contents/${path}`, {
     method: 'PUT',
     headers: ghHeaders(),
-    body: JSON.stringify({
-      message: `Subir foto ${path}`,
-      content: base64
-    })
+    body: JSON.stringify(body)
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(`No se pudo subir ${path}: ${err.message || res.status}`);
   }
+}
+
+async function getFileSha(path) {
+  const res = await fetch(`${ghBase()}/contents/${path}`, { headers: ghHeaders() });
+  if (!res.ok) return null;
+  const data = await res.json();
+  return data.sha;
 }
 
 async function getProductosJson() {
