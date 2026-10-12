@@ -1209,6 +1209,18 @@
         "images/gorra-grace-3-1.jpg",
         "images/gorra-grace-3-2.jpg"
       ]
+    },
+    {
+      "numero": "N100",
+      "nombre": "Gorra \"Sardelli 96\" N° 21",
+      "categoria": "Airbag",
+      "descripcion": "Con strass dorado Hotfix ",
+      "precio": "$36000",
+      "fotos": [
+        "images/gorra-sardelli-96-n-21-1.jpg",
+        "images/gorra-sardelli-96-n-21-2.jpg",
+        "images/gorra-sardelli-96-n-21-3.jpg"
+      ]
     }
   ]
 }
