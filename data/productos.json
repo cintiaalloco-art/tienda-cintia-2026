@@ -1198,6 +1198,17 @@
         "images/gorra-de-nina-saray-1.jpg",
         "images/gorra-de-nina-saray-2.jpg"
       ]
+    },
+    {
+      "numero": "N099",
+      "nombre": "Gorra \"Grace 3\"",
+      "categoria": "Grace",
+      "descripcion": "Con aplique + galón ",
+      "precio": "$38000",
+      "fotos": [
+        "images/gorra-grace-3-1.jpg",
+        "images/gorra-grace-3-2.jpg"
+      ]
     }
   ]
 }
