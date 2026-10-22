@@ -1221,6 +1221,18 @@
         "images/gorra-sardelli-96-n-21-2.jpg",
         "images/gorra-sardelli-96-n-21-3.jpg"
       ]
+    },
+    {
+      "numero": "N101",
+      "nombre": "Gorra \"Bugué\" N° 14",
+      "categoria": "Otras",
+      "descripcion": "Galón de gemas ",
+      "precio": "$35000",
+      "fotos": [
+        "images/gorra-bugue-n-14-1.jpg",
+        "images/gorra-bugue-n-14-2.jpg",
+        "images/gorra-bugue-n-14-3.jpg"
+      ]
     }
   ]
 }
