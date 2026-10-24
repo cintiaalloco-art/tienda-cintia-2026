@@ -1233,6 +1233,18 @@
         "images/gorra-bugue-n-14-2.jpg",
         "images/gorra-bugue-n-14-3.jpg"
       ]
+    },
+    {
+      "numero": "N102",
+      "nombre": "Gorra \"Niamh\" N° 2",
+      "categoria": "Otras",
+      "descripcion": "Con strass Hotfix ",
+      "precio": "$30000",
+      "fotos": [
+        "images/gorra-niamh-n-2-1.jpg",
+        "images/gorra-niamh-n-2-2.jpg",
+        "images/gorra-niamh-n-2-3.jpg"
+      ]
     }
   ]
 }
