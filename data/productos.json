@@ -1245,6 +1245,18 @@
         "images/gorra-niamh-n-2-2.jpg",
         "images/gorra-niamh-n-2-3.jpg"
       ]
+    },
+    {
+      "numero": "N103",
+      "nombre": "Gorra \"Bajos Instintos\"",
+      "categoria": "Otras",
+      "descripcion": "Con tachas Hotfix 2mm\n",
+      "precio": "$40000",
+      "fotos": [
+        "images/gorra-bajos-instintos-1.jpg",
+        "images/gorra-bajos-instintos-2.jpg",
+        "images/gorra-bajos-instintos-3.jpg"
+      ]
     }
   ]
 }
