@@ -1,0 +1,10 @@
+# Que los celulares siempre pidan la versión nueva de la tienda y del catálogo
+# (las fotos sí se pueden guardar en caché).
+/
+  Cache-Control: no-cache
+/*.html
+  Cache-Control: no-cache
+/*.js
+  Cache-Control: no-cache
+/data/*
+  Cache-Control: no-cache
