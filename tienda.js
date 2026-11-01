@@ -51,7 +51,6 @@ function tcEnd(el,e){const dx=e.changedTouches[0].clientX-el._tx;if(Math.abs(dx)
 // ---------- Tarjetas ----------
 function buildCard(p, idx, pre){
   const cid=(pre||'card')+idx;
-  const rot=(idx%2===0)?'-2deg':'2deg';
   const fotos=fotosDe(p);
   const slides=fotos.map((src,i)=>`<div class="slide${i===0?' active':''}"><img src="${escapeHtml(src)}" alt="${escapeHtml(p.nombre)}" loading="lazy"></div>`).join('');
   const dots=fotos.length>1?`<div class="carousel-dots">${fotos.map((_,i)=>`<span class="dot${i===0?' active':''}" onclick="event.stopPropagation();goSlide('${cid}',${i})"></span>`).join('')}</div>`:'';
@@ -59,7 +58,7 @@ function buildCard(p, idx, pre){
   const sold=p.vendida?`<span class="sold-ribbon">Vendida</span>`:'';
   const waText=textoConsulta(p);
   const cartBtn=p.vendida?'':`<button class="add-cart" data-num="${escapeHtml(p.numero)}" onclick="toggleCart('${escapeHtml(p.numero)}')" aria-label="Comprar">${ICON_CART}<span class="ac-txt">Comprar</span></button>`;
-  return `<article class="card${p.vendida?' sold':''}" data-cat="${escapeHtml(p.categoria)}" data-idx="${idx}"><span class="tag" style="--rot:${rot}">N&ordm;${escapeHtml(String(p.numero||'').replace(/^N/,''))}</span><div class="card-img">${sold}<div class="carousel" id="${cid}" onclick="openModal(${idx})">${slides}${dots}</div>${vids}</div><div class="card-body"><h3>${escapeHtml(p.nombre)}</h3><p>${escapeHtml(p.descripcion)}</p><div class="card-foot"><span class="price">${escapeHtml(precioTexto(p.precio))}</span><span class="card-actions"><a class="mini-wa" href="${waLink(waText)}" target="_blank" rel="noopener" aria-label="${p.vendida?'Pedir similar':'Consultar'} por WhatsApp">${ICON_WA}<span class="wa-txt">${p.vendida?'Pedir similar':'Consultar'}</span></a>${cartBtn}</span></div></div></article>`;
+  return `<article class="card${p.vendida?' sold':''}" data-cat="${escapeHtml(p.categoria)}" data-idx="${idx}"><div class="card-img">${sold}<div class="carousel" id="${cid}" onclick="openModal(${idx})">${slides}${dots}</div>${vids}</div><div class="card-body"><h3>${escapeHtml(p.nombre)}</h3><p>${escapeHtml(p.descripcion)}</p><div class="card-foot"><span class="price">${escapeHtml(precioTexto(p.precio))}</span><span class="card-actions"><a class="mini-wa" href="${waLink(waText)}" target="_blank" rel="noopener" aria-label="${p.vendida?'Pedir similar':'Consultar'} por WhatsApp">${ICON_WA}<span class="wa-txt">${p.vendida?'Pedir similar':'Consultar'}</span></a>${cartBtn}</span></div></div></article>`;
 }
 
 // ---------- Vistas del catálogo ----------
@@ -164,7 +163,7 @@ function openModal(idx){
   document.getElementById('modalTitle').textContent=p.nombre||'';
   document.getElementById('modalDesc').textContent=p.descripcion||'';
   document.getElementById('modalPrice').textContent=precioTexto(p.precio);
-  document.getElementById('modalNum').textContent=numTexto(p)+(p.vendida?' · Vendida':'');
+  document.getElementById('modalNum').textContent=p.vendida?'Vendida':'';
   const waText=textoConsulta(p);
   const wa=document.getElementById('modalWa');
   wa.href=waLink(waText);wa.textContent=p.vendida?'💬 Pedir similar':'💬 Consultar';
@@ -288,7 +287,7 @@ function renderCart(){
     list.innerHTML='<div class="cart-empty">Tu carrito está vacío.<br>Tocá 🛒 en las gorras que te gusten.</div>';
     document.getElementById('cartFoot').style.display='none';
   }else{
-    list.innerHTML=items.map(p=>`<div class="cart-item"><img src="${escapeHtml(fotosDe(p)[0])}" alt=""><div class="ci-info"><div class="ci-name">${escapeHtml(p.nombre)}</div><div class="ci-meta">${escapeHtml(numTexto(p))} · ${escapeHtml(p.categoria||'')}</div><div class="ci-price">${escapeHtml(precioTexto(p.precio))}</div></div><button class="ci-remove" onclick="toggleCart('${escapeHtml(p.numero)}')" aria-label="Quitar">✕</button></div>`).join('');
+    list.innerHTML=items.map(p=>`<div class="cart-item"><img src="${escapeHtml(fotosDe(p)[0])}" alt=""><div class="ci-info"><div class="ci-name">${escapeHtml(p.nombre)}</div><div class="ci-meta">${escapeHtml(p.categoria||'')}</div><div class="ci-price">${escapeHtml(precioTexto(p.precio))}</div></div><button class="ci-remove" onclick="toggleCart('${escapeHtml(p.numero)}')" aria-label="Quitar">✕</button></div>`).join('');
     document.getElementById('cartFoot').style.display='';
     const total=items.reduce((s,p)=>s+precioNum(p.precio),0);
     const sinPrecio=items.some(p=>!precioNum(p.precio));
