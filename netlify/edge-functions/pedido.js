@@ -10,8 +10,7 @@ function precioNum(p) { const d = String(p || '').replace(/\D/g, ''); return d ?
 function fmt(n) { return '$' + n.toLocaleString('es-AR'); }
 function numTexto(p) { return 'Nº' + String(p.numero || '').replace(/^N/, ''); }
 
-// Alto de la imagen según la cantidad de gorras (igual que disenio() en pedido-foto.mjs)
-export function altoCollage(n) { return n === 2 ? 296 : 600; }
+export function altoCollage() { return 600; } // todas las imágenes son cuadradas
 
 export function armarOg(items, origin) {
   const first = items[0];

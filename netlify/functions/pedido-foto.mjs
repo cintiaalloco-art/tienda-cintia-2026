@@ -1,12 +1,12 @@
 // Netlify Function: /pedido-foto?n=N001,N005,N010
 // Arma una imagen JPG para la vista previa de WhatsApp de un pedido, adaptada a la cantidad de gorras:
 //   1 gorra  -> una foto de 600x600
-//   2 gorras -> dos fotos iguales una al lado de la otra (imagen de 600x296)
-//   3 gorras -> tres fotos iguales: dos arriba y una abajo al centro (600x600)
+//   2 gorras -> el cuadrado partido en dos mitades iguales, una arriba y otra abajo
+//   3 gorras -> una grande arriba y dos más chicas abajo
 //   4 gorras -> cuadrícula de 2x2 (600x600)
 //   5 o más  -> la primera grande y hasta 4 miniaturas abajo (600x600)
 // Usa jpeg-js (JavaScript puro, sin dependencias nativas).
-// Si cambiás los tamaños, actualizá también altoCollage() en netlify/edge-functions/pedido.js.
+// Todas las imágenes son cuadradas de 600x600.
 import jpeg from 'jpeg-js';
 
 const W = 600;              // ancho de la imagen final
@@ -16,12 +16,15 @@ const BG = [251, 243, 240]; // --cream
 const HALF = (W - GAP) / 2; // 296: celda de las grillas de 2 columnas
 const THUMB = (W - GAP * 3) / 4; // 144: miniaturas cuando son 5 o más
 const MAIN_H = W - GAP - THUMB;  // 448: foto grande cuando son 5 o más
+const TOP3 = 380;                // foto grande de arriba cuando son 3
 
 // Rectángulos donde va cada foto, según la cantidad de gorras
 export function disenio(n) {
   if (n <= 1) return { w: W, h: W, celdas: [[0, 0, W, W]] };
-  if (n === 2) return { w: W, h: HALF, celdas: [[0, 0, HALF, HALF], [HALF + GAP, 0, HALF, HALF]] };
-  if (n === 3) return { w: W, h: W, celdas: [[0, 0, HALF, HALF], [HALF + GAP, 0, HALF, HALF], [(W - HALF) / 2, HALF + GAP, HALF, HALF]] };
+  // 2: el cuadrado partido en dos mitades, una arriba y otra abajo (las gorras son más anchas que altas)
+  if (n === 2) return { w: W, h: W, celdas: [[0, 0, W, HALF], [0, HALF + GAP, W, HALF]] };
+  // 3: una grande arriba y dos abajo
+  if (n === 3) return { w: W, h: W, celdas: [[0, 0, W, TOP3], [0, TOP3 + GAP, HALF, W - TOP3 - GAP], [HALF + GAP, TOP3 + GAP, HALF, W - TOP3 - GAP]] };
   if (n === 4) return { w: W, h: W, celdas: [[0, 0, HALF, HALF], [HALF + GAP, 0, HALF, HALF], [0, HALF + GAP, HALF, HALF], [HALF + GAP, HALF + GAP, HALF, HALF]] };
   const celdas = [[0, 0, W, MAIN_H]];
   for (let k = 0; k < 4; k++) celdas.push([k * (THUMB + GAP), MAIN_H + GAP, THUMB, THUMB]);

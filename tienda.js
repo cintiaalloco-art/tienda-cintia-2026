@@ -26,7 +26,7 @@ function waLink(text){return 'https://wa.me/'+WA_NUM+'?text='+encodeURIComponent
 function fotosDe(p){let f=(p.fotos&&p.fotos.length)?p.fotos:[p.foto1,p.foto2,p.foto3].filter(Boolean);return f.length?f:['images/hero.jpg']}
 function videosDe(p){return (p.videos||[]).filter(Boolean)}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),1800)}
-const ICON_CART='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1.2 11.2a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 7z"/><path d="M9 7V6a3 3 0 0 1 6 0v1"/></svg>';
+const ICON_CART='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/><path d="M2.5 3h2.6l2.4 11.2a1.6 1.6 0 0 0 1.6 1.3h8.3a1.6 1.6 0 0 0 1.6-1.2L21 7H6"/></svg>';
 const ICON_WA='<svg class="wa-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.27-1.38a9.9 9.9 0 0 0 4.77 1.21h.01c5.46 0 9.91-4.45 9.91-9.91A9.86 9.86 0 0 0 12.04 2zm5.84 14.07c-.25.7-1.45 1.34-2 1.43-.51.08-1.15.11-1.86-.12-.43-.13-.98-.32-1.69-.62-2.97-1.28-4.91-4.27-5.06-4.47-.15-.2-1.21-1.61-1.21-3.07 0-1.46.77-2.18 1.04-2.47.27-.29.6-.37.8-.37.2 0 .4 0 .57.01.18.01.43-.07.67.51.25.6.85 2.07.92 2.22.07.15.12.33.02.53-.1.2-.15.32-.3.49-.15.17-.31.39-.45.52-.15.15-.3.31-.13.6.17.3.77 1.27 1.65 2.06 1.13 1.01 2.09 1.33 2.38 1.48.29.15.46.13.63-.05.17-.18.74-.86.94-1.16.2-.3.4-.25.67-.15.27.1 1.74.82 2.04.97.3.15.5.22.57.35.07.13.07.74-.18 1.44z"/></svg>';
 const ICON_CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>';
 
@@ -57,7 +57,7 @@ function buildCard(p, idx){
   const vids=videosDe(p).length?`<span class="video-badge">▶ video</span>`:'';
   const sold=p.vendida?`<span class="sold-ribbon">Vendida</span>`:'';
   const waText=textoConsulta(p);
-  const cartBtn=p.vendida?'':`<button class="add-cart" data-num="${escapeHtml(p.numero)}" onclick="toggleCart('${escapeHtml(p.numero)}')" aria-label="Agregar al carrito">${ICON_CART}<span class="ac-txt">Agregar</span></button>`;
+  const cartBtn=p.vendida?'':`<button class="add-cart" data-num="${escapeHtml(p.numero)}" onclick="toggleCart('${escapeHtml(p.numero)}')" aria-label="Comprar">${ICON_CART}<span class="ac-txt">Comprar</span></button>`;
   return `<article class="card${p.vendida?' sold':''}" data-cat="${escapeHtml(p.categoria)}" data-idx="${idx}"><span class="tag" style="--rot:${rot}">N&ordm;${escapeHtml(String(p.numero||'').replace(/^N/,''))}</span><div class="card-img">${sold}<div class="carousel" id="card${idx}" onclick="openModal(${idx})">${slides}${dots}</div>${vids}</div><div class="card-body"><h3>${escapeHtml(p.nombre)}</h3><p>${escapeHtml(p.descripcion)}</p><div class="card-foot"><span class="price">${escapeHtml(precioTexto(p.precio))}</span><span class="card-actions"><a class="mini-wa" href="${waLink(waText)}" target="_blank" rel="noopener" aria-label="${p.vendida?'Pedir similar':'Consultar'} por WhatsApp">${ICON_WA}<span class="wa-txt">${p.vendida?'Pedir similar':'Consultar'}</span></a>${cartBtn}</span></div></div></article>`;
 }
 
@@ -138,7 +138,8 @@ function openModal(idx){
 function updateModalCartBtn(){
   if(modalIdx==null)return;
   const p=PRODUCTOS[modalIdx];const mb=document.getElementById('modalCart');
-  mb.textContent=getCart().includes(p.numero)?'✓ En el carrito':'🛒 Agregar';
+  const en=getCart().includes(p.numero);
+  mb.innerHTML=en?ICON_CHECK+' En tu pedido':ICON_CART+' Comprar';mb.classList.toggle('in',en);
 }
 // ---------- Visor de fotos a pantalla completa (con zoom) ----------
 let vFotos=[],vIdx=0,vZoom=false,vDrag=null,vOx=50,vOy=50;
@@ -221,8 +222,8 @@ function getCart(){try{return JSON.parse(localStorage.getItem(CART_KEY)||'[]')}c
 function setCart(c){localStorage.setItem(CART_KEY,JSON.stringify(c));renderCart()}
 function toggleCart(numero){
   const c=getCart();const i=c.indexOf(numero);
-  if(i>=0){c.splice(i,1);setCart(c);toast('Quitada del carrito')}
-  else{c.push(numero);setCart(c);toast('Agregada al carrito ✓');const cc=document.getElementById('cartCount');cc.classList.remove('bump');void cc.offsetWidth;cc.classList.add('bump')}
+  if(i>=0){c.splice(i,1);setCart(c);toast('Quitada de tu pedido')}
+  else{c.push(numero);setCart(c);toast('¡Agregada a tu pedido! ✓');const cc=document.getElementById('cartCount');cc.classList.remove('bump');void cc.offsetWidth;cc.classList.add('bump')}
 }
 function itemsCarrito(){
   const c=getCart();
@@ -239,8 +240,8 @@ function renderCart(){
   if(bb){if(bb.textContent!==String(items.length)&&items.length){bb.classList.remove('bump');void bb.offsetWidth;bb.classList.add('bump')}bb.textContent=items.length;bb.classList.toggle('on',items.length>0)}
   document.querySelectorAll('.add-cart').forEach(b=>{
     const inCart=vigentes.includes(b.dataset.num);
-    b.classList.toggle('in',inCart);b.innerHTML=inCart?ICON_CHECK+'<span class="ac-txt">Agregada</span>':ICON_CART+'<span class="ac-txt">Agregar</span>';
-    b.setAttribute('aria-label',inCart?'Quitar del carrito':'Agregar al carrito');
+    b.classList.toggle('in',inCart);b.innerHTML=inCart?ICON_CHECK+'<span class="ac-txt">Agregada</span>':ICON_CART+'<span class="ac-txt">Comprar</span>';
+    b.setAttribute('aria-label',inCart?'Quitar de mi pedido':'Comprar');
   });
   const list=document.getElementById('cartItems');
   if(!items.length){
