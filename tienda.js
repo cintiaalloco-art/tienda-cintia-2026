@@ -14,6 +14,14 @@ function formatoPrecio(n){return '$'+n.toLocaleString('es-AR')}
 function precioTexto(p){const n=precioNum(p);return n?formatoPrecio(n):(p||'')}
 function numTexto(p){return 'Nº'+String(p.numero||'').replace(/^N/,'')}
 function esVideo(src){return /\.(mp4|mov|webm|m4v)(\?|#|$)/i.test(src||'')}
+// Mensaje para consultar por una gorra. El link va en la 2ª línea: WhatsApp muestra la foto
+// de la gorra en miniatura (la pone netlify/edge-functions/pedido.js) y al tocarlo se ve la gorra.
+function textoConsulta(p){
+  const link=SITE+'/pedido?n='+encodeURIComponent(p.numero);
+  return p.vendida
+    ?`Hola Cintia! Vi esta gorra que figura vendida. ¿Me harías una similar?\n${link}\n\n${numTexto(p)} — ${p.nombre}`
+    :`Hola Cintia! Me interesa esta gorra 💕\n${link}\n\n${numTexto(p)} — ${p.nombre} — ${precioTexto(p.precio)}`;
+}
 function waLink(text){return 'https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(text)}
 function fotosDe(p){let f=(p.fotos&&p.fotos.length)?p.fotos:[p.foto1,p.foto2,p.foto3].filter(Boolean);return f.length?f:['images/hero.jpg']}
 function videosDe(p){return (p.videos||[]).filter(Boolean)}
@@ -48,9 +56,7 @@ function buildCard(p, idx){
   const dots=fotos.length>1?`<div class="carousel-dots">${fotos.map((_,i)=>`<span class="dot${i===0?' active':''}" onclick="event.stopPropagation();goSlide('card${idx}',${i})"></span>`).join('')}</div>`:'';
   const vids=videosDe(p).length?`<span class="video-badge">▶ video</span>`:'';
   const sold=p.vendida?`<span class="sold-ribbon">Vendida</span>`:'';
-  const waText=p.vendida
-    ?`Hola Cintia! Vi la gorra "${p.nombre}" (${numTexto(p)}) que figura vendida. ¿Me harías una similar?`
-    :`Hola Cintia! Me interesa la gorra "${p.nombre}" (${numTexto(p)})`;
+  const waText=textoConsulta(p);
   const cartBtn=p.vendida?'':`<button class="add-cart" data-num="${escapeHtml(p.numero)}" onclick="toggleCart('${escapeHtml(p.numero)}')" aria-label="Agregar al carrito">${ICON_CART}<span class="ac-txt">Agregar</span></button>`;
   return `<article class="card${p.vendida?' sold':''}" data-cat="${escapeHtml(p.categoria)}" data-idx="${idx}"><span class="tag" style="--rot:${rot}">N&ordm;${escapeHtml(String(p.numero||'').replace(/^N/,''))}</span><div class="card-img">${sold}<div class="carousel" id="card${idx}" onclick="openModal(${idx})">${slides}${dots}</div>${vids}</div><div class="card-body"><h3>${escapeHtml(p.nombre)}</h3><p>${escapeHtml(p.descripcion)}</p><div class="card-foot"><span class="price">${escapeHtml(precioTexto(p.precio))}</span><span class="card-actions"><a class="mini-wa" href="${waLink(waText)}" target="_blank" rel="noopener" aria-label="${p.vendida?'Pedir similar':'Consultar'} por WhatsApp">${ICON_WA}<span class="wa-txt">${p.vendida?'Pedir similar':'Consultar'}</span></a>${cartBtn}</span></div></div></article>`;
 }
@@ -119,9 +125,7 @@ function openModal(idx){
   document.getElementById('modalDesc').textContent=p.descripcion||'';
   document.getElementById('modalPrice').textContent=precioTexto(p.precio);
   document.getElementById('modalNum').textContent=numTexto(p)+(p.vendida?' · Vendida':'');
-  const waText=p.vendida
-    ?`Hola Cintia! Vi la gorra "${p.nombre}" (${numTexto(p)}) que figura vendida. ¿Me harías una similar?`
-    :`Hola Cintia! Me interesa la gorra "${p.nombre}" (${numTexto(p)})`;
+  const waText=textoConsulta(p);
   const wa=document.getElementById('modalWa');
   wa.href=waLink(waText);wa.textContent=p.vendida?'💬 Pedir similar':'💬 Consultar';
   const mb=document.getElementById('modalCart');
