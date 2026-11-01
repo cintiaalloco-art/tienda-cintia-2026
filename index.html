@@ -108,6 +108,16 @@ footer .name{font-family:'Parisienne',cursive;color:var(--ink);font-size:1.6rem}
 .hero-imgs img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:14px;opacity:0;transition:opacity 1.1s ease}
 .hero-imgs img.on{opacity:1}
 /* ---- Carrito, videos y vendidas ---- */
+.add-cart .ac-txt{display:none}
+.bottom-bar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:70;gap:10px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.97);backdrop-filter:blur(6px);border-top:1px solid var(--line);box-shadow:0 -8px 20px -14px rgba(59,42,44,.45)}
+.bb-btn{flex:1;height:52px;border-radius:26px;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-size:1rem;font-weight:700;text-decoration:none;border:none;cursor:pointer;position:relative}
+.bb-wa{background:#25D366;color:#fff}
+.bb-wa svg{width:22px;height:22px}
+.bb-cart{background:var(--ink);color:var(--cream)}
+.bb-cart svg{width:22px;height:22px}
+.bb-count{background:var(--rose);color:#fff;min-width:24px;height:24px;border-radius:12px;font-size:.8rem;display:none;align-items:center;justify-content:center;padding:0 7px}
+.bb-count.on{display:inline-flex}
+.bb-count.bump{animation:bump .4s}
 .card-actions{display:flex;align-items:center;gap:6px}
 .add-cart{border:1.5px solid var(--ink);background:#fff;color:var(--ink);width:42px;height:42px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:background .2s,color .2s,transform .2s;flex-shrink:0}
 .add-cart:hover{background:var(--rose);border-color:var(--rose);color:#fff}
@@ -153,7 +163,7 @@ footer .name{font-family:'Parisienne',cursive;color:var(--ink);font-size:1.6rem}
 .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);background:var(--ink);color:var(--cream);padding:11px 20px;border-radius:30px;font-size:.88rem;font-weight:500;z-index:120;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;white-space:nowrap}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .cart-panel.open~.toast{bottom:auto;top:80px}
-.modal-actions{display:flex;gap:10px;margin-top:16px}
+.modal-actions{display:flex;gap:10px;margin-top:16px;position:sticky;bottom:0;background:var(--card);padding:12px 0 4px;z-index:5}
 .modal-actions .btn-primary,.modal-actions .btn-secondary{flex:1;justify-content:center;text-align:center;padding:16px 14px;font-size:1.02rem;border:none;cursor:pointer;font-family:inherit}
 .modal-actions .btn-secondary{border:1px solid var(--ink);background:#fff}
 .videos-sec{padding:40px 28px 20px;max-width:1180px;margin:0 auto}
@@ -165,19 +175,25 @@ footer .name{font-family:'Parisienne',cursive;color:var(--ink);font-size:1.6rem}
 .video-card .vc-title{padding:12px 14px;font-family:'Bodoni Moda',serif;font-weight:600;font-size:.98rem}
 .video-link{display:flex;align-items:center;justify-content:center;height:100%;color:#fff;text-decoration:none;font-weight:600;flex-direction:column;gap:8px;background:linear-gradient(135deg,var(--deep),var(--ink))}
 @media(max-width:640px){
-.card-actions{width:100%;justify-content:space-between}
-.card-actions{justify-content:center!important;gap:8px!important;margin-top:4px}
-.add-cart{width:38px;height:38px}
-.add-cart svg{width:19px;height:19px}
-.card-actions .mini-wa{flex:none;width:38px;height:38px;padding:0;justify-content:center;border-radius:50%}
-.card-actions .mini-wa .wa-txt{display:none}
-.card-actions .mini-wa .wa-ico{width:19px;height:19px}
+/* En el celular: un solo botón ancho "Agregar" por tarjeta; consultar queda en la barra de abajo y en la ventana */
+.card-actions{width:100%;margin-top:5px}
+.card-actions .mini-wa{display:none}
+.card.sold .card-actions .mini-wa{display:flex;flex:1;height:34px;padding:0 6px;font-size:.66rem;border-radius:17px;gap:4px}
+.card.sold .card-actions .mini-wa .wa-ico{width:14px;height:14px}
+.add-cart{flex:1;width:auto;height:34px;border-radius:17px;gap:4px;font-size:.7rem;font-weight:700;font-family:inherit;background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.add-cart .ac-txt{display:inline}
+.add-cart svg{width:15px;height:15px}
+.add-cart.in{background:var(--deep);border-color:var(--deep)}
+/* Barra fija abajo, siempre visible */
+.bottom-bar{display:flex}
+.wa-float,.cart-float,.cart-float.show{display:none}
+body{padding-bottom:78px}
+.toast{bottom:92px}
 .sold-ribbon{font-size:.5rem;padding:2px 6px;top:8px}
 .video-badge{font-size:.55rem;padding:2px 6px;bottom:4px;right:4px}
 .videos-sec{padding:24px 16px 10px}
 .videos-grid{grid-template-columns:repeat(2,1fr);gap:10px}
 .video-card .vc-title{padding:8px 10px;font-size:.8rem}
-.cart-float{bottom:88px;right:22px}
 }
 @media(max-width:640px){
 .wrap{padding:0 16px}
@@ -216,6 +232,7 @@ footer .name{font-family:'Parisienne',cursive;color:var(--ink);font-size:1.6rem}
 <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
 <aside class="cart-panel" id="cartPanel" aria-label="Carrito"><div class="cart-head"><h3>Tu pedido</h3><button class="cart-close" onclick="closeCart()" aria-label="Cerrar">&times;</button></div><div class="cart-items" id="cartItems"></div><div class="cart-foot" id="cartFoot"><div class="cart-total"><span>Total</span><span id="cartTotal">$0</span></div><input type="text" id="cartName" placeholder="Tu nombre (opcional)"><textarea id="cartMsg" placeholder="Comentario: ciudad, envío, cambios... (opcional)"></textarea><button class="btn-primary cart-send" onclick="sendCart()">Enviar pedido por WhatsApp</button><p class="cart-note">Cintia te confirma disponibilidad, envío y forma de pago por WhatsApp.</p><button class="cart-clear" onclick="clearCart()">Vaciar carrito</button></div></aside>
 <div class="toast" id="toast"></div>
+<div class="bottom-bar" role="navigation" aria-label="Accesos rápidos"><a class="bb-btn bb-wa" href="https://wa.me/543468598805?text=Hola%20Cintia!" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.27-1.38a9.9 9.9 0 0 0 4.77 1.21h.01c5.46 0 9.91-4.45 9.91-9.91A9.86 9.86 0 0 0 12.04 2zm5.84 14.07c-.25.7-1.45 1.34-2 1.43-.51.08-1.15.11-1.86-.12-.43-.13-.98-.32-1.69-.62-2.97-1.28-4.91-4.27-5.06-4.47-.15-.2-1.21-1.61-1.21-3.07 0-1.46.77-2.18 1.04-2.47.27-.29.6-.37.8-.37.2 0 .4 0 .57.01.18.01.43-.07.67.51.25.6.85 2.07.92 2.22.07.15.12.33.02.53-.1.2-.15.32-.3.49-.15.17-.31.39-.45.52-.15.15-.3.31-.13.6.17.3.77 1.27 1.65 2.06 1.13 1.01 2.09 1.33 2.38 1.48.29.15.46.13.63-.05.17-.18.74-.86.94-1.16.2-.3.4-.25.67-.15.27.1 1.74.82 2.04.97.3.15.5.22.57.35.07.13.07.74-.18 1.44z"/></svg>Consultar</a><button class="bb-btn bb-cart" onclick="openCart()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l-1.2 11.2a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 7z"/><path d="M9 7V6a3 3 0 0 1 6 0v1"/></svg>Mi pedido<span class="bb-count" id="bbCount">0</span></button></div>
 <div class="viewer" id="viewer"><img id="viewerImg" alt=""><button class="v-btn v-close" onclick="closeViewer()" aria-label="Cerrar">&times;</button><button class="v-btn v-prev" id="vPrev" onclick="viewerGo(-1)" aria-label="Anterior">&#8249;</button><button class="v-btn v-next" id="vNext" onclick="viewerGo(1)" aria-label="Siguiente">&#8250;</button><div class="v-count" id="vCount"></div><div class="v-hint" id="vHint">Tocá la foto para hacer zoom</div></div>
 <a class="wa-float" href="https://wa.me/543468598805?text=Hola%20Cintia!" target="_blank" rel="noopener"><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.27-1.38a9.9 9.9 0 0 0 4.77 1.21h.01c5.46 0 9.91-4.45 9.91-9.91A9.86 9.86 0 0 0 12.04 2zm5.84 14.07c-.25.7-1.45 1.34-2 1.43-.51.08-1.15.11-1.86-.12-.43-.13-.98-.32-1.69-.62-2.97-1.28-4.91-4.27-5.06-4.47-.15-.2-1.21-1.61-1.21-3.07 0-1.46.77-2.18 1.04-2.47.27-.29.6-.37.8-.37.2 0 .4 0 .57.01.18.01.43-.07.67.51.25.6.85 2.07.92 2.22.07.15.12.33.02.53-.1.2-.15.32-.3.49-.15.17-.31.39-.45.52-.15.15-.3.31-.13.6.17.3.77 1.27 1.65 2.06 1.13 1.01 2.09 1.33 2.38 1.48.29.15.46.13.63-.05.17-.18.74-.86.94-1.16.2-.3.4-.25.67-.15.27.1 1.74.82 2.04.97.3.15.5.22.57.35.07.13.07.74-.18 1.44z"/></svg></a>
 <script src="tienda.js"></script>
