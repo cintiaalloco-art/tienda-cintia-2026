@@ -1260,6 +1260,18 @@
         "images/gorra-bajos-instintos-2.jpg",
         "images/gorra-bajos-instintos-3.jpg"
       ]
+    },
+    {
+      "numero": "N107",
+      "nombre": "Gorra \"Kandhy\" Nª 1",
+      "categoria": "Otras",
+      "descripcion": "Con strass y gemas.",
+      "precio": "$39.000",
+      "fotos": [
+        "images/gorra-kandhy-n-1-n107-mvy6emdm-1.jpg",
+        "images/gorra-kandhy-n-1-n107-mvy6emdm-2.jpg",
+        "images/gorra-kandhy-n-1-n107-mvy6emdm-3.jpg"
+      ]
     }
   ]
 }
