@@ -159,14 +159,15 @@
     {
       "numero": "N014",
       "nombre": "Calleigh Nº5",
-      "categoria": "Otras",
+      "categoria": "Myna",
       "descripcion": "Denim vintage color verde musgo, con tachas, medias perlas y strass en tonos verdes.",
       "precio": "$35.000",
       "fotos": [
         "images/calleigh-no5-1.jpg",
         "images/calleigh-no5-2.jpg",
         "images/calleigh-no5-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N018",
@@ -219,7 +220,7 @@
     {
       "numero": "N019",
       "nombre": "Layca Nº3",
-      "categoria": "Otras",
+      "categoria": "Layca\"",
       "descripcion": "Lila con aplique \"Sweet\" en strass y galón.",
       "precio": "$32.000",
       "fotos": [
