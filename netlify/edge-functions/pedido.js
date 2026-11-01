@@ -10,12 +10,13 @@ function precioNum(p) { const d = String(p || '').replace(/\D/g, ''); return d ?
 function fmt(n) { return '$' + n.toLocaleString('es-AR'); }
 function numTexto(p) { return 'Nº' + String(p.numero || '').replace(/^N/, ''); }
 
+export function altoCollage() { return 600; } // todas las imágenes son cuadradas
+
 export function armarOg(items, origin) {
   const first = items[0];
   const foto = (first.fotos || [])[0];
-  // Netlify Image CDN achica la foto: WhatsApp no muestra vistas previas de imágenes pesadas
-  // Una gorra: su foto achicada. Varias: collage armado por netlify/functions/pedido-foto.mjs
-  // (la primera grande y las otras en miniatura abajo).
+  // Una gorra: su foto achicada con Netlify Image CDN (WhatsApp no muestra imágenes pesadas).
+  // Varias: collage armado por netlify/functions/pedido-foto.mjs, adaptado a la cantidad.
   const image = items.length > 1
     ? `${origin}/pedido-foto?n=${items.map(p => encodeURIComponent(p.numero)).join(',')}`
     : foto
@@ -26,7 +27,7 @@ export function armarOg(items, origin) {
     ? `${numTexto(first)} — ${first.nombre}`
     : `Pedido de ${items.length} gorras — ${fmt(total)}`;
   const description = items.map(p => `${numTexto(p)} ${p.nombre}`).join(' · ') + (items.length === 1 ? ` — ${fmt(total)}` : '');
-  return { title, description, image };
+  return { title, description, image, height: altoCollage(items.length) };
 }
 
 export function reemplazarOg(html, og) {
@@ -36,7 +37,7 @@ export function reemplazarOg(html, og) {
   set('og:title', og.title);
   set('og:description', og.description);
   set('og:image', og.image);
-  html = html.replace('</head>', `<meta property="og:image:width" content="600"><meta property="og:image:height" content="600">\n</head>`);
+  html = html.replace('</head>', `<meta property="og:image:width" content="600"><meta property="og:image:height" content="${og.height || 600}">\n</head>`);
   return html;
 }
 

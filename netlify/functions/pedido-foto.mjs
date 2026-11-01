@@ -1,15 +1,35 @@
 // Netlify Function: /pedido-foto?n=N001,N005,N010
-// Arma una imagen JPG cuadrada de 600x600 para la vista previa de WhatsApp:
-// arriba la primera gorra grande y abajo, en miniatura, hasta 4 de las otras gorras elegidas.
+// Arma una imagen JPG para la vista previa de WhatsApp de un pedido, adaptada a la cantidad de gorras:
+//   1 gorra  -> una foto de 600x600
+//   2 gorras -> el cuadrado partido en dos mitades iguales, una arriba y otra abajo
+//   3 gorras -> una grande arriba y dos más chicas abajo
+//   4 gorras -> cuadrícula de 2x2 (600x600)
+//   5 o más  -> la primera grande y hasta 4 miniaturas abajo (600x600)
 // Usa jpeg-js (JavaScript puro, sin dependencias nativas).
+// Todas las imágenes son cuadradas de 600x600.
 import jpeg from 'jpeg-js';
 
-const SIZE = 600;          // lado de la imagen final
-const GAP = 8;             // separación entre fotos
-const THUMBS = 4;          // miniaturas como máximo
-const THUMB = (SIZE - GAP * (THUMBS - 1)) / THUMBS; // 144
-const MAIN_H = SIZE - GAP - THUMB;                   // 448
+const W = 600;              // ancho de la imagen final
+const GAP = 8;              // separación entre fotos
+const MAX = 5;              // gorras que entran en la imagen
 const BG = [251, 243, 240]; // --cream
+const HALF = (W - GAP) / 2; // 296: celda de las grillas de 2 columnas
+const THUMB = (W - GAP * 3) / 4; // 144: miniaturas cuando son 5 o más
+const MAIN_H = W - GAP - THUMB;  // 448: foto grande cuando son 5 o más
+const TOP3 = 380;                // foto grande de arriba cuando son 3
+
+// Rectángulos donde va cada foto, según la cantidad de gorras
+export function disenio(n) {
+  if (n <= 1) return { w: W, h: W, celdas: [[0, 0, W, W]] };
+  // 2: el cuadrado partido en dos mitades, una arriba y otra abajo (las gorras son más anchas que altas)
+  if (n === 2) return { w: W, h: W, celdas: [[0, 0, W, HALF], [0, HALF + GAP, W, HALF]] };
+  // 3: una grande arriba y dos abajo
+  if (n === 3) return { w: W, h: W, celdas: [[0, 0, W, TOP3], [0, TOP3 + GAP, HALF, W - TOP3 - GAP], [HALF + GAP, TOP3 + GAP, HALF, W - TOP3 - GAP]] };
+  if (n === 4) return { w: W, h: W, celdas: [[0, 0, HALF, HALF], [HALF + GAP, 0, HALF, HALF], [0, HALF + GAP, HALF, HALF], [HALF + GAP, HALF + GAP, HALF, HALF]] };
+  const celdas = [[0, 0, W, MAIN_H]];
+  for (let k = 0; k < 4; k++) celdas.push([k * (THUMB + GAP), MAIN_H + GAP, THUMB, THUMB]);
+  return { w: W, h: W, celdas };
+}
 
 function nuevaImagen(w, h) {
   const data = Buffer.alloc(w * h * 4);
@@ -19,6 +39,7 @@ function nuevaImagen(w, h) {
 
 // Copia src dentro de dst en el rectángulo (x,y,w,h) recortando como "object-fit: cover"
 export function dibujarCover(dst, src, x, y, w, h) {
+  x = Math.round(x); y = Math.round(y); w = Math.round(w); h = Math.round(h);
   const escala = Math.max(w / src.width, h / src.height);
   const sw = w / escala, sh = h / escala;
   const sx0 = (src.width - sw) / 2, sy0 = (src.height - sh) / 2;
@@ -34,19 +55,10 @@ export function dibujarCover(dst, src, x, y, w, h) {
 }
 
 export function armarCollage(fotos) {
-  const out = nuevaImagen(SIZE, SIZE);
-  const [principal, ...otras] = fotos;
-  if (!otras.length) {
-    dibujarCover(out, principal, 0, 0, SIZE, SIZE);
-  } else {
-    dibujarCover(out, principal, 0, 0, SIZE, MAIN_H);
-    const n = Math.min(THUMBS, otras.length);
-    // Las miniaturas quedan centradas si son menos de 4
-    const inicio = (SIZE - (n * THUMB + (n - 1) * GAP)) / 2;
-    for (let k = 0; k < n; k++) {
-      dibujarCover(out, otras[k], Math.round(inicio + k * (THUMB + GAP)), MAIN_H + GAP, Math.round(THUMB), Math.round(THUMB));
-    }
-  }
+  const fs = fotos.slice(0, MAX);
+  const d = disenio(fs.length);
+  const out = nuevaImagen(d.w, d.h);
+  fs.forEach((f, k) => { const [x, y, w, h] = d.celdas[k]; dibujarCover(out, f, x, y, w, h); });
   return jpeg.encode(out, 82).data;
 }
 
@@ -65,14 +77,17 @@ export default async (request) => {
   const url = new URL(request.url);
   const origin = url.origin;
   try {
-    const nums = (url.searchParams.get('n') || '').split(',').map(s => s.trim()).filter(Boolean).slice(0, 1 + THUMBS);
+    const nums = (url.searchParams.get('n') || '').split(',').map(s => s.trim()).filter(Boolean).slice(0, MAX);
     const data = await (await fetch(origin + '/data/productos.json')).json();
     const items = nums.map(n => (data.productos || []).find(p => p.numero === n)).filter(p => p && p.fotos && p.fotos.length);
     if (!items.length) return Response.redirect(origin + '/images/hero.jpg', 302);
+    // Tamaño a pedir de cada foto según dónde va a ir
+    const d = disenio(items.length);
     // Si alguna foto no se puede leer, se saltea (no arruina toda la imagen)
-    const res = await Promise.allSettled(items.map((p, i) =>
-      i === 0 ? bajarFoto(origin, p.fotos[0], SIZE, items.length > 1 ? MAIN_H : SIZE)
-              : bajarFoto(origin, p.fotos[0], 160, 160)));
+    const res = await Promise.allSettled(items.map((p, i) => {
+      const [, , w, h] = d.celdas[i];
+      return bajarFoto(origin, p.fotos[0], Math.round(w), Math.round(h));
+    }));
     const fotos = res.filter(r => r.status === 'fulfilled').map(r => r.value);
     if (!fotos.length) return Response.redirect(origin + '/images/hero.jpg', 302);
     const jpg = armarCollage(fotos);
