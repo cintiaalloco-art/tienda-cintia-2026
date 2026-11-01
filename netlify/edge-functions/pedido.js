@@ -14,9 +14,13 @@ export function armarOg(items, origin) {
   const first = items[0];
   const foto = (first.fotos || [])[0];
   // Netlify Image CDN achica la foto: WhatsApp no muestra vistas previas de imágenes pesadas
-  const image = foto
-    ? `${origin}/.netlify/images?url=${encodeURIComponent('/' + foto.replace(/^\//, ''))}&w=600&h=600&fit=cover&fm=jpg&q=75`
-    : `${origin}/images/hero.jpg`;
+  // Una gorra: su foto achicada. Varias: collage armado por netlify/functions/pedido-foto.mjs
+  // (la primera grande y las otras en miniatura abajo).
+  const image = items.length > 1
+    ? `${origin}/pedido-foto?n=${items.map(p => encodeURIComponent(p.numero)).join(',')}`
+    : foto
+      ? `${origin}/.netlify/images?url=${encodeURIComponent('/' + foto.replace(/^\//, ''))}&w=600&h=600&fit=cover&fm=jpg&q=75`
+      : `${origin}/images/hero.jpg`;
   const total = items.reduce((s, p) => s + precioNum(p.precio), 0);
   const title = items.length === 1
     ? `${numTexto(first)} — ${first.nombre}`

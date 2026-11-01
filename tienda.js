@@ -51,7 +51,7 @@ function buildCard(p, idx){
   const waText=p.vendida
     ?`Hola Cintia! Vi la gorra "${p.nombre}" (${numTexto(p)}) que figura vendida. ¿Me harías una similar?`
     :`Hola Cintia! Me interesa la gorra "${p.nombre}" (${numTexto(p)})`;
-  const cartBtn=p.vendida?'':`<button class="add-cart" data-num="${escapeHtml(p.numero)}" onclick="toggleCart('${escapeHtml(p.numero)}')" aria-label="Agregar al carrito">${ICON_CART}</button>`;
+  const cartBtn=p.vendida?'':`<button class="add-cart" data-num="${escapeHtml(p.numero)}" onclick="toggleCart('${escapeHtml(p.numero)}')" aria-label="Agregar al carrito">${ICON_CART}<span class="ac-txt">Agregar</span></button>`;
   return `<article class="card${p.vendida?' sold':''}" data-cat="${escapeHtml(p.categoria)}" data-idx="${idx}"><span class="tag" style="--rot:${rot}">N&ordm;${escapeHtml(String(p.numero||'').replace(/^N/,''))}</span><div class="card-img">${sold}<div class="carousel" id="card${idx}" onclick="openModal(${idx})">${slides}${dots}</div>${vids}</div><div class="card-body"><h3>${escapeHtml(p.nombre)}</h3><p>${escapeHtml(p.descripcion)}</p><div class="card-foot"><span class="price">${escapeHtml(precioTexto(p.precio))}</span><span class="card-actions"><a class="mini-wa" href="${waLink(waText)}" target="_blank" rel="noopener" aria-label="${p.vendida?'Pedir similar':'Consultar'} por WhatsApp">${ICON_WA}<span class="wa-txt">${p.vendida?'Pedir similar':'Consultar'}</span></a>${cartBtn}</span></div></div></article>`;
 }
 
@@ -231,9 +231,11 @@ function renderCart(){
   if(PRODUCTOS.length&&vigentes.length!==getCart().length)localStorage.setItem(CART_KEY,JSON.stringify(vigentes));
   document.getElementById('cartCount').textContent=items.length;
   document.getElementById('cartFloat').classList.toggle('show',items.length>0);
+  const bb=document.getElementById('bbCount');
+  if(bb){if(bb.textContent!==String(items.length)&&items.length){bb.classList.remove('bump');void bb.offsetWidth;bb.classList.add('bump')}bb.textContent=items.length;bb.classList.toggle('on',items.length>0)}
   document.querySelectorAll('.add-cart').forEach(b=>{
     const inCart=vigentes.includes(b.dataset.num);
-    b.classList.toggle('in',inCart);b.innerHTML=inCart?ICON_CHECK:ICON_CART;
+    b.classList.toggle('in',inCart);b.innerHTML=inCart?ICON_CHECK+'<span class="ac-txt">Agregada</span>':ICON_CART+'<span class="ac-txt">Agregar</span>';
     b.setAttribute('aria-label',inCart?'Quitar del carrito':'Agregar al carrito');
   });
   const list=document.getElementById('cartItems');

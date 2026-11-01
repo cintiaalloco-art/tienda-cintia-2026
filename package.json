@@ -1,0 +1,8 @@
+{
+  "name": "tienda-cintia-2026",
+  "private": true,
+  "description": "Dependencias de las funciones de Netlify (la tienda en sí no necesita compilarse).",
+  "dependencies": {
+    "jpeg-js": "^0.4.4"
+  }
+}
