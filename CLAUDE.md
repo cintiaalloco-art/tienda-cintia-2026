@@ -12,7 +12,10 @@ Sitio estático de Cintia Alloco (gorras decoradas a mano). Repo: `cintiaalloco-
   - Subir: agrupa fotos de a 3, video opcional por modelo, publica en `productos.json`. Los nombres de archivo llevan número y marca de tiempo para no chocar nunca con fotos existentes.
   - Catálogo: buscar/filtrar, editar, marcar Vendida, ordenar gorras, ordenar/cambiar/agregar fotos, agregar/quitar videos. Los cambios se juntan y se publican con "Publicar cambios".
   - Categorías y Videos: cada cambio se guarda al instante en GitHub. Renombrar o borrar una categoría actualiza también las gorras en `productos.json`.
-- `admin/index.html`: el viejo Decap CMS fue retirado; la página solo redirige a `/subir.html`. `admin/config.yml`, `data/gorras/` y `netlify/functions/` (restos del CMS) se borraron.
+- Portada: la foto del hero va cambiando cada 4,5 s entre las portadas de gorras no vendidas, en orden aleatorio (`startHero` en `tienda.js`). `images/hero.jpg` es solo la primera imagen y la del og:image del sitio. Tocar la foto abre esa gorra.
+- Link directo a una gorra: `/?g=N012` abre su ventana de detalle.
+- `pedido.html` (`/pedido?n=N001,N005`): página prolija con las gorras elegidas (foto, número, precio, total). El mensaje de WhatsApp del carrito lleva este link en la segunda línea. `netlify/edge-functions/pedido.js` reemplaza las etiquetas og: con la foto (achicada con Netlify Image CDN) y el nombre de la primera gorra, así WhatsApp muestra la miniatura en la vista previa. Si la función falla, la página se sirve igual sin vista previa personalizada.
+- `admin/index.html`: el viejo Decap CMS fue retirado; la página solo redirige a `/subir.html`. `admin/config.yml`, `data/gorras/` y `netlify/functions/` (restos del CMS) se borraron. `netlify/edge-functions/` SÍ se usa (vista previa del pedido).
 
 ## Carrito
 - Se guarda en localStorage de la clienta (`oha_carrito`, lista de números). Cada gorra se agrega una vez (son únicas). "Enviar pedido" abre WhatsApp (543468598805) con la lista, el total, el nombre y un comentario. No hay pago online (Mercado Pago quedó como opción futura).

@@ -4,6 +4,7 @@
 
 const WA_NUM = '543468598805';
 const CART_KEY = 'oha_carrito';
+const SITE = 'https://obrashechasconamor.com.ar';
 let PRODUCTOS = [];
 
 // ---------- Utilidades ----------
@@ -183,7 +184,10 @@ function sendCart(){
   const items=itemsCarrito();if(!items.length)return;
   const nombre=document.getElementById('cartName').value.trim();
   const msg=document.getElementById('cartMsg').value.trim();
-  let t='Hola Cintia! Quiero hacer este pedido:\n\n';
+  // El link al pedido va primero: WhatsApp muestra la foto de la gorra como vista previa
+  // y al abrirlo se ven todas las gorras elegidas con su foto.
+  const link=SITE+'/pedido?n='+items.map(p=>encodeURIComponent(p.numero)).join(',');
+  let t=`Hola Cintia! Quiero hacer este pedido 🛍️\n${link}\n\n`;
   items.forEach(p=>{t+=`• ${numTexto(p)} — ${p.nombre} — ${precioTexto(p.precio)}\n`});
   const total=items.reduce((s,p)=>s+precioNum(p.precio),0);
   t+=`\nTotal: ${formatoPrecio(total)}`;
@@ -220,6 +224,41 @@ function buildVideos(videos){
   document.getElementById('navVideos').style.display='';
 }
 
+// ---------- Portada: va mostrando gorras al azar ----------
+function startHero(){
+  const box=document.getElementById('heroImgs');if(!box)return;
+  const pool=PRODUCTOS.map((p,i)=>({p,i})).filter(x=>!x.p.vendida&&x.p.fotos&&x.p.fotos.length);
+  if(!pool.length)return;
+  const imgs=box.querySelectorAll('img');
+  let front=0,actual=null,cola=[];
+  const siguiente=()=>{
+    if(!cola.length){cola=pool.slice().sort(()=>Math.random()-.5);if(actual&&cola[0]===actual)cola.push(cola.shift())}
+    return cola.shift();
+  };
+  const mostrar=x=>{
+    const back=imgs[1-front];
+    const pre=new Image();
+    pre.onload=()=>{
+      back.src=pre.src;back.alt=x.p.nombre||'';
+      back.classList.add('on');imgs[front].classList.remove('on');
+      front=1-front;actual=x;
+    };
+    pre.src=x.p.fotos[0];
+  };
+  box.onclick=()=>{if(actual)openModal(actual.i);else document.getElementById('catalogo').scrollIntoView()};
+  mostrar(siguiente());
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  setInterval(()=>{if(!document.hidden)mostrar(siguiente())},4500);
+}
+
+// Link directo a una gorra: obrashechasconamor.com.ar/?g=N012 abre su ventana
+function abrirDesdeLink(){
+  const g=new URLSearchParams(location.search).get('g');
+  if(!g)return;
+  const i=PRODUCTOS.findIndex(p=>p.numero===g);
+  if(i>=0)openModal(i);
+}
+
 // ---------- Carga inicial ----------
 const sinCache='?v='+Date.now();
 function getJson(url,porDefecto){return fetch(url+sinCache).then(r=>r.ok?r.json():porDefecto).catch(()=>porDefecto)}
@@ -237,6 +276,8 @@ Promise.all([
   buildFilters(nombres);
   buildVideos(vids.videos);
   renderCart();
+  startHero();
+  abrirDesdeLink();
 }).catch(err=>{
   document.querySelector('.grid').innerHTML='<p style="padding:40px;text-align:center;color:#7A5C5F">No se pudo cargar el cat&aacute;logo. Revis&aacute; tu conexi&oacute;n e intent&aacute; de nuevo.</p>';
   console.error(err);
