@@ -49,43 +49,83 @@ function tcStart(el,e){el._tx=e.touches[0].clientX}
 function tcEnd(el,e){const dx=e.changedTouches[0].clientX-el._tx;if(Math.abs(dx)>40)nextSlide(el,dx<0?1:-1)}
 
 // ---------- Tarjetas ----------
-function buildCard(p, idx){
+function buildCard(p, idx, pre){
+  const cid=(pre||'card')+idx;
   const rot=(idx%2===0)?'-2deg':'2deg';
   const fotos=fotosDe(p);
   const slides=fotos.map((src,i)=>`<div class="slide${i===0?' active':''}"><img src="${escapeHtml(src)}" alt="${escapeHtml(p.nombre)}" loading="lazy"></div>`).join('');
-  const dots=fotos.length>1?`<div class="carousel-dots">${fotos.map((_,i)=>`<span class="dot${i===0?' active':''}" onclick="event.stopPropagation();goSlide('card${idx}',${i})"></span>`).join('')}</div>`:'';
+  const dots=fotos.length>1?`<div class="carousel-dots">${fotos.map((_,i)=>`<span class="dot${i===0?' active':''}" onclick="event.stopPropagation();goSlide('${cid}',${i})"></span>`).join('')}</div>`:'';
   const vids=videosDe(p).length?`<span class="video-badge">▶ video</span>`:'';
   const sold=p.vendida?`<span class="sold-ribbon">Vendida</span>`:'';
   const waText=textoConsulta(p);
   const cartBtn=p.vendida?'':`<button class="add-cart" data-num="${escapeHtml(p.numero)}" onclick="toggleCart('${escapeHtml(p.numero)}')" aria-label="Comprar">${ICON_CART}<span class="ac-txt">Comprar</span></button>`;
-  return `<article class="card${p.vendida?' sold':''}" data-cat="${escapeHtml(p.categoria)}" data-idx="${idx}"><span class="tag" style="--rot:${rot}">N&ordm;${escapeHtml(String(p.numero||'').replace(/^N/,''))}</span><div class="card-img">${sold}<div class="carousel" id="card${idx}" onclick="openModal(${idx})">${slides}${dots}</div>${vids}</div><div class="card-body"><h3>${escapeHtml(p.nombre)}</h3><p>${escapeHtml(p.descripcion)}</p><div class="card-foot"><span class="price">${escapeHtml(precioTexto(p.precio))}</span><span class="card-actions"><a class="mini-wa" href="${waLink(waText)}" target="_blank" rel="noopener" aria-label="${p.vendida?'Pedir similar':'Consultar'} por WhatsApp">${ICON_WA}<span class="wa-txt">${p.vendida?'Pedir similar':'Consultar'}</span></a>${cartBtn}</span></div></div></article>`;
+  return `<article class="card${p.vendida?' sold':''}" data-cat="${escapeHtml(p.categoria)}" data-idx="${idx}"><span class="tag" style="--rot:${rot}">N&ordm;${escapeHtml(String(p.numero||'').replace(/^N/,''))}</span><div class="card-img">${sold}<div class="carousel" id="${cid}" onclick="openModal(${idx})">${slides}${dots}</div>${vids}</div><div class="card-body"><h3>${escapeHtml(p.nombre)}</h3><p>${escapeHtml(p.descripcion)}</p><div class="card-foot"><span class="price">${escapeHtml(precioTexto(p.precio))}</span><span class="card-actions"><a class="mini-wa" href="${waLink(waText)}" target="_blank" rel="noopener" aria-label="${p.vendida?'Pedir similar':'Consultar'} por WhatsApp">${ICON_WA}<span class="wa-txt">${p.vendida?'Pedir similar':'Consultar'}</span></a>${cartBtn}</span></div></div></article>`;
 }
 
-// ---------- Filtros de categoría (salen de data/categorias.json) ----------
-function buildFilters(categorias){
+// ---------- Vistas del catálogo ----------
+// "inicio": una fila por categoría con algunas gorras para deslizar + botón "Ver todas".
+// "todas": todas las gorras en el orden del catálogo. Cualquier otro valor: las gorras de esa categoría.
+// La vista va en la dirección (?cat=Airbag / ?cat=todas) para que el botón "atrás" del celular funcione.
+let CATEGORIAS=[];
+let vista='inicio';
+const POR_FILA=8; // gorras que se muestran en cada fila del inicio (después viene "Ver todas")
+function contar(cat){return PRODUCTOS.filter(p=>p.categoria===cat).length}
+function buildFilters(){
   const bar=document.getElementById('filterBar');
-  const conteo={};
-  PRODUCTOS.forEach(p=>{conteo[p.categoria]=(conteo[p.categoria]||0)+1});
   bar.innerHTML='';
-  const mk=(cat,label,n)=>{
+  const mk=(v,label,n)=>{
     const b=document.createElement('button');
-    b.className='filter-btn'+(cat==='all'?' active':'');
-    b.dataset.cat=cat;
+    b.className='filter-btn';b.dataset.cat=v;
     b.innerHTML=escapeHtml(label)+(n!=null?`<span class="count">${n}</span>`:'');
-    b.onclick=()=>filterCat(b,cat);
+    b.onclick=()=>setVista(v);
     bar.appendChild(b);
   };
-  mk('all','Todas',PRODUCTOS.length);
+  mk('inicio','Inicio');
   // Solo se muestran las categorías que tienen al menos una gorra
-  categorias.forEach(c=>{if(conteo[c])mk(c,c,conteo[c])});
+  CATEGORIAS.forEach(c=>{const n=contar(c);if(n)mk(c,c,n)});
+  mk('todas','Todas',PRODUCTOS.length);
 }
-function filterCat(btn,cat){
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.grid .card').forEach(card=>{
-    card.style.display=(cat==='all'||card.getAttribute('data-cat')===cat)?'':'none';
-  });
+function setVista(v,desdeHistorial){
+  vista=v||'inicio';
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.cat===vista));
+  const home=document.getElementById('home'),grid=document.querySelector('.grid'),head=document.getElementById('vistaHead');
+  if(vista==='inicio'){
+    home.style.display='';grid.style.display='none';head.style.display='none';
+    home.innerHTML=renderInicio();
+  }else{
+    const lista=PRODUCTOS.map((p,i)=>({p,i})).filter(x=>vista==='todas'||x.p.categoria===vista);
+    head.style.display='';
+    head.innerHTML=`<button class="vh-back" onclick="setVista('inicio')">‹ Inicio</button><h3>${vista==='todas'?'Todas las gorras':escapeHtml(vista)}</h3><span class="vh-count">${lista.length} gorra${lista.length===1?'':'s'}</span>`;
+    grid.innerHTML=lista.map(x=>buildCard(x.p,x.i,'g')).join('');
+    home.style.display='none';grid.style.display='';
+  }
+  renderCart();
+  if(!desdeHistorial){
+    const url=new URL(location.href);
+    if(vista==='inicio')url.searchParams.delete('cat');else url.searchParams.set('cat',vista);
+    url.searchParams.delete('g');
+    history.pushState({vista},'',url);
+    const cat=document.getElementById('catalogo');
+    if(cat&&window.scrollY>cat.offsetTop)window.scrollTo({top:cat.offsetTop-70,behavior:'smooth'});
+  }
 }
+function renderInicio(){
+  const filas=CATEGORIAS.map(c=>{
+    const todas=PRODUCTOS.map((p,i)=>({p,i})).filter(x=>x.p.categoria===c);
+    if(!todas.length)return '';
+    // Primero las disponibles, después las vendidas
+    const orden=todas.filter(x=>!x.p.vendida).concat(todas.filter(x=>x.p.vendida)).slice(0,POR_FILA);
+    const cs=JSON.stringify(c).replace(/"/g,'&quot;');
+    const mas=todas.length>orden.length||todas.length>2
+      ?`<button class="row-more" onclick="setVista(${cs})"><span class="rm-n">${todas.length}</span><span>Ver todas<br>las de ${escapeHtml(c)}</span><span class="rm-arrow">→</span></button>`:'';
+    return `<section class="cat-row"><div class="cat-row-head"><h3>${escapeHtml(c)}</h3><span class="cr-count">${todas.length} gorra${todas.length===1?'':'s'}</span><button class="cr-link" onclick="setVista(${cs})">Ver todas ›</button></div><div class="cat-strip">${orden.map(x=>buildCard(x.p,x.i,'s')).join('')}${mas}</div></section>`;
+  }).join('');
+  return filas+`<button class="see-all" onclick="setVista('todas')">Ver todas las gorras <span>(${PRODUCTOS.length})</span></button>`;
+}
+window.addEventListener('popstate',e=>{
+  const v=(e.state&&e.state.vista)||new URLSearchParams(location.search).get('cat')||'inicio';
+  setVista(v,true);
+});
 
 // ---------- Ventana de detalle ----------
 let modalIdx=null;
@@ -347,12 +387,15 @@ Promise.all([
   getJson('data/videos.json',{videos:[]})
 ]).then(([data,cats,vids])=>{
   PRODUCTOS=data.productos||[];
-  const grid=document.querySelector('.grid');
-  grid.innerHTML=PRODUCTOS.map((p,i)=>buildCard(p,i)).join('');
   let nombres=(cats.categorias||[]).map(c=>c.nombre);
   // Si alguna gorra tiene una categoría que no está en la lista, igual aparece su botón al final
   PRODUCTOS.forEach(p=>{if(p.categoria&&!nombres.includes(p.categoria))nombres.push(p.categoria)});
-  buildFilters(nombres);
+  CATEGORIAS=nombres;
+  buildFilters();
+  const inicial=new URLSearchParams(location.search).get('cat');
+  const valida=inicial&&(inicial==='todas'||CATEGORIAS.includes(inicial))?inicial:'inicio';
+  history.replaceState({vista:valida},'',location.href);
+  setVista(valida,true);
   buildVideos(vids.videos);
   renderCart();
   startHero();
