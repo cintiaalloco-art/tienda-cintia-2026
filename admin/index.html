@@ -1,100 +1,24 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Panel - Obras hechas con Amor</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="4; url=/subir.html">
+<title>Panel — Obras hechas con Amor</title>
+<style>
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#FBF3F0;color:#3B2A2C;font-family:-apple-system,"Segoe UI",Roboto,sans-serif;padding:20px;text-align:center}
+  .box{background:#fff;border:1px solid #ECD9D9;border-radius:16px;padding:28px 22px;max-width:380px}
+  a{display:inline-block;margin-top:16px;background:#3B2A2C;color:#FBF3F0;text-decoration:none;padding:12px 22px;border-radius:30px;font-weight:600}
+  p{color:#7A5C5F;line-height:1.5}
+</style>
 </head>
 <body>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-
-  <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
-      });
-    }
-  </script>
-
-  <script>
-    // Traducciones de la interfaz.
-    // IMPORTANTE: sin MutationObserver. La version anterior recorria todo el DOM
-    // en cada mutacion, lo que congelaba el navegador al abrir el catalogo.
-    var TRADUCCIONES = {
-      'Ahorrar': 'Guardar',
-      'Save': 'Guardar',
-      'Delete entry': 'Eliminar catálogo',
-      'Delete published entry': 'Eliminar catálogo',
-      'Eliminar entrada': 'Eliminar catálogo',
-      'Eliminar entrada publicada': 'Eliminar catálogo',
-      'Published': 'Publicado',
-      'CHANGES SAVED': 'CAMBIOS GUARDADOS',
-      'Add gorras': 'Agregar gorras',
-      'Check for Preview': 'Comprobar vista previa',
-      'Comprobar la vista previa': 'Comprobar vista previa',
-      'Escritos en la colección de Gorras': 'En Catálogo de Gorras',
-      'Writing in Gorras collection': 'En Catálogo de Gorras',
-      'Contents': 'Contenido',
-      'Workflow': 'Flujo editorial',
-      'Media': 'Archivos',
-      'Editorial Workflow': 'Flujo editorial',
-      'New Post': 'Nueva gorra',
-      'Drafts': 'Borradores',
-      'In Review': 'En revisión',
-      'Ready': 'Listo',
-      'Quick add': 'Agregar rápido'
-    };
-
-    function aplicarTraducciones() {
-      try {
-        var caminar = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
-        var nodo;
-        while ((nodo = caminar.nextNode())) {
-          var limpio = nodo.nodeValue.trim();
-          if (limpio.length > 40) continue;
-          if (TRADUCCIONES.hasOwnProperty(limpio) && nodo.nodeValue !== TRADUCCIONES[limpio]) {
-            nodo.nodeValue = nodo.nodeValue.replace(limpio, TRADUCCIONES[limpio]);
-          }
-        }
-      } catch (e) {
-        console.warn('Traducciones:', e);
-      }
-    }
-
-    // Un solo recorrido cada 2.5 segundos, en tiempo ocioso del navegador.
-    function programarTraducciones() {
-      if (window.requestIdleCallback) {
-        window.requestIdleCallback(aplicarTraducciones, { timeout: 1000 });
-      } else {
-        aplicarTraducciones();
-      }
-    }
-    setInterval(programarTraducciones, 2500);
-  </script>
-
-  <script>
-    // Boton para volver al catalogo.
-    function crearBotonInicio() {
-      if (document.getElementById('boton-inicio-panel')) return;
-      var boton = document.createElement('a');
-      boton.id = 'boton-inicio-panel';
-      boton.href = '/admin/#/collections/productos/entries/catalogo';
-      boton.textContent = '← Volver al catálogo';
-      boton.style.cssText =
-        'position:fixed;top:70px;right:18px;z-index:9999;' +
-        'background:#3B2A2C;color:#FBF3F0;padding:12px 18px;' +
-        'border-radius:30px;font-family:sans-serif;font-size:14px;' +
-        'font-weight:bold;text-decoration:none;' +
-        'box-shadow:0 6px 16px rgba(0,0,0,0.3)';
-      document.body.appendChild(boton);
-    }
-    crearBotonInicio();
-    setInterval(crearBotonInicio, 3000);
-  </script>
+  <div class="box">
+    <h2>El panel se mudó 🧢</h2>
+    <p>Ahora todo se maneja desde un solo lugar: subir gorras, editar el catálogo, categorías y videos.</p>
+    <a href="/subir.html">Ir al panel nuevo</a>
+    <p style="font-size:.8rem;margin-top:14px">Te llevamos automáticamente en unos segundos…</p>
+  </div>
 </body>
 </html>
