@@ -12,8 +12,7 @@ Sitio estático de Cintia Alloco (gorras decoradas a mano). Repo: `cintiaalloco-
   - Subir: agrupa fotos de a 3, video opcional por modelo, publica en `productos.json`. Los nombres de archivo llevan número y marca de tiempo para no chocar nunca con fotos existentes.
   - Catálogo: buscar/filtrar, editar, marcar Vendida, ordenar gorras, ordenar/cambiar/agregar fotos, agregar/quitar videos. Los cambios se juntan y se publican con "Publicar cambios".
   - Categorías y Videos: cada cambio se guarda al instante en GitHub. Renombrar o borrar una categoría actualiza también las gorras en `productos.json`.
-- `admin/index.html`: el viejo Decap CMS fue retirado; la página solo redirige a `/subir.html`. `admin/config.yml` se borró. `data/gorras/` son restos del CMS: la tienda NO los lee.
-- `netlify/functions/`: OAuth del viejo CMS (sin uso).
+- `admin/index.html`: el viejo Decap CMS fue retirado; la página solo redirige a `/subir.html`. `admin/config.yml`, `data/gorras/` y `netlify/functions/` (restos del CMS) se borraron.
 
 ## Carrito
 - Se guarda en localStorage de la clienta (`oha_carrito`, lista de números). Cada gorra se agrega una vez (son únicas). "Enviar pedido" abre WhatsApp (543468598805) con la lista, el total, el nombre y un comentario. No hay pago online (Mercado Pago quedó como opción futura).
@@ -26,9 +25,9 @@ Sitio estático de Cintia Alloco (gorras decoradas a mano). Repo: `cintiaalloco-
 - Nunca escribir tokens ni claves en archivos del repo.
 - Pegar texto con tildes/ñ desde el editor móvil de GitHub puede corromper la codificación (Ã¡). Preferir `github.dev` desde PC, o commits desde Code.
 - En `subir.html`, el orden de fotos de un grupo sale de `g.photoIds` (no de `pool`); no cambiar eso.
-- La PR #11 (rama `cms/productos/catalogo`) es un borrador viejo del CMS con un catálogo de 33 gorras: NO mergear nunca.
+- La PR #11 (rama `cms/productos/catalogo`) era un borrador viejo del CMS con un catálogo de 33 gorras: se cerró sin mergear. No reabrirla.
 
 ## Pendiente
-- Cerrar la PR #11 y borrar las ramas `cms/...` viejas.
+- Borrar las ramas `cms/...` viejas (lo hace Cintia desde GitHub → Branches).
 - Opcional: pago con Mercado Pago sobre el carrito.
-- Opcional: borrar `data/gorras/` y `netlify/functions/` si se confirma que no se usan.
+- Único repo en uso: `tienda-cintia-2026`. `Tienda-Cintia` y `Tienda-Cintia-2` son viejos (borrarlos lo hace Cintia desde Settings de cada repo).
