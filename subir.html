@@ -3,699 +3,447 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Subir gorras — Obras hechas con Amor</title>
+<meta name="robots" content="noindex">
+<title>Panel de la tienda — Obras hechas con Amor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,600;1,6..96,500&family=Parisienne&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --rose: #b76e79;
-    --rose-dark: #8f4f5a;
-    --cream: #f7ece6;
-    --mauve: #5c4033;
-    --bg: #fdf6f3;
-    --ok: #4a7c59;
-    --err: #b03a2e;
+    --cream:#FBF3F0; --ink:#3B2A2C; --ink-soft:#7A5C5F; --rose:#C98A95; --deep:#A85D6B; --line:#ECD9D9;
+    --soft:#F5EAE8; --ok:#4a7c59; --err:#b03a2e;
   }
   * { box-sizing: border-box; }
-  body {
-    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--mauve);
-    margin: 0;
-    padding: 16px;
-    padding-bottom: 100px;
+  body { font-family:'Jost',-apple-system,"Segoe UI",Roboto,sans-serif; background:var(--cream); color:var(--ink); margin:0; padding:0 0 110px; -webkit-font-smoothing:antialiased; }
+  .top { padding:18px 16px 10px; max-width:860px; margin:0 auto; }
+  .brand { font-family:'Parisienne',cursive; font-size:1.7rem; line-height:1; }
+  h1 { font-family:'Bodoni Moda',serif; font-style:italic; font-weight:500; font-size:1.5rem; margin:4px 0 2px; }
+  .subtitle { color:var(--ink-soft); font-size:.88rem; }
+  .top-links { margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; }
+  .pill-link { display:inline-block; background:#fff; border:1px solid var(--line); color:var(--deep); padding:7px 14px; border-radius:20px; font-size:.82rem; font-weight:600; text-decoration:none; }
+  .tabs { position:sticky; top:0; z-index:40; background:rgba(251,243,240,.95); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); }
+  .tabs-inner { display:flex; gap:6px; overflow-x:auto; padding:10px 16px; max-width:860px; margin:0 auto; scrollbar-width:none; }
+  .tabs-inner::-webkit-scrollbar { display:none; }
+  .tab { flex-shrink:0; border:1px solid var(--rose); background:transparent; color:var(--ink); padding:8px 14px; border-radius:30px; font-size:.85rem; font-weight:600; cursor:pointer; font-family:inherit; }
+  .tab.active { background:var(--ink); color:var(--cream); border-color:var(--ink); }
+  .tab .n { opacity:.65; font-weight:500; margin-left:3px; }
+  main { max-width:860px; margin:0 auto; padding:14px 16px; }
+  .panel { display:none; }
+  .panel.active { display:block; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:16px; padding:16px; margin-bottom:14px; box-shadow:0 6px 18px -14px rgba(59,42,44,.35); }
+  .card h2 { font-family:'Bodoni Moda',serif; font-weight:600; font-size:1.1rem; margin:0 0 10px; color:var(--ink); }
+  label { display:block; font-size:.8rem; font-weight:600; margin:10px 0 4px; color:var(--ink-soft); }
+  input[type=text], input[type=password], input[type=search], select, textarea {
+    width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--line); font-size:16px; background:var(--cream); color:var(--ink); font-family:inherit;
   }
-  h1 {
-    font-size: 1.4rem;
-    color: var(--rose-dark);
-    margin: 0 0 4px;
-  }
-  .subtitle { color: #9c8478; font-size: 0.9rem; margin-bottom: 14px; }
-  .admin-link {
-    display: inline-block; background: var(--cream); color: var(--rose-dark);
-    padding: 8px 14px; border-radius: 10px; font-size: 0.85rem; font-weight: 700;
-    text-decoration: none; margin-bottom: 16px;
-  }
-  .card {
-    background: white;
-    border-radius: 14px;
-    padding: 16px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(183,110,121,0.12);
-  }
-  .card h2 {
-    font-size: 1rem;
-    margin: 0 0 12px;
-    color: var(--rose-dark);
-  }
-  label {
-    display: block;
-    font-size: 0.82rem;
-    font-weight: 600;
-    margin-bottom: 4px;
-    margin-top: 10px;
-    color: var(--mauve);
-  }
-  input[type=text], input[type=password], input[type=number], select, textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #e4cfc6;
-    font-size: 0.95rem;
-    background: #fffaf8;
-  }
-  textarea { min-height: 60px; resize: vertical; }
-  button {
-    font-family: inherit;
-    border: none;
-    border-radius: 10px;
-    padding: 12px 18px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .btn-primary { background: var(--rose); color: white; }
-  .btn-primary:disabled { background: #ddb9bf; cursor: not-allowed; }
-  .btn-secondary { background: var(--cream); color: var(--rose-dark); }
-  .btn-small { padding: 6px 10px; font-size: 0.8rem; border-radius: 8px; }
-  .btn-danger { background: #fbeceb; color: var(--err); }
-  .thumbs {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 8px;
-    margin: 12px 0;
-  }
-  .thumb {
-    position: relative;
-    border-radius: 8px;
-    overflow: hidden;
-    aspect-ratio: 1;
-    border: 3px solid transparent;
-    cursor: pointer;
-  }
-  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .thumb.selected { border-color: var(--rose); }
-  .thumb .check {
-    position: absolute; top: 4px; right: 4px;
-    width: 20px; height: 20px; border-radius: 50%;
-    background: rgba(255,255,255,0.85);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; color: var(--rose);
-  }
-  .thumb .removeBtn {
-    position: absolute; top: 4px; left: 4px;
-    width: 20px; height: 20px; border-radius: 50%;
-    background: rgba(176,58,46,0.85);
-    color: white;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: bold;
-    cursor: pointer;
-  }
-  .group {
-    border: 1px solid #f0dcd4;
-    border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 14px;
-    background: #fffdfc;
-  }
-  .group-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 8px;
-  }
-  .group-header span { font-weight: 700; color: var(--rose-dark); font-size: 0.9rem; }
-  .group .thumbs { grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); }
-  .moveSelect {
-    width: 100%;
-    font-size: 0.68rem;
-    padding: 3px 2px;
-    margin-top: 3px;
-    border-radius: 5px;
-    border: 1px solid #e4cfc6;
-    background: #fffaf8;
-    color: var(--rose-dark);
-  }
-  .photoItem { position: relative; }
-  .thumb { cursor: pointer; touch-action: manipulation; }
-  .thumb.swapSelected { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(183,110,121,0.4); }
-  .dragTag {
-    position: absolute; bottom: 4px; left: 4px;
-    background: rgba(0,0,0,0.6); color: #fff;
-    font-size: 0.62rem; padding: 1px 6px; border-radius: 8px;
-  }
-  .reorderRow { display: flex; gap: 3px; margin-top: 3px; }
-  .arrowBtn {
-    flex: 1; padding: 10px 0; font-size: 0.9rem; font-weight: 700;
-    border-radius: 5px; border: 1px solid #e4cfc6;
-    background: #fffaf8; color: var(--rose-dark);
-    touch-action: manipulation;
-    min-height: 38px;
-  }
-  .arrowBtn:disabled { opacity: 0.25; }
-  .thumb.dropTarget { outline: 3px dashed var(--rose); outline-offset: 2px; }
-  .dragHandle { cursor: grab; user-select: none; -webkit-user-select: none; -webkit-user-drag: none; -webkit-touch-callout: none; touch-action: none; }
-  .dragHandle img { -webkit-user-drag: none; user-drag: none; pointer-events: none; -webkit-touch-callout: none; }
-  .dragHandle.dragging { opacity: 0.4; transform: scale(0.95); }
-  @media (max-width: 420px) {
-    body { padding: 10px; padding-bottom: 90px; }
-    h1 { font-size: 1.2rem; }
-    .card { padding: 12px; border-radius: 12px; }
-    .thumbs { grid-template-columns: repeat(auto-fill, minmax(68px, 1fr)); gap: 6px; }
-    button { padding: 10px 14px; font-size: 0.88rem; }
-    input[type=text], input[type=password], select, textarea { font-size: 16px; }
-  }
-  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .status-line {
-    font-size: 0.82rem;
-    padding: 4px 0;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .status-line.ok { color: var(--ok); }
-  .status-line.err { color: var(--err); }
-  .status-line.pending { color: #9c8478; }
-  .hint { font-size: 0.78rem; color: #a7897d; margin-top: 4px; }
-  .footer-bar {
-    position: fixed; bottom: 0; left: 0; right: 0;
-    background: white;
-    padding: 12px 16px;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
-    display: flex; gap: 10px; align-items: center;
-  }
-  .footer-bar .count { font-size: 0.85rem; color: #9c8478; flex: 1; }
-  .badge {
-    display: inline-block;
-    background: var(--cream);
-    color: var(--rose-dark);
-    border-radius: 6px;
-    padding: 3px 8px;
-    font-size: 0.75rem;
-    margin: 2px 4px 2px 0;
-  }
-  #logBox {
-    max-height: 220px;
-    overflow-y: auto;
-    background: #fff8f6;
-    border-radius: 8px;
-    padding: 10px;
-    margin-top: 10px;
-  }
-  .toggle-config {
-    background: none; border: none; color: var(--rose-dark);
-    font-size: 0.82rem; text-decoration: underline; padding: 0;
-  }
-  .catItem {
-    display: flex; gap: 10px; align-items: center;
-    border: 1px solid #f0dcd4; border-radius: 10px;
-    padding: 8px; margin-bottom: 8px; background: #fffdfc;
-  }
-  .catItem img {
-    width: 56px; height: 56px; object-fit: cover; border-radius: 8px; flex-shrink: 0;
-  }
-  .catItem .catInfo { flex: 1; min-width: 0; }
-  .catItem .catInfo .nm { font-weight: 700; font-size: 0.88rem; color: var(--rose-dark); }
-  .catItem .catInfo .meta { font-size: 0.76rem; color: #9c8478; }
-  .catEditForm { margin-top: 10px; }
-  .catActions { display: flex; gap: 6px; flex-shrink: 0; }
-  .deleted-row { opacity: 0.4; text-decoration: line-through; }
-  .photoAddTile {
-    width: 100%; height: 100%; min-height: 70px; border: 2px dashed #e4cfc6;
-    background: #fffaf8; color: var(--rose-dark); border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.75rem; text-align: center; padding: 4px;
+  input:focus, select:focus, textarea:focus { outline:2px solid var(--rose); outline-offset:0; }
+  textarea { min-height:60px; resize:vertical; }
+  button { font-family:inherit; border:none; border-radius:30px; padding:11px 18px; font-size:.92rem; font-weight:600; cursor:pointer; touch-action:manipulation; }
+  .btn-primary { background:var(--ink); color:var(--cream); }
+  .btn-primary:disabled { background:#cdbfbf; cursor:not-allowed; }
+  .btn-secondary { background:var(--soft); color:var(--deep); }
+  .btn-small { padding:7px 12px; font-size:.8rem; }
+  .btn-danger { background:#fbeceb; color:var(--err); }
+  .btn-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+  .hint { font-size:.8rem; color:var(--ink-soft); margin-top:6px; line-height:1.45; }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .badge { display:inline-block; background:var(--soft); color:var(--deep); border-radius:20px; padding:2px 9px; font-size:.72rem; font-weight:600; margin:2px 4px 2px 0; }
+  .badge.sold { background:var(--deep); color:#fff; }
+  .badge.vid { background:var(--ink); color:#fff; }
+  .msg { font-size:.85rem; margin-top:8px; }
+  .msg.ok { color:var(--ok); } .msg.err { color:var(--err); } .msg.pending { color:var(--ink-soft); }
+
+  /* Fotos */
+  .thumbs { display:grid; grid-template-columns:repeat(auto-fill, minmax(84px, 1fr)); gap:8px; margin:12px 0; }
+  .thumb { position:relative; border-radius:10px; overflow:hidden; aspect-ratio:1; border:3px solid transparent; cursor:pointer; touch-action:manipulation; background:var(--soft); }
+  .thumb img, .thumb video { width:100%; height:100%; object-fit:cover; display:block; }
+  .thumb.selected, .thumb.swapSelected { border-color:var(--rose); box-shadow:0 0 0 3px rgba(201,138,149,.35); }
+  .thumb .check { position:absolute; top:4px; right:4px; width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,.9); display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--deep); font-weight:700; }
+  .thumb .removeBtn { position:absolute; top:4px; left:4px; width:22px; height:22px; border-radius:50%; background:rgba(176,58,46,.88); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:bold; cursor:pointer; }
+  .thumb .coverTag { position:absolute; bottom:4px; right:4px; background:var(--rose); color:#fff; font-size:.6rem; font-weight:700; padding:1px 6px; border-radius:8px; }
+  .dragTag { position:absolute; bottom:4px; left:4px; background:rgba(0,0,0,.6); color:#fff; font-size:.62rem; padding:1px 6px; border-radius:8px; }
+  .photoItem { position:relative; }
+  .miniRow { display:flex; gap:3px; margin-top:3px; }
+  .miniBtn { flex:1; padding:7px 0; font-size:.72rem; border-radius:7px; border:1px solid var(--line); background:var(--cream); color:var(--deep); font-weight:700; min-height:32px; text-align:center; text-decoration:none; display:flex; align-items:center; justify-content:center; }
+  .miniBtn:disabled { opacity:.3; }
+  .moveSelect { width:100%; font-size:.7rem; padding:4px 2px; margin-top:3px; border-radius:7px; }
+  .addTile { width:100%; aspect-ratio:1; border:2px dashed var(--rose); background:var(--cream); color:var(--deep); border-radius:10px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:.75rem; font-weight:600; text-align:center; padding:4px; }
+  .thumb.dropTarget { outline:3px dashed var(--rose); outline-offset:2px; }
+  .dragHandle { cursor:grab; user-select:none; -webkit-user-select:none; -webkit-user-drag:none; -webkit-touch-callout:none; touch-action:none; }
+  .dragHandle img { -webkit-user-drag:none; pointer-events:none; -webkit-touch-callout:none; }
+  .dragHandle.dragging { opacity:.4; transform:scale(.95); }
+  .dropzone { border:2px dashed var(--rose); border-radius:14px; padding:22px 12px; text-align:center; background:var(--cream); cursor:pointer; display:block; }
+  .dropzone b { font-family:'Bodoni Moda',serif; font-size:1.05rem; display:block; margin-bottom:4px; }
+  .dropzone input { display:none; }
+
+  /* Grupos */
+  .group { border:1px solid var(--line); border-radius:14px; padding:14px; margin-bottom:14px; background:#fffdfc; }
+  .group.incomplete { border-color:#e8b9a8; }
+  .group-header { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:6px; }
+  .group-header span { font-weight:700; font-size:.95rem; }
+  .group .thumbs { grid-template-columns:repeat(auto-fill, minmax(70px, 1fr)); }
+  .videoChip { display:flex; align-items:center; gap:8px; background:var(--soft); border-radius:10px; padding:6px 10px; margin-top:6px; font-size:.82rem; }
+  .videoChip span { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+  /* Catálogo */
+  .catTools { display:grid; grid-template-columns:1fr 140px; gap:8px; margin-bottom:10px; }
+  .catItem { display:flex; gap:10px; align-items:center; border:1px solid var(--line); border-radius:12px; padding:8px; margin-bottom:8px; background:#fffdfc; }
+  .catItem.isSold { background:#faf4f3; }
+  .catItem.isSold img { filter:grayscale(.6); }
+  .catItem img { width:58px; height:58px; object-fit:cover; border-radius:9px; flex-shrink:0; background:var(--soft); }
+  .catInfo { flex:1; min-width:0; }
+  .catInfo .nm { font-weight:600; font-size:.92rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .catInfo .meta { font-size:.78rem; color:var(--ink-soft); }
+  .catActions { display:flex; flex-direction:column; gap:4px; flex-shrink:0; }
+  .editBox { border:2px solid var(--rose); border-radius:14px; padding:12px; margin-bottom:10px; background:#fff; }
+  .editHead { display:flex; gap:10px; align-items:center; margin-bottom:6px; }
+  .editHead img { width:52px; height:52px; border-radius:9px; object-fit:cover; }
+  .switch { display:flex; align-items:center; gap:10px; margin-top:12px; padding:10px 12px; background:var(--soft); border-radius:10px; font-weight:600; font-size:.9rem; cursor:pointer; }
+  .switch input { width:20px; height:20px; accent-color:var(--deep); }
+  .stickyBar { position:fixed; left:0; right:0; bottom:0; z-index:50; background:#fff; padding:12px 16px calc(12px + env(safe-area-inset-bottom)); box-shadow:0 -6px 18px -8px rgba(0,0,0,.18); display:none; }
+  .stickyBar.show { display:block; }
+  .stickyInner { max-width:860px; margin:0 auto; display:flex; gap:10px; align-items:center; }
+  .stickyInner .count { flex:1; font-size:.85rem; color:var(--ink-soft); line-height:1.3; }
+
+  /* Listas ordenables (categorías / videos) */
+  .listRow { display:flex; align-items:center; gap:8px; border:1px solid var(--line); border-radius:12px; padding:8px 10px; margin-bottom:8px; background:#fffdfc; }
+  .listRow .grow { flex:1; min-width:0; }
+  .listRow .grow b { display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .listRow .grow small { color:var(--ink-soft); }
+  .iconBtn { width:36px; height:36px; padding:0; border-radius:50%; background:var(--soft); color:var(--deep); font-size:.95rem; flex-shrink:0; }
+  .iconBtn:disabled { opacity:.3; }
+  .iconBtn.del { background:#fbeceb; color:var(--err); }
+
+  #logBox { max-height:240px; overflow-y:auto; background:var(--cream); border-radius:10px; padding:10px; }
+  .status-line { font-size:.84rem; padding:3px 0; }
+  .status-line.ok { color:var(--ok); } .status-line.err { color:var(--err); } .status-line.pending { color:var(--ink-soft); }
+  .demoBanner { background:#fff4e6; border:1px solid #f0c98a; border-radius:12px; padding:10px 12px; font-size:.85rem; margin-bottom:12px; display:none; }
+  .empty { text-align:center; color:var(--ink-soft); padding:20px 10px; font-size:.9rem; }
+  .toast { position:fixed; left:50%; bottom:90px; transform:translate(-50%,20px); background:var(--ink); color:var(--cream); padding:10px 18px; border-radius:30px; font-size:.88rem; z-index:100; opacity:0; pointer-events:none; transition:all .25s; max-width:90vw; text-align:center; }
+  .toast.show { opacity:1; transform:translate(-50%,0); }
+  .toast.err { background:var(--err); }
+  @media (max-width:420px) {
+    .top { padding:14px 12px 6px; }
+    main { padding:12px 10px; }
+    .card { padding:13px; }
+    .thumbs { grid-template-columns:repeat(auto-fill, minmax(72px, 1fr)); gap:6px; }
+    .catTools { grid-template-columns:1fr 110px; }
   }
 </style>
 </head>
 <body>
 
-<h1>🧢 Subir gorras nuevas</h1>
-<div class="subtitle">Obras hechas con Amor — carga directa al catálogo</div>
-<a class="admin-link" href="/admin/" target="_blank">🛠️ Ir al administrador completo</a>
-<div id="debugPanel" style="display:none; background:#fff4e6; border:1px solid #f0c98a; border-radius:10px; padding:10px; margin-bottom:12px; font-size:0.78rem;"></div>
-
-<div class="card" id="configCard">
-  <h2>⚙️ Configuración (una sola vez)</h2>
-  <label>Token de GitHub</label>
-  <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-  <div class="hint">
-    Se guarda solo en este navegador. Para generarlo: GitHub → foto de perfil → Settings →
-    Developer settings → Personal access tokens → Tokens (classic) → Generate new token →
-    marcá el permiso <b>repo</b> → Generate. Copiá el código que empieza con "ghp_" y pegalo acá.
-  </div>
-  <label>Usuario/organización de GitHub</label>
-  <input type="text" id="ghOwner" placeholder="cintiaalloco-art">
-  <label>Nombre del repositorio</label>
-  <input type="text" id="ghRepo" placeholder="tienda-cintia-2026">
-  <button class="btn-primary" style="margin-top:14px" onclick="saveConfig()">Guardar configuración</button>
-  <button class="btn-secondary" style="margin-top:14px" onclick="testConnection()">Verificar conexión</button>
-  <button class="btn-secondary" style="margin-top:14px" onclick="startDemo()">Probar el funcionamiento (modo demo, sin conectar)</button>
-  <div id="configStatus" class="hint"></div>
-  <div id="testResult" class="hint"></div>
-</div>
-<div class="card" id="demoBanner" style="display:none; background:#fff4e6; border:1px solid #f0c98a;">
-  <b>🧪 Modo demo</b> — estás probando cómo funciona, sin conectar a GitHub todavía. Al tocar "Publicar" se simula el resultado, no se sube nada de verdad.
-</div>
-
-<div class="card" id="categoriasCard" style="display:none">
-  <h2>🏷️ Categorías</h2>
-  <div class="hint" style="margin-bottom:8px;">Estas categorías aparecen en los desplegables de "Categoría" de abajo. Las que agregues acá quedan guardadas en este dispositivo/navegador.</div>
-  <div id="categoriasList" style="margin-bottom:10px;"></div>
-  <div style="display:flex; gap:8px;">
-    <input type="text" id="newCategoriaInput" placeholder="Nueva categoría, ej: Verano">
-    <button class="btn-primary btn-small" onclick="addCategoria()">Agregar</button>
+<div class="top">
+  <div class="brand">Obras hechas con Amor</div>
+  <h1>Panel de la tienda</h1>
+  <div class="subtitle">Subí gorras, editá el catálogo, las categorías y los videos.</div>
+  <div class="top-links">
+    <a class="pill-link" href="/" target="_blank">👀 Ver la tienda</a>
   </div>
 </div>
 
-<div class="card" id="uploadCard" style="display:none">
-  <h2>1️⃣ Elegí las fotos de esta tanda</h2>
-  <input type="file" id="fileInput" accept="image/*" multiple onchange="handleFiles(event)">
-  <div class="hint">Podés elegir todas las fotos de una vez, aunque sean de varios modelos distintos.</div>
-  <div class="thumbs" id="pool"></div>
-  <div id="poolActions" style="display:none; margin-top:10px;">
-    <button class="btn-primary btn-small" onclick="createGroupFromSelection()">Agrupar seleccionadas en un modelo</button>
-    <span class="hint" id="selCount"></span>
-  </div>
-</div>
+<nav class="tabs"><div class="tabs-inner" id="tabs">
+  <button class="tab active" data-tab="subir">🧢 Subir</button>
+  <button class="tab" data-tab="catalogo">📋 Catálogo <span class="n" id="nCatalogo"></span></button>
+  <button class="tab" data-tab="categorias">🏷️ Categorías <span class="n" id="nCategorias"></span></button>
+  <button class="tab" data-tab="videos">🎬 Videos <span class="n" id="nVideos"></span></button>
+  <button class="tab" data-tab="config">⚙️ Configuración</button>
+</div></nav>
 
-<div class="card" id="groupsCard" style="display:none">
-  <h2>2️⃣ Completá los datos de cada modelo</h2>
-  <div id="groupsContainer"></div>
-</div>
+<main>
+<div class="demoBanner" id="demoBanner"><b>🧪 Modo demo</b> — estás probando sin conectar a GitHub. Podés tocar todo: nada se guarda de verdad. <a href="#" onclick="salirDemo();return false;">Salir del modo demo</a></div>
 
-<div class="card" id="logCard" style="display:none">
-  <h2>📋 Progreso</h2>
-  <div id="logBox"></div>
-</div>
-
-<div class="card" id="catalogCard" style="display:none">
-  <div class="group-header" style="margin-bottom:12px; flex-wrap:wrap; gap:8px;">
-    <h2 style="margin:0">3️⃣ Catálogo actual</h2>
-    <div style="display:flex; gap:6px; flex-wrap:wrap;">
-      <button class="btn-secondary btn-small" onclick="renombrarNinoANinas()">🔄 "Niño" → "Niñas"</button>
-      <button class="btn-secondary btn-small" onclick="loadCatalog()">↻ Cargar / Actualizar</button>
+<!-- ===================== SUBIR ===================== -->
+<section class="panel active" id="panel-subir">
+  <div class="card">
+    <h2>1. Elegí las fotos de esta tanda</h2>
+    <label class="dropzone">
+      <b>📷 Tocá para elegir fotos</b>
+      <span class="hint">Podés elegir muchas de una vez, aunque sean de varios modelos. Se agrupan solas de a 3.</span>
+      <input type="file" id="fileInput" accept="image/*" multiple onchange="handleFiles(event)">
+    </label>
+    <div class="thumbs" id="pool"></div>
+    <div id="poolActions" style="display:none;">
+      <div class="hint" id="selCount" style="margin-bottom:8px;"></div>
+      <button class="btn-primary btn-small" onclick="createGroupFromSelection()">Agrupar seleccionadas en un modelo</button>
     </div>
   </div>
-  <div id="catalogStatus" class="hint"></div>
-  <div id="catalogList"></div>
-  <div id="catalogPublishBar" style="display:none; margin-top:14px; padding-top:14px; border-top:1px solid #f0dcd4;">
-    <button class="btn-primary" id="catalogPublishBtn" onclick="publishCatalogChanges()">Publicar cambios en el catálogo</button>
-    <span class="hint" id="catalogDirtyCount"></span>
-  </div>
-</div>
 
-<div class="footer-bar" id="footerBar" style="display:none">
-  <div class="count" id="footerCount">0 fotos sin agrupar</div>
-  <button class="btn-primary" id="publishBtn" onclick="publishAll()" disabled>Publicar catálogo</button>
-</div>
+  <div class="card" id="groupsCard" style="display:none">
+    <div class="group-header" style="margin-bottom:4px;">
+      <h2 style="margin:0">2. Completá cada modelo</h2>
+    </div>
+    <div class="hint" id="groupsHint">Para cambiar el orden de las fotos: tocá una foto y después otra (se intercambian), o arrastrala. La foto 1 es la portada.</div>
+    <div class="btn-row" id="applyAllRow" style="display:none; margin-bottom:10px;">
+      <button class="btn-secondary btn-small" onclick="applyToAll()">📋 Copiar categoría y precio del Modelo 1 a todos</button>
+    </div>
+    <div id="groupsContainer" style="margin-top:10px;"></div>
+  </div>
+
+  <div class="card" id="logCard" style="display:none">
+    <h2>Progreso</h2>
+    <div id="logBox"></div>
+  </div>
+</section>
+
+<!-- ===================== CATÁLOGO ===================== -->
+<section class="panel" id="panel-catalogo">
+  <div class="card">
+    <div class="group-header">
+      <h2 style="margin:0">Catálogo actual</h2>
+      <button class="btn-secondary btn-small" onclick="reloadAll()">↻ Actualizar</button>
+    </div>
+    <div class="hint">El orden de esta lista es el orden en la tienda. Tocá <b>Editar</b> para cambiar fotos, videos, datos o marcarla como vendida.</div>
+    <div class="catTools" style="margin-top:12px;">
+      <input type="search" id="catSearch" placeholder="🔍 Buscar por nombre o número" oninput="renderCatalogList()">
+      <select id="catFilter" onchange="renderCatalogList()"></select>
+    </div>
+    <div id="catalogStatus" class="msg"></div>
+    <div id="catalogList"></div>
+  </div>
+</section>
+
+<!-- ===================== CATEGORÍAS ===================== -->
+<section class="panel" id="panel-categorias">
+  <div class="card">
+    <h2>Categorías</h2>
+    <div class="hint">Cada categoría es un botón en la tienda, en este mismo orden (solo se muestran las que tienen gorras). Los cambios se guardan en GitHub apenas los hacés y se ven en todos tus dispositivos.</div>
+    <div id="categoriasList" style="margin-top:12px;"></div>
+    <label>Agregar categoría</label>
+    <div style="display:flex; gap:8px;">
+      <input type="text" id="newCategoriaInput" placeholder="Ej: Verano" onkeydown="if(event.key==='Enter')addCategoria()">
+      <button class="btn-primary" onclick="addCategoria()">Agregar</button>
+    </div>
+    <div id="catMsg" class="msg"></div>
+  </div>
+</section>
+
+<!-- ===================== VIDEOS ===================== -->
+<section class="panel" id="panel-videos">
+  <div class="card">
+    <h2>Videos de la tienda</h2>
+    <div class="hint">Aparecen en la sección "Videos" de la página. Para el video de <b>una gorra</b> en particular, usá "Editar" en el Catálogo (o "Agregar video" al subirla).</div>
+    <div id="videosList" style="margin-top:12px;"></div>
+  </div>
+  <div class="card">
+    <h2>Agregar video</h2>
+    <label>Título (opcional)</label>
+    <input type="text" id="vTitulo" placeholder="Ej: Así decoro una Airbag">
+    <label>Opción A — Pegá un link de YouTube, Instagram o TikTok</label>
+    <input type="text" id="vUrl" placeholder="https://www.youtube.com/shorts/...">
+    <button class="btn-primary" style="margin-top:10px;" onclick="addVideoLink()">Agregar link</button>
+    <label style="margin-top:18px;">Opción B — Subí un video corto desde el celular</label>
+    <button class="btn-secondary" onclick="pickVideo(f=>addVideoFile(f))">🎬 Elegir video</button>
+    <div class="hint">Máximo 40 MB (unos 20 a 30 segundos). Videos más largos: subilos a YouTube o Instagram y pegá el link. En iPhone conviene: Configuración → Cámara → Formatos → <b>Más compatible</b>, así se ven en todos los celulares.</div>
+    <div id="videoMsg" class="msg"></div>
+  </div>
+</section>
+
+<!-- ===================== CONFIGURACIÓN ===================== -->
+<section class="panel" id="panel-config">
+  <div class="card">
+    <h2>⚙️ Configuración (una sola vez por dispositivo)</h2>
+    <label>Token de GitHub</label>
+    <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+    <div class="hint">
+      Se guarda solo en este navegador. Para generarlo: GitHub → foto de perfil → Settings →
+      Developer settings → Personal access tokens → Tokens (classic) → Generate new token →
+      marcá el permiso <b>repo</b> → Generate. Copiá el código que empieza con "ghp_" y pegalo acá.
+    </div>
+    <label>Usuario de GitHub</label>
+    <input type="text" id="ghOwner" placeholder="cintiaalloco-art">
+    <label>Nombre del repositorio</label>
+    <input type="text" id="ghRepo" placeholder="tienda-cintia-2026">
+    <div class="btn-row">
+      <button class="btn-primary" onclick="saveConfig()">Guardar y conectar</button>
+      <button class="btn-secondary" onclick="testConnection()">Verificar conexión</button>
+      <button class="btn-secondary" onclick="startDemo()">Probar en modo demo</button>
+    </div>
+    <div id="configStatus" class="msg"></div>
+    <div id="testResult" class="msg"></div>
+  </div>
+</section>
+</main>
+
+<div class="stickyBar" id="footerBar"><div class="stickyInner">
+  <div class="count" id="footerCount"></div>
+  <button class="btn-primary" id="publishBtn" onclick="publishAll()" disabled>Publicar</button>
+</div></div>
+<div class="stickyBar" id="catalogPublishBar"><div class="stickyInner">
+  <div class="count">Hay cambios en el catálogo sin publicar</div>
+  <button class="btn-secondary btn-small" onclick="discardCatalogChanges()">Descartar</button>
+  <button class="btn-primary" id="catalogPublishBtn" onclick="publishCatalogChanges()">Publicar cambios</button>
+</div></div>
+<div class="toast" id="toast"></div>
 
 <script>
-const CATEGORIAS = ["Airbag", "Fuxion", "Niñas", "Otras"];
-let customCategorias = [];
-try { customCategorias = JSON.parse(localStorage.getItem('custom_categorias') || '[]'); } catch (e) { customCategorias = []; }
-
-function getAllCategorias() { return CATEGORIAS.concat(customCategorias); }
-
-function saveCustomCategorias() {
-  localStorage.setItem('custom_categorias', JSON.stringify(customCategorias));
-}
-
-function addCategoria() {
-  const input = document.getElementById('newCategoriaInput');
-  const val = input.value.trim();
-  if (!val) return;
-  const exists = getAllCategorias().some(c => c.toLowerCase() === val.toLowerCase());
-  if (exists) { alert('Esa categoría ya existe.'); return; }
-  customCategorias.push(val);
-  saveCustomCategorias();
-  input.value = '';
-  renderCategoriasList();
-  renderGroups();
-  renderCatalogList();
-}
-
-function removeCategoria(cat) {
-  if (!confirm(`¿Quitar la categoría "${cat}" de la lista? (Los productos que ya la tengan asignada no cambian)`)) return;
-  customCategorias = customCategorias.filter(c => c !== cat);
-  saveCustomCategorias();
-  renderCategoriasList();
-  renderGroups();
-  renderCatalogList();
-}
-
-function renderCategoriasList() {
-  const el = document.getElementById('categoriasList');
-  if (!el) return;
-  el.innerHTML =
-    CATEGORIAS.map(c => `<span class="badge">${c}</span>`).join('') +
-    customCategorias.map(c => `<span class="badge">${c} <span style="cursor:pointer;color:var(--err);font-weight:bold;" onclick="removeCategoria('${c.replace(/'/g, "\\'")}')">✕</span></span>`).join('');
-}
-
-let pool = [];
-let groups = [];
-let nextId = 1;
-let nextGroupId = 1;
-let demoMode = false;
-
-function startDemo() {
-  demoMode = true;
-  document.getElementById('demoBanner').style.display = 'block';
-  document.getElementById('uploadCard').style.display = 'block';
-  document.getElementById('footerBar').style.display = 'flex';
-  document.getElementById('catalogCard').style.display = 'block';
-  document.getElementById('categoriasCard').style.display = 'block';
-  document.getElementById('configCard').style.display = 'none';
-  renderCategoriasList();
-  window.scrollTo({ top: document.getElementById('uploadCard').offsetTop - 10, behavior: 'smooth' });
-}
-
-function loadConfig() {
-  const t = localStorage.getItem('gh_token');
-  const o = localStorage.getItem('gh_owner');
-  const r = localStorage.getItem('gh_repo');
-  if (t) document.getElementById('ghToken').value = t;
-  if (o) document.getElementById('ghOwner').value = o;
-  if (r) document.getElementById('ghRepo').value = r;
-  if (t && o && r) {
-    document.getElementById('uploadCard').style.display = 'block';
-    document.getElementById('footerBar').style.display = 'flex';
-    document.getElementById('catalogCard').style.display = 'block';
-    document.getElementById('categoriasCard').style.display = 'block';
-    document.getElementById('configStatus').textContent = '✓ Configuración guardada.';
-    renderCategoriasList();
-  }
-}
-function saveConfig() {
-  // Saca CUALQUIER espacio o salto de línea, no solo al principio/final —
-  // por si al copiar en el celular se coló algo invisible en el medio
-  const t = document.getElementById('ghToken').value.replace(/\s+/g, '');
-  const o = document.getElementById('ghOwner').value.trim();
-  const r = document.getElementById('ghRepo').value.trim();
-  if (!t || !o || !r) {
-    document.getElementById('configStatus').textContent = 'Completá los 3 campos.';
-    return;
-  }
-  document.getElementById('ghToken').value = t; // reflejar el token ya limpio en el campo
-  localStorage.setItem('gh_token', t);
-  localStorage.setItem('gh_owner', o);
-  localStorage.setItem('gh_repo', r);
-
-  let formatWarning = '';
-  if (!t.startsWith('ghp_') && !t.startsWith('github_pat_')) {
-    formatWarning = '<br>⚠️ Este token no empieza con "ghp_" ni "github_pat_" — revisá que sea el código correcto.';
-  } else if (t.startsWith('ghp_') && t.length !== 40) {
-    formatWarning = `<br>⚠️ Un token "ghp_" clásico suele tener 40 caracteres exactos; el tuyo tiene ${t.length}. Puede faltar o sobrar algo al copiarlo.`;
-  }
-
-  const preview = t.length > 12 ? t.slice(0, 8) + '...' + t.slice(-4) : '(muy corto, revisalo)';
-  document.getElementById('configStatus').innerHTML =
-    `✓ Guardado. Token: <b>${preview}</b> (${t.length} caracteres) — comparalo con el que copiaste de GitHub.${formatWarning}`;
-  document.getElementById('uploadCard').style.display = 'block';
-  document.getElementById('footerBar').style.display = 'flex';
-  document.getElementById('categoriasCard').style.display = 'block';
-  renderCategoriasList();
-}
-
-let catalogData = [];
+// ======================================================================
+//  Estado
+// ======================================================================
+const CATEGORIAS_INICIALES = ["Airbag", "Fuxion", "Bugué", "Grace", "Niñas", "Otras"];
+const MAX_VIDEO_MB = 40;
+let categorias = [];          // nombres, en orden (data/categorias.json)
+let categoriasSha = null;
+let catalogData = [];         // data/productos.json -> productos
 let catalogSha = null;
 let catalogDirty = false;
+let catalogBackup = null;     // copia para "Descartar"
+let videosData = [];          // data/videos.json -> videos
+let videosSha = null;
 let expandedIndex = null;
+let pool = [];
+let groups = [];
+let nextId = 1, nextGroupId = 1;
+let demoMode = false;
+let lastCategoria = localStorage.getItem('ultima_categoria') || 'Airbag';
+const cacheBust = {};         // rutas de fotos reemplazadas en esta sesión
 
+// ======================================================================
+//  Utilidades
+// ======================================================================
+function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function jsArg(s) { return esc(JSON.stringify(String(s))); }
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+function toast(msg, isErr) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show' + (isErr ? ' err' : '');
+  clearTimeout(t._h); t._h = setTimeout(() => t.className = 'toast', isErr ? 4000 : 2200);
+}
+function setMsg(id, text, cls) { const el = document.getElementById(id); if (!el) return; el.textContent = text; el.className = 'msg ' + (cls || ''); }
+function slugify(s) {
+  return String(s || '').toLowerCase()
+    .replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i')
+    .replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n').replace(/[º°]/g,'')
+    .replace(/[^a-z0-9]+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
+}
+// "$33000", "33.000", "33000" -> "$33.000"
+function normPrecio(v) {
+  const d = String(v || '').replace(/\D/g, '');
+  return d ? '$' + parseInt(d, 10).toLocaleString('es-AR') : String(v || '').trim();
+}
+function stamp() { return Date.now().toString(36); }
+function videoExt(file) {
+  const m = (file.name || '').match(/\.(mp4|mov|webm|m4v)$/i);
+  if (m) return m[1].toLowerCase();
+  if (/webm/.test(file.type)) return 'webm';
+  if (/quicktime/.test(file.type)) return 'mov';
+  return 'mp4';
+}
+function hasPendingWork() { return pool.length > 0 || catalogDirty; }
+window.addEventListener('beforeunload', e => { if (hasPendingWork()) { e.preventDefault(); e.returnValue = ''; } });
+
+// ======================================================================
+//  Pestañas
+// ======================================================================
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + name));
+  updateBars();
+  window.scrollTo({ top: 0 });
+}
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => showTab(t.dataset.tab));
+function activeTab() { const t = document.querySelector('.tab.active'); return t ? t.dataset.tab : ''; }
+function updateBars() {
+  document.getElementById('footerBar').classList.toggle('show', activeTab() === 'subir' && groups.length > 0);
+  document.getElementById('catalogPublishBar').classList.toggle('show', catalogDirty && activeTab() !== 'subir');
+}
+function updateCounts() {
+  document.getElementById('nCatalogo').textContent = catalogData.length || '';
+  document.getElementById('nCategorias').textContent = categorias.length || '';
+  document.getElementById('nVideos').textContent = videosData.length || '';
+}
+
+// ======================================================================
+//  GitHub
+// ======================================================================
+function ghHeaders() {
+  return { 'Authorization': 'token ' + localStorage.getItem('gh_token'), 'Accept': 'application/vnd.github+json' };
+}
+function ghBase() {
+  return `https://api.github.com/repos/${localStorage.getItem('gh_owner')}/${localStorage.getItem('gh_repo')}`;
+}
 function fotoUrl(path) {
   if (!path) return '';
+  if (/^(https?:|data:|blob:)/.test(path)) return path;
   const clean = path.replace(/^\//, '');
-  return `https://raw.githubusercontent.com/${localStorage.getItem('gh_owner')}/${localStorage.getItem('gh_repo')}/main/${clean}`;
+  if (demoMode) return '/' + clean;
+  const v = cacheBust[clean] ? '?v=' + cacheBust[clean] : '';
+  return `https://raw.githubusercontent.com/${localStorage.getItem('gh_owner')}/${localStorage.getItem('gh_repo')}/main/${encodeURI(clean)}${v}`;
 }
-
-async function loadCatalog() {
-  const status = document.getElementById('catalogStatus');
-  status.textContent = 'Cargando catálogo...';
-  status.style.color = '#9c8478';
-  try {
-    const { json, sha } = await getProductosJson();
-    catalogData = json.productos;
-    catalogSha = sha;
-    catalogDirty = false;
-    expandedIndex = null;
-    status.textContent = `✓ ${catalogData.length} producto(s) cargados.`;
-    status.style.color = '#4a7c59';
-    renderCatalogList();
-    updateCatalogPublishBar();
-  } catch (err) {
-    status.textContent = '✗ ' + err.message;
-    status.style.color = '#b03a2e';
-  }
+function b64ToUtf8(b64) {
+  const bin = atob(b64.replace(/\n/g, ''));
+  const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+  return new TextDecoder('utf-8').decode(bytes);
 }
-
-function renombrarNinoANinas() {
-  if (!catalogData || !catalogData.length) {
-    alert('Primero tocá "Cargar / Actualizar" para traer el catálogo.');
-    return;
+function utf8ToB64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = ''; const CH = 0x8000;
+  for (let i = 0; i < bytes.length; i += CH) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CH));
+  return btoa(bin);
+}
+// Lee un JSON del repo. Devuelve { json, sha } o null si el archivo no existe.
+async function getJsonFile(path) {
+  if (demoMode) {
+    const r = await fetch('/' + path + '?v=' + Date.now()).catch(() => null);
+    if (!r || !r.ok) return null;
+    return { json: await r.json(), sha: 'demo' };
   }
-  let changed = 0;
-  catalogData.forEach(p => {
-    if (p.categoria === 'Niño' || p.categoria === 'Nino' || p.categoria === 'niño' || p.categoria === 'nino') {
-      p.categoria = 'Niñas';
-      changed++;
+  const res = await fetch(`${ghBase()}/contents/${path}?ref=main&t=${Date.now()}`, { headers: ghHeaders(), cache: 'no-store' });
+  if (res.status === 404) return null;
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(`No se pudo leer ${path}: ${err.message || res.status} (revisá el token en Configuración).`);
+  }
+  const data = await res.json();
+  let text;
+  if (data.content) text = b64ToUtf8(data.content);
+  else text = await (await fetch(data.download_url + '?t=' + Date.now())).text(); // archivos de más de 1 MB
+  return { json: JSON.parse(text), sha: data.sha };
+}
+// Guarda un JSON en el repo. Devuelve el sha nuevo.
+async function saveJsonFile(path, obj, sha, message) {
+  if (demoMode) { await wait(300); return 'demo'; }
+  const body = { message, content: utf8ToB64(JSON.stringify(obj, null, 2)), branch: 'main' };
+  if (sha) body.sha = sha;
+  const res = await fetch(`${ghBase()}/contents/${path}`, { method: 'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    if (res.status === 409 || /does not match|sha/i.test(err.message || '')) {
+      throw new Error(`Alguien (u otro dispositivo) cambió ${path} recién. Tocá "↻ Actualizar" y volvé a intentar.`);
     }
-  });
-  if (changed === 0) {
-    alert('No se encontraron productos con categoría "Niño". Puede que ya estén todos como "Niñas".');
-    return;
+    throw new Error(`No se pudo guardar ${path}: ${err.message || res.status}`);
   }
-  catalogDirty = true;
-  renderCatalogList();
-  updateCatalogPublishBar();
-  alert(`Se actualizaron ${changed} producto(s) a "Niñas". Tocá "Publicar cambios en el catálogo" para guardarlo.`);
+  const data = await res.json();
+  return data.content.sha;
 }
-
-function renderCatalogList() {
-  const container = document.getElementById('catalogList');
-  container.innerHTML = '';
-  catalogData.forEach((p, idx) => {
-    const wrap = document.createElement('div');
-    const thumb = (p.fotos && p.fotos[0]) ? fotoUrl(p.fotos[0]) : '';
-    if (expandedIndex === idx) {
-      const fotos = p.fotos || [];
-      wrap.innerHTML = `
-        <div class="catItem" style="align-items:flex-start; flex-direction:column;">
-          <div style="display:flex; gap:10px; width:100%;">
-            <img src="${thumb}" onerror="this.style.opacity=0.2">
-            <div class="catInfo">
-              <div class="nm">${p.nombre || '(sin nombre)'}</div>
-              <div class="meta">${p.numero || ''}</div>
-            </div>
-          </div>
-          <div class="catEditForm" style="width:100%;">
-            <label>Fotos</label>
-            <div class="thumbs" style="grid-template-columns:repeat(auto-fill, minmax(72px,1fr));">
-              ${fotos.map((foto, fIdx) => `
-                <div class="photoItem">
-                  <div class="thumb" style="cursor:default;">
-                    <img src="${fotoUrl(foto)}" onerror="this.style.opacity=0.2">
-                    <div class="removeBtn" onclick="removeCatalogPhoto(${idx},${fIdx})" title="Quitar foto">✕</div>
-                  </div>
-                  <div style="display:flex; gap:3px; margin-top:3px;">
-                    <a href="${fotoUrl(foto)}" download target="_blank" class="btn-secondary btn-small" style="flex:1; text-align:center; font-size:0.62rem; padding:4px 2px;">⬇ Bajar</a>
-                    <button class="btn-secondary btn-small" style="flex:1; font-size:0.62rem; padding:4px 2px;" onclick="triggerReplacePhoto(${idx},${fIdx})">🔄 Cambiar</button>
-                  </div>
-                </div>
-              `).join('')}
-              <div class="photoItem">
-                <button class="photoAddTile" onclick="triggerAddPhoto(${idx})">+ Agregar<br>foto</button>
-              </div>
-            </div>
-            <label>Nombre</label>
-            <input type="text" value="${p.nombre || ''}" oninput="updateCatalogField(${idx},'nombre',this.value)">
-            <div class="row2">
-              <div>
-                <label>Categoría</label>
-                <select onchange="updateCatalogField(${idx},'categoria',this.value)">
-                  ${getAllCategorias().map(c => `<option value="${c}" ${c===p.categoria?'selected':''}>${c}</option>`).join('')}
-                </select>
-              </div>
-              <div>
-                <label>Precio</label>
-                <input type="text" value="${p.precio || ''}" oninput="updateCatalogField(${idx},'precio',this.value)">
-              </div>
-            </div>
-            <label>Detalle</label>
-            <textarea oninput="updateCatalogField(${idx},'descripcion',this.value)">${p.descripcion || ''}</textarea>
-            <div style="display:flex; gap:8px; margin-top:10px;">
-              <button class="btn-secondary btn-small" onclick="expandedIndex=null; renderCatalogList();">Cerrar</button>
-              <button class="btn-danger btn-small" onclick="deleteCatalogItem(${idx})">Eliminar producto</button>
-            </div>
-          </div>
-        </div>
-      `;
-    } else {
-      wrap.innerHTML = `
-        <div class="catItem">
-          <img src="${thumb}" onerror="this.style.opacity=0.2">
-          <div class="catInfo">
-            <div class="nm">${p.nombre || '(sin nombre)'}</div>
-            <div class="meta">${p.categoria || ''} · ${p.precio || ''}</div>
-          </div>
-          <div class="catActions">
-            <button class="btn-secondary btn-small" onclick="expandedIndex=${idx}; renderCatalogList();">Editar</button>
-          </div>
-        </div>
-      `;
-    }
-    container.appendChild(wrap);
+// Sube un archivo (foto o video) en base64.
+async function uploadFile(path, base64, sha, message) {
+  if (demoMode) { await wait(250); return; }
+  const body = { message: message || `Subir ${path}`, content: base64, branch: 'main' };
+  if (sha) body.sha = sha;
+  const res = await fetch(`${ghBase()}/contents/${path}`, { method: 'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(`No se pudo subir ${path}: ${err.message || res.status}`);
+  }
+}
+async function getFileSha(path) {
+  if (demoMode) return null;
+  const res = await fetch(`${ghBase()}/contents/${path}?ref=main`, { headers: ghHeaders() });
+  if (!res.ok) return null;
+  return (await res.json()).sha;
+}
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result).split(',')[1]);
+    r.onerror = () => reject(new Error('No se pudo leer el archivo.'));
+    r.readAsDataURL(file);
   });
 }
-
-function updateCatalogField(idx, field, value) {
-  catalogData[idx][field] = value;
-  catalogDirty = true;
-  updateCatalogPublishBar();
-}
-
-function deleteCatalogItem(idx) {
-  const p = catalogData[idx];
-  if (!confirm(`¿Eliminar "${p.nombre || 'este producto'}"? Esto no se puede deshacer una vez publicado.`)) return;
-  catalogData.splice(idx, 1);
-  catalogDirty = true;
-  expandedIndex = null;
-  renderCatalogList();
-  updateCatalogPublishBar();
-}
-
-function removeCatalogPhoto(idx, fotoIdx) {
-  if (!confirm('¿Quitar esta foto del producto? (La foto sigue existiendo en GitHub, pero deja de mostrarse en la web)')) return;
-  catalogData[idx].fotos.splice(fotoIdx, 1);
-  catalogDirty = true;
-  renderCatalogList();
-  updateCatalogPublishBar();
-}
-
-function triggerReplacePhoto(idx, fotoIdx) {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*';
-  input.onchange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    await doReplacePhoto(idx, fotoIdx, file);
-  };
-  input.click();
-}
-
-async function doReplacePhoto(idx, fotoIdx, file) {
-  const status = document.getElementById('catalogStatus');
-  status.textContent = 'Subiendo foto nueva...';
-  status.style.color = '#9c8478';
-  try {
-    const dataUrl = await compressImage(file, 1600, 0.85);
-    const path = catalogData[idx].fotos[fotoIdx];
-    let sha = null;
-    try { sha = await getFileSha(path); } catch (e) {}
-    await uploadImage(path, dataUrl, sha);
-    status.textContent = '✓ Foto reemplazada. Puede tardar uno o dos minutos en verse actualizada en la web.';
-    status.style.color = '#4a7c59';
-    renderCatalogList();
-  } catch (err) {
-    status.textContent = '✗ ' + err.message;
-    status.style.color = '#b03a2e';
-  }
-}
-
-function triggerAddPhoto(idx) {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*';
-  input.onchange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    await doAddPhoto(idx, file);
-  };
-  input.click();
-}
-
-async function doAddPhoto(idx, file) {
-  const status = document.getElementById('catalogStatus');
-  status.textContent = 'Subiendo foto nueva...';
-  status.style.color = '#9c8478';
-  try {
-    const dataUrl = await compressImage(file, 1600, 0.85);
-    const p = catalogData[idx];
-    const baseSlug = slugify(p.nombre || p.numero || ('producto-' + idx));
-    const n = (p.fotos ? p.fotos.length : 0) + 1;
-    const path = `images/${baseSlug}-extra-${n}-${Date.now()}.jpg`;
-    await uploadImage(path, dataUrl, null);
-    if (!p.fotos) p.fotos = [];
-    p.fotos.push(path);
-    catalogDirty = true;
-    status.textContent = '✓ Foto agregada. Tocá "Publicar cambios en el catálogo" para guardarla.';
-    status.style.color = '#4a7c59';
-    renderCatalogList();
-    updateCatalogPublishBar();
-  } catch (err) {
-    status.textContent = '✗ ' + err.message;
-    status.style.color = '#b03a2e';
-  }
-}
-
-function updateCatalogPublishBar() {
-  const bar = document.getElementById('catalogPublishBar');
-  bar.style.display = catalogDirty ? 'block' : 'none';
-  document.getElementById('catalogDirtyCount').textContent = catalogDirty ? 'Hay cambios sin publicar' : '';
-}
-
-async function publishCatalogChanges() {
-  if (!confirm('¿Publicar los cambios (ediciones/fotos/eliminaciones) en el catálogo ahora?')) return;
-  const btn = document.getElementById('catalogPublishBtn');
-  btn.disabled = true;
-  btn.textContent = 'Publicando...';
-  try {
-    await saveProductosJson({ productos: catalogData }, catalogSha);
-    catalogDirty = false;
-    updateCatalogPublishBar();
-    document.getElementById('catalogStatus').textContent = '✓ Cambios publicados. Refrescando...';
-    document.getElementById('catalogStatus').style.color = '#4a7c59';
-    await loadCatalog();
-  } catch (err) {
-    document.getElementById('catalogStatus').textContent = '✗ ' + err.message;
-    document.getElementById('catalogStatus').style.color = '#b03a2e';
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Publicar cambios en el catálogo';
-  }
-}
-
-function handleFiles(evt) {
-  const files = Array.from(evt.target.files);
-  let remaining = files.length;
-  const startIdx = pool.length;
-  files.forEach(file => {
-    compressImage(file, 1600, 0.85).then(dataUrl => {
-      pool.push({ id: nextId++, file, dataUrl, selected: false });
-      remaining--;
-      if (remaining === 0) autoGroupNew(startIdx);
-    });
-  });
-  evt.target.value = '';
-}
-
-function autoGroupNew(startIdx) {
-  const nuevas = pool.slice(startIdx);
-  for (let i = 0; i < nuevas.length; i += 3) {
-    const chunk = nuevas.slice(i, i + 3);
-    if (chunk.length > 0) {
-      groups.push({
-        id: nextGroupId++,
-        photoIds: chunk.map(p => p.id),
-        nombre: '', categoria: 'Airbag', precio: '', detalle: ''
-      });
-    }
-  }
-  renderPool();
-  renderGroups();
-}
-
 function compressImage(file, maxDim, quality) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     const img = new Image();
-    const reader = new FileReader();
-    reader.onload = e => { img.src = e.target.result; };
+    const url = URL.createObjectURL(file);
     img.onload = () => {
       let w = img.width, h = img.height;
       const scale = Math.min(1, maxDim / Math.max(w, h));
@@ -703,80 +451,199 @@ function compressImage(file, maxDim, quality) {
       const canvas = document.createElement('canvas');
       canvas.width = w; canvas.height = h;
       canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url);
       resolve(canvas.toDataURL('image/jpeg', quality));
     };
-    reader.readAsDataURL(file);
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error(`No se pudo abrir la foto "${file.name}". Probá con otra (formato JPG o PNG).`)); };
+    img.src = url;
+  });
+}
+function pickFile(accept, cb) {
+  const input = document.createElement('input');
+  input.type = 'file'; input.accept = accept;
+  input.onchange = e => { const f = e.target.files[0]; if (f) cb(f); };
+  input.click();
+}
+function pickVideo(cb) {
+  pickFile('video/*', f => {
+    const mb = f.size / 1048576;
+    if (mb > MAX_VIDEO_MB) {
+      alert(`Este video pesa ${mb.toFixed(0)} MB y el máximo es ${MAX_VIDEO_MB} MB.\n\nOpciones: recortalo en el celular (Editar → recortar) a unos 20 segundos, o subilo a YouTube/Instagram y agregá el link en la pestaña Videos.`);
+      return;
+    }
+    cb(f);
   });
 }
 
+// ======================================================================
+//  Configuración
+// ======================================================================
+function isConfigured() { return !!(localStorage.getItem('gh_token') && localStorage.getItem('gh_owner') && localStorage.getItem('gh_repo')); }
+function loadConfig() {
+  ['gh_token','gh_owner','gh_repo'].forEach((k, i) => {
+    const v = localStorage.getItem(k);
+    if (v) document.getElementById(['ghToken','ghOwner','ghRepo'][i]).value = v;
+  });
+  if (isConfigured()) {
+    setMsg('configStatus', '✓ Configuración guardada en este dispositivo.', 'ok');
+    reloadAll();
+  } else {
+    showTab('config');
+  }
+}
+function saveConfig() {
+  // Saca cualquier espacio o salto de línea que se haya colado al copiar en el celular
+  const t = document.getElementById('ghToken').value.replace(/\s+/g, '');
+  const o = document.getElementById('ghOwner').value.trim();
+  const r = document.getElementById('ghRepo').value.trim();
+  if (!t || !o || !r) { setMsg('configStatus', 'Completá los 3 campos.', 'err'); return; }
+  document.getElementById('ghToken').value = t;
+  localStorage.setItem('gh_token', t); localStorage.setItem('gh_owner', o); localStorage.setItem('gh_repo', r);
+  let warn = '';
+  if (!t.startsWith('ghp_') && !t.startsWith('github_pat_')) warn = ' ⚠️ El token no empieza con "ghp_" ni "github_pat_": revisá que sea el código correcto.';
+  else if (t.startsWith('ghp_') && t.length !== 40) warn = ` ⚠️ Un token "ghp_" suele tener 40 caracteres; el tuyo tiene ${t.length}.`;
+  const preview = t.length > 12 ? t.slice(0, 8) + '...' + t.slice(-4) : '(muy corto)';
+  setMsg('configStatus', `✓ Guardado. Token: ${preview} (${t.length} caracteres).${warn}`, warn ? 'err' : 'ok');
+  if (demoMode) salirDemo(true);
+  testConnection().then(ok => { if (ok) reloadAll(); });
+}
+async function testConnection() {
+  const el = document.getElementById('testResult');
+  el.textContent = 'Probando conexión...'; el.className = 'msg pending';
+  try {
+    const res = await fetch(`${ghBase()}/contents/data/productos.json?ref=main`, { headers: ghHeaders() });
+    if (res.ok) { el.textContent = '✓ Conexión OK. Ya podés usar todas las pestañas.'; el.className = 'msg ok'; return true; }
+    const body = await res.json().catch(() => ({}));
+    const extra = res.status === 401 ? ' — el token es incorrecto o venció. Generá uno nuevo.' : res.status === 404 ? ' — revisá usuario y repositorio, o que el token tenga el permiso "repo".' : '';
+    el.textContent = `✗ Error ${res.status}: ${body.message || ''}${extra}`; el.className = 'msg err';
+  } catch (err) {
+    el.textContent = '✗ No se pudo conectar: ' + err.message; el.className = 'msg err';
+  }
+  return false;
+}
+function startDemo() {
+  demoMode = true;
+  document.getElementById('demoBanner').style.display = 'block';
+  reloadAll();
+  showTab('subir');
+}
+function salirDemo(silent) {
+  demoMode = false;
+  document.getElementById('demoBanner').style.display = 'none';
+  if (!silent) { if (isConfigured()) reloadAll(); else showTab('config'); }
+}
+
+// ======================================================================
+//  Carga de datos (catálogo + categorías + videos)
+// ======================================================================
+async function reloadAll() {
+  if (catalogDirty && !confirm('Tenés cambios del catálogo sin publicar. Si actualizás se pierden. ¿Seguir?')) return;
+  setMsg('catalogStatus', 'Cargando catálogo...', 'pending');
+  try {
+    const [prod, cats, vids] = await Promise.all([
+      getJsonFile('data/productos.json'),
+      getJsonFile('data/categorias.json'),
+      getJsonFile('data/videos.json')
+    ]);
+    if (!prod) throw new Error('No se encontró data/productos.json.');
+    catalogData = prod.json.productos || [];
+    catalogSha = prod.sha;
+    categorias = cats ? (cats.json.categorias || []).map(c => c.nombre).filter(Boolean) : CATEGORIAS_INICIALES.slice();
+    categoriasSha = cats ? cats.sha : null;
+    videosData = vids ? (vids.json.videos || []) : [];
+    videosSha = vids ? vids.sha : null;
+    catalogDirty = false; catalogBackup = null; expandedIndex = null;
+    setMsg('catalogStatus', `✓ ${catalogData.length} gorras cargadas.`, 'ok');
+  } catch (err) {
+    setMsg('catalogStatus', '✗ ' + err.message, 'err');
+    toast(err.message, true);
+    if (!categorias.length) categorias = CATEGORIAS_INICIALES.slice();
+  }
+  renderAll();
+}
+function renderAll() {
+  renderCatFilter(); renderCatalogList(); renderCategoriasList(); renderVideosList(); renderGroups(); updateCounts(); updateBars();
+}
+// Lista de categorías para los desplegables (incluye cualquier categoría "suelta" de una gorra)
+function categoriasParaElegir(actual) {
+  const list = categorias.slice();
+  if (actual && !list.includes(actual)) list.push(actual);
+  return list;
+}
+function catOptions(selected) {
+  return categoriasParaElegir(selected).map(c => `<option value="${esc(c)}" ${c === selected ? 'selected' : ''}>${esc(c)}</option>`).join('');
+}
+
+// ======================================================================
+//  SUBIR: fotos nuevas y grupos
+// ======================================================================
+async function handleFiles(evt) {
+  const files = Array.from(evt.target.files);
+  evt.target.value = '';
+  if (!files.length) return;
+  const startIdx = pool.length;
+  toast(`Preparando ${files.length} foto(s)...`);
+  for (const file of files) {
+    try {
+      const dataUrl = await compressImage(file, 1600, 0.85);
+      pool.push({ id: nextId++, dataUrl, selected: false });
+    } catch (err) { toast(err.message, true); }
+  }
+  autoGroupNew(startIdx);
+}
+function autoGroupNew(startIdx) {
+  const nuevas = pool.slice(startIdx);
+  for (let i = 0; i < nuevas.length; i += 3) {
+    groups.push(newGroup(nuevas.slice(i, i + 3).map(p => p.id)));
+  }
+  renderPool(); renderGroups();
+}
+function newGroup(photoIds) {
+  return { id: nextGroupId++, photoIds, nombre: '', categoria: categorias.includes(lastCategoria) ? lastCategoria : (categorias[0] || 'Otras'), precio: '', detalle: '', video: null };
+}
+function unassignedPhotos() { return pool.filter(p => !groups.some(g => g.photoIds.includes(p.id))); }
 function renderPool() {
   const el = document.getElementById('pool');
   el.innerHTML = '';
-  const unassigned = pool.filter(p => !groups.some(g => g.photoIds.includes(p.id)));
+  const unassigned = unassignedPhotos();
   unassigned.forEach(p => {
     const div = document.createElement('div');
     div.className = 'thumb' + (p.selected ? ' selected' : '');
     div.innerHTML = `<img src="${p.dataUrl}"><div class="check">${p.selected ? '✓' : ''}</div><div class="removeBtn">✕</div>`;
-    div.querySelector('.check').onclick = (e) => { e.stopPropagation(); p.selected = !p.selected; renderPool(); };
-    div.querySelector('.removeBtn').onclick = (e) => { e.stopPropagation(); removePhoto(p.id); };
+    div.querySelector('.removeBtn').onclick = e => { e.stopPropagation(); pool = pool.filter(x => x.id !== p.id); renderPool(); };
     div.onclick = () => { p.selected = !p.selected; renderPool(); };
     el.appendChild(div);
   });
-  const selCount = pool.filter(p => p.selected).length;
+  const selCount = unassigned.filter(p => p.selected).length;
   document.getElementById('poolActions').style.display = unassigned.length ? 'block' : 'none';
-  document.getElementById('selCount').textContent = selCount ? `${selCount} seleccionadas` : 'Tocá las fotos de un mismo modelo';
+  document.getElementById('selCount').textContent = unassigned.length
+    ? (selCount ? `${selCount} seleccionada(s)` : `${unassigned.length} foto(s) sin agrupar. Tocá las de un mismo modelo y agrupalas.`) : '';
   updateFooter();
 }
-
-function removePhoto(id) {
-  pool = pool.filter(p => p.id !== id);
-  renderPool();
-}
-
 function createGroupFromSelection() {
-  const selected = pool.filter(p => p.selected);
-  if (selected.length === 0) return;
-  groups.push({
-    id: nextGroupId++,
-    photoIds: selected.map(p => p.id),
-    nombre: '', categoria: 'Airbag', precio: '', detalle: ''
-  });
+  const selected = unassignedPhotos().filter(p => p.selected);
+  if (!selected.length) { toast('Primero tocá las fotos que van juntas.'); return; }
+  groups.push(newGroup(selected.map(p => p.id)));
   selected.forEach(p => p.selected = false);
-  renderPool();
-  renderGroups();
+  renderPool(); renderGroups();
 }
 
-function movePhotoWithinGroup(groupId, photoId, direction) {
-  const g = groups.find(gr => gr.id === groupId);
-  if (!g) return;
-  const idx = g.photoIds.indexOf(photoId);
-  const newIdx = idx + direction;
-  if (newIdx < 0 || newIdx >= g.photoIds.length) return;
-  [g.photoIds[idx], g.photoIds[newIdx]] = [g.photoIds[newIdx], g.photoIds[idx]];
-  renderGroups();
-}
-
+// --- Reordenar fotos dentro de un grupo (tocar dos fotos o arrastrar) ---
 let dragState = null;
 let selectedForSwap = null;
 const DRAG_THRESHOLD = 12;
-
 function attachDragHandlers() {
   document.querySelectorAll('.dragHandle').forEach(handle => {
-    handle.oncontextmenu = (e) => { e.preventDefault(); return false; };
-    handle.onpointerdown = (e) => {
+    handle.oncontextmenu = e => { e.preventDefault(); return false; };
+    handle.onpointerdown = e => {
       const item = handle.closest('.photoItem');
-      const groupId = parseInt(item.dataset.groupId, 10);
-      const photoId = parseInt(item.dataset.photoId, 10);
-      dragState = { groupId, photoId, startX: e.clientX, startY: e.clientY, moved: false, lastTargetPhotoId: null };
+      dragState = { groupId: +item.dataset.groupId, photoId: +item.dataset.photoId, startX: e.clientX, startY: e.clientY, moved: false, lastTargetPhotoId: null };
       handle.setPointerCapture(e.pointerId);
     };
-    handle.onpointermove = (e) => {
-      if (!dragState || dragState.photoId !== parseInt(handle.closest('.photoItem').dataset.photoId, 10)) return;
-      const dx = e.clientX - dragState.startX;
-      const dy = e.clientY - dragState.startY;
-      if (!dragState.moved && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
-        dragState.moved = true;
-        handle.classList.add('dragging');
+    handle.onpointermove = e => {
+      if (!dragState || dragState.photoId !== +handle.closest('.photoItem').dataset.photoId) return;
+      if (!dragState.moved && Math.hypot(e.clientX - dragState.startX, e.clientY - dragState.startY) > DRAG_THRESHOLD) {
+        dragState.moved = true; handle.classList.add('dragging');
       }
       if (!dragState.moved) return;
       const container = document.getElementById('thumbs-' + dragState.groupId);
@@ -784,9 +651,9 @@ function attachDragHandlers() {
       const elUnder = document.elementFromPoint(e.clientX, e.clientY);
       const targetItem = elUnder ? elUnder.closest('.photoItem') : null;
       container.querySelectorAll('.thumb').forEach(t => t.classList.remove('dropTarget'));
-      if (targetItem && container.contains(targetItem)) {
+      if (targetItem && container.contains(targetItem) && targetItem.dataset.photoId) {
         targetItem.querySelector('.thumb').classList.add('dropTarget');
-        dragState.lastTargetPhotoId = parseInt(targetItem.dataset.photoId, 10);
+        dragState.lastTargetPhotoId = +targetItem.dataset.photoId;
       }
     };
     function finishDrag() {
@@ -794,12 +661,9 @@ function attachDragHandlers() {
       handle.classList.remove('dragging');
       const container = document.getElementById('thumbs-' + dragState.groupId);
       if (container) container.querySelectorAll('.thumb').forEach(t => t.classList.remove('dropTarget'));
-
       if (dragState.moved) {
-        const targetPhotoId = dragState.lastTargetPhotoId;
-        if (targetPhotoId != null && targetPhotoId !== dragState.photoId) {
-          swapPhotos(dragState.groupId, dragState.photoId, targetPhotoId);
-        }
+        const t = dragState.lastTargetPhotoId;
+        if (t != null && t !== dragState.photoId) swapPhotos(dragState.groupId, dragState.photoId, t);
       } else {
         tapPhotoForSwap(dragState.groupId, dragState.photoId);
       }
@@ -809,52 +673,54 @@ function attachDragHandlers() {
     handle.onpointercancel = finishDrag;
   });
 }
-
-function swapPhotos(groupId, photoIdA, photoIdB) {
-  const g = groups.find(gr => gr.id === groupId);
-  if (!g) return;
-  const idxA = g.photoIds.indexOf(photoIdA);
-  const idxB = g.photoIds.indexOf(photoIdB);
-  if (idxA === -1 || idxB === -1) return;
-  [g.photoIds[idxA], g.photoIds[idxB]] = [g.photoIds[idxB], g.photoIds[idxA]];
+function swapPhotos(groupId, a, b) {
+  const g = groups.find(gr => gr.id === groupId); if (!g) return;
+  const ia = g.photoIds.indexOf(a), ib = g.photoIds.indexOf(b);
+  if (ia === -1 || ib === -1) return;
+  [g.photoIds[ia], g.photoIds[ib]] = [g.photoIds[ib], g.photoIds[ia]];
   renderGroups();
 }
-
 function tapPhotoForSwap(groupId, photoId) {
-  if (selectedForSwap && selectedForSwap.groupId === groupId && selectedForSwap.photoId === photoId) {
-    selectedForSwap = null;
-    renderGroups();
-    return;
+  if (selectedForSwap && selectedForSwap.groupId === groupId && selectedForSwap.photoId === photoId) { selectedForSwap = null; renderGroups(); return; }
+  if (selectedForSwap && selectedForSwap.groupId === groupId) { swapPhotos(groupId, selectedForSwap.photoId, photoId); selectedForSwap = null; return; }
+  selectedForSwap = { groupId, photoId }; renderGroups();
+}
+function movePhotoCombined(photoId, value, fromGroupId) {
+  if (!value) return;
+  const fromGroup = groups.find(g => g.id === fromGroupId);
+  if (!fromGroup) return;
+  if (value.startsWith('pos:')) {
+    const targetIdx = parseInt(value.split(':')[1], 10);
+    const fromIdx = fromGroup.photoIds.indexOf(photoId);
+    if (fromIdx === -1) return;
+    fromGroup.photoIds.splice(fromIdx, 1);
+    fromGroup.photoIds.splice(targetIdx, 0, photoId);
+  } else {
+    fromGroup.photoIds = fromGroup.photoIds.filter(id => id !== photoId);
+    if (value.startsWith('grp:')) {
+      const toGroup = groups.find(g => g.id === parseInt(value.split(':')[1], 10));
+      if (toGroup) toGroup.photoIds.push(photoId);
+    }
+    groups = groups.filter(g => g.photoIds.length > 0);
+    renderPool();
   }
-  if (selectedForSwap && selectedForSwap.groupId === groupId) {
-    swapPhotos(groupId, selectedForSwap.photoId, photoId);
-    selectedForSwap = null;
-    return;
-  }
-  selectedForSwap = { groupId, photoId };
   renderGroups();
 }
-
 function renderGroups() {
   const container = document.getElementById('groupsContainer');
-  const card = document.getElementById('groupsCard');
-  card.style.display = groups.length ? 'block' : 'none';
+  document.getElementById('groupsCard').style.display = groups.length ? 'block' : 'none';
+  document.getElementById('applyAllRow').style.display = groups.length > 1 ? 'flex' : 'none';
   container.innerHTML = '';
-  if (groups.length > 1) {
-    const hint = document.createElement('div');
-    hint.className = 'hint';
-    hint.style.marginBottom = '10px';
-    hint.textContent = '💡 Los grupos quedan en el orden en que elegiste las fotos. Para cambiar el orden DENTRO de un grupo: tocá una foto y después tocá otra, se intercambian de lugar (o usá las flechitas ◀▶). Para mandar una foto a OTRO grupo, usá "Mover a...".';
-    container.appendChild(hint);
-  }
   groups.forEach((g, gIdx) => {
+    // El orden de las fotos sale de g.photoIds (no de pool)
     const photos = g.photoIds.map(id => pool.find(p => p.id === id)).filter(Boolean);
+    const incompleto = !g.nombre.trim() || !g.precio.trim();
     const div = document.createElement('div');
-    div.className = 'group';
+    div.className = 'group' + (incompleto ? ' incomplete' : '');
     div.innerHTML = `
       <div class="group-header">
-        <span>Grupo ${gIdx + 1} <span class="badge">${photos.length} fotos</span></span>
-        <button class="btn-danger btn-small" onclick="removeGroup(${g.id})">Quitar grupo</button>
+        <span>Modelo ${gIdx + 1} <span class="badge">${photos.length} foto(s)</span>${incompleto ? '<span class="badge" style="background:#fbeceb;color:var(--err)">falta nombre o precio</span>' : '<span class="badge" style="background:#e7f1ea;color:var(--ok)">✓ listo</span>'}</span>
+        <button class="btn-danger btn-small" onclick="removeGroup(${g.id})">Quitar</button>
       </div>
       <div class="thumbs" id="thumbs-${g.id}">
         ${photos.map((p, pIdx) => `
@@ -862,122 +728,79 @@ function renderGroups() {
             <div class="thumb dragHandle ${selectedForSwap && selectedForSwap.groupId === g.id && selectedForSwap.photoId === p.id ? 'swapSelected' : ''}">
               <img src="${p.dataUrl}" draggable="false">
               <div class="dragTag">${pIdx + 1}</div>
+              ${pIdx === 0 ? '<div class="coverTag">portada</div>' : ''}
             </div>
             <select class="moveSelect" onchange="movePhotoCombined(${p.id}, this.value, ${g.id})">
               <option value="">Mover a...</option>
-              <optgroup label="Posición en este grupo">
+              <optgroup label="Posición en este modelo">
                 ${photos.map((_, i) => i === pIdx ? '' : `<option value="pos:${i}">Posición ${i + 1}</option>`).join('')}
               </optgroup>
-              <optgroup label="Otro grupo">
+              <optgroup label="Otro modelo">
                 <option value="pool">Sin agrupar</option>
-                ${groups.map((og, ogIdx) => og.id === g.id ? '' : `<option value="grp:${og.id}">Grupo ${ogIdx + 1}</option>`).join('')}
+                ${groups.map((og, ogIdx) => og.id === g.id ? '' : `<option value="grp:${og.id}">Modelo ${ogIdx + 1}</option>`).join('')}
               </optgroup>
             </select>
-          </div>
-        `).join('')}
+          </div>`).join('')}
       </div>
+      ${g.video
+        ? `<div class="videoChip">🎬 <span>${esc(g.video.name)} (${(g.video.size / 1048576).toFixed(1)} MB)</span><button class="btn-danger btn-small" onclick="setGroupVideo(${g.id}, null)">Quitar</button></div>`
+        : `<button class="btn-secondary btn-small" onclick="pickVideo(f => setGroupVideo(${g.id}, f))">🎬 Agregar video (opcional)</button>`}
       <label>Nombre</label>
-      <input type="text" value="${g.nombre}" oninput="updateGroup(${g.id},'nombre',this.value)" placeholder="Ej: Airbag Nº20">
+      <input type="text" value="${esc(g.nombre)}" oninput="updateGroup(${g.id},'nombre',this.value)" placeholder='Ej: Gorra "Airbag" N° 20'>
       <div class="row2">
         <div>
           <label>Categoría</label>
-          <select onchange="updateGroup(${g.id},'categoria',this.value)">
-            ${getAllCategorias().map(c => `<option value="${c}" ${c===g.categoria?'selected':''}>${c}</option>`).join('')}
-          </select>
+          <select onchange="updateGroup(${g.id},'categoria',this.value)">${catOptions(g.categoria)}</select>
         </div>
         <div>
           <label>Precio</label>
-          <input type="text" value="${g.precio}" oninput="updateGroup(${g.id},'precio',this.value)" placeholder="Ej: $32.000">
+          <input type="text" inputmode="numeric" value="${esc(g.precio)}" oninput="updateGroup(${g.id},'precio',this.value)" onblur="this.value=normPrecio(this.value); updateGroup(${g.id},'precio',this.value)" placeholder="Ej: 33000">
         </div>
       </div>
       <label>Detalle</label>
-      <textarea oninput="updateGroup(${g.id},'detalle',this.value)" placeholder="Ej: Con strass boreal Hotfix">${g.detalle}</textarea>
-    `;
+      <textarea oninput="updateGroup(${g.id},'detalle',this.value)" placeholder="Ej: Con strass boreal Hotfix">${esc(g.detalle)}</textarea>`;
     container.appendChild(div);
   });
   updateFooter();
   attachDragHandlers();
 }
-
-function debugLog(msg) {
-  const panel = document.getElementById('debugPanel');
-  panel.style.display = 'block';
-  panel.innerHTML += msg + '<br>';
-}
-
-function movePhotoCombined(photoId, value, fromGroupId) {
-  if (!value) { return; }
-
-  if (value.startsWith('pos:')) {
-    const targetIdx = parseInt(value.split(':')[1], 10);
-    const g = groups.find(gr => gr.id === fromGroupId);
-    if (!g) return;
-    const fromIdx = g.photoIds.indexOf(photoId);
-    if (fromIdx === -1) return;
-    g.photoIds.splice(fromIdx, 1);
-    g.photoIds.splice(targetIdx, 0, photoId);
-    renderGroups();
-    return;
-  }
-
-  if (value === 'pool') {
-    const fromGroup = groups.find(g => g.id === fromGroupId);
-    if (fromGroup) fromGroup.photoIds = fromGroup.photoIds.filter(id => id !== photoId);
-    groups = groups.filter(g => g.photoIds.length > 0);
-    renderPool();
-    renderGroups();
-    return;
-  }
-
-  if (value.startsWith('grp:')) {
-    const toGroupId = parseInt(value.split(':')[1], 10);
-    const fromGroup = groups.find(g => g.id === fromGroupId);
-    if (fromGroup) fromGroup.photoIds = fromGroup.photoIds.filter(id => id !== photoId);
-    const toGroup = groups.find(g => g.id === toGroupId);
-    if (toGroup) toGroup.photoIds.push(photoId);
-    groups = groups.filter(g => g.photoIds.length > 0);
-    renderPool();
-    renderGroups();
-    return;
-  }
-}
-
+function setGroupVideo(id, file) { const g = groups.find(x => x.id === id); if (g) { g.video = file; renderGroups(); } }
 function updateGroup(id, field, value) {
-  const g = groups.find(g => g.id === id);
-  if (g) g[field] = value;
+  const g = groups.find(x => x.id === id);
+  if (!g) return;
+  g[field] = value;
+  if (field === 'categoria') { lastCategoria = value; localStorage.setItem('ultima_categoria', value); }
   updateFooter();
+  // Actualiza la etiqueta "listo / falta" sin redibujar (para no perder el foco del teclado)
+  const el = document.getElementById('thumbs-' + id);
+  if (el) {
+    const box = el.closest('.group');
+    const inc = !g.nombre.trim() || !g.precio.trim();
+    box.classList.toggle('incomplete', inc);
+    const badges = box.querySelectorAll('.group-header .badge');
+    const b = badges[badges.length - 1];
+    if (b) { b.textContent = inc ? 'falta nombre o precio' : '✓ listo'; b.style.background = inc ? '#fbeceb' : '#e7f1ea'; b.style.color = inc ? 'var(--err)' : 'var(--ok)'; }
+  }
+}
+function applyToAll() {
+  const g0 = groups[0]; if (!g0) return;
+  groups.forEach(g => { g.categoria = g0.categoria; if (g0.precio) g.precio = g0.precio; });
+  renderGroups(); toast('Copiado a todos los modelos ✓');
 }
 function removeGroup(id) {
+  if (!confirm('¿Quitar este modelo? Sus fotos vuelven a "sin agrupar".')) return;
   groups = groups.filter(g => g.id !== id);
-  renderPool();
-  renderGroups();
+  renderPool(); renderGroups();
 }
-
 function updateFooter() {
-  const unassigned = pool.filter(p => !groups.some(g => g.photoIds.includes(p.id))).length;
-  document.getElementById('footerCount').textContent =
-    groups.length ? `${groups.length} modelo(s) armados, ${unassigned} foto(s) sin agrupar` : `${unassigned} foto(s) sin agrupar`;
-  const allFilled = groups.length > 0 && groups.every(g => g.nombre && g.precio);
-  document.getElementById('publishBtn').disabled = !allFilled;
+  const unassigned = unassignedPhotos().length;
+  const listos = groups.filter(g => g.nombre.trim() && g.precio.trim()).length;
+  let txt = groups.length ? `${listos} de ${groups.length} modelo(s) listos` : '';
+  if (unassigned) txt += (txt ? ' · ' : '') + `${unassigned} foto(s) sin agrupar`;
+  document.getElementById('footerCount').textContent = txt;
+  document.getElementById('publishBtn').disabled = !(groups.length > 0 && listos === groups.length);
+  updateBars();
 }
-
-function slugify(s) {
-  return s.toLowerCase()
-    .replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i')
-    .replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n').replace(/º/g,'')
-    .replace(/[^a-z0-9]+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
-}
-
-function ghHeaders() {
-  return {
-    'Authorization': 'token ' + localStorage.getItem('gh_token'),
-    'Accept': 'application/vnd.github+json'
-  };
-}
-function ghBase() {
-  return `https://api.github.com/repos/${localStorage.getItem('gh_owner')}/${localStorage.getItem('gh_repo')}`;
-}
-
 function log(msg, cls) {
   const box = document.getElementById('logBox');
   document.getElementById('logCard').style.display = 'block';
@@ -987,208 +810,483 @@ function log(msg, cls) {
   box.appendChild(line);
   box.scrollTop = box.scrollHeight;
 }
-
-async function uploadImage(path, dataUrl, sha) {
-  const base64 = dataUrl.split(',')[1];
-  const body = {
-    message: `Subir foto ${path}`,
-    content: base64
-  };
-  if (sha) body.sha = sha;
-  const res = await fetch(`${ghBase()}/contents/${path}`, {
-    method: 'PUT',
-    headers: ghHeaders(),
-    body: JSON.stringify(body)
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(`No se pudo subir ${path}: ${err.message || res.status}`);
-  }
-}
-
-async function getFileSha(path) {
-  const res = await fetch(`${ghBase()}/contents/${path}`, { headers: ghHeaders() });
-  if (!res.ok) return null;
-  const data = await res.json();
-  return data.sha;
-}
-
-async function getProductosJson() {
-  const res = await fetch(`${ghBase()}/contents/data/productos.json`, { headers: ghHeaders() });
-  if (!res.ok) throw new Error('No se pudo leer data/productos.json (revisá el token y el nombre del repo).');
-  const data = await res.json();
-  const content = decodeURIComponent(escape(atob(data.content)));
-  return { json: JSON.parse(content), sha: data.sha };
-}
-
-async function saveProductosJson(jsonObj, sha) {
-  const content = JSON.stringify(jsonObj, null, 2);
-  const base64 = btoa(unescape(encodeURIComponent(content)));
-  const res = await fetch(`${ghBase()}/contents/data/productos.json`, {
-    method: 'PUT',
-    headers: ghHeaders(),
-    body: JSON.stringify({
-      message: 'Agregar gorras nuevas desde el panel de carga',
-      content: base64,
-      sha: sha
-    })
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error('No se pudo guardar productos.json: ' + (err.message || res.status));
-  }
-}
-
 function nextNumero(productos) {
   let max = 0;
-  productos.forEach(p => {
-    if (p.numero) {
-      const n = parseInt(p.numero.replace(/\D/g, ''), 10);
-      if (!isNaN(n) && n > max) max = n;
-    }
-  });
+  productos.forEach(p => { const n = parseInt(String(p.numero || '').replace(/\D/g, ''), 10); if (!isNaN(n) && n > max) max = n; });
   return max;
 }
-
-function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-async function publishAllDemo() {
-  const btn = document.getElementById('publishBtn');
-  btn.disabled = true;
-  btn.textContent = 'Publicando (demo)...';
-  document.getElementById('logBox').innerHTML = '';
-  document.getElementById('logCard').style.display = 'block';
-
-  log('🧪 DEMO — no se conecta a GitHub, es solo una simulación', 'pending');
-  await wait(400);
-  log('Leyendo el catálogo actual...', 'pending');
-  await wait(500);
-
-  for (const g of groups) {
-    const photos = g.photoIds.map(id => pool.find(p => p.id === id)).filter(Boolean);
-    for (let i = 0; i < photos.length; i++) {
-      log(`Subiendo foto ${i + 1} de "${g.nombre}"...`, 'pending');
-      await wait(250);
-    }
-    log(`✓ "${g.nombre}" — ${photos.length} fotos subidas`, 'ok');
-    await wait(200);
-  }
-
-  log('Actualizando el catálogo (productos.json)...', 'pending');
-  await wait(500);
-  log('✓ ¡Listo! (simulado) — así se vería con ' + groups.length + ' modelo(s) nuevo(s) publicados de verdad.', 'ok');
-  log('Para publicar en serio, cargá tu token real arriba en Configuración.', 'pending');
-
-  btn.disabled = false;
-  btn.textContent = 'Publicar catálogo';
-}
-
-async function testConnection() {
-  const el = document.getElementById('testResult');
-  el.textContent = 'Probando conexión...';
-  el.style.color = '#9c8478';
-  try {
-    const savedToken = localStorage.getItem('gh_token') || '';
-    const savedOwner = localStorage.getItem('gh_owner') || '';
-    const savedRepo = localStorage.getItem('gh_repo') || '';
-    const diag = `[Guardado: token de ${savedToken.length} caracteres, owner="${savedOwner}", repo="${savedRepo}"]`;
-
-    const res = await fetch(`${ghBase()}/contents/data/productos.json`, { headers: ghHeaders() });
-    if (res.ok) {
-      const data = await res.json();
-      el.innerHTML = `✓ Conexión OK. Se pudo leer el catálogo (${data.size} bytes).<br><span style="font-size:0.68rem">${diag}</span>`;
-      el.style.color = '#4a7c59';
-    } else {
-      let githubMsg = '';
-      try {
-        const errBody = await res.json();
-        githubMsg = errBody.message || '';
-      } catch (e) {}
-      el.innerHTML = `✗ Error ${res.status}: ${githubMsg || '(sin mensaje)'}<br><span style="font-size:0.68rem">${diag}</span>`;
-      el.style.color = '#b03a2e';
-    }
-  } catch (err) {
-    el.textContent = '✗ No se pudo conectar: ' + err.message;
-    el.style.color = '#b03a2e';
-  }
-}
-
 async function publishAll() {
-  if (demoMode) { return publishAllDemo(); }
-  const totalFotos = groups.reduce((sum, g) => sum + g.photoIds.length, 0);
-  const confirmado = confirm(
-    `⚠️ Vas a publicar de verdad en tu web:\n\n` +
-    `${groups.length} modelo(s), ${totalFotos} foto(s) en total.\n\n` +
-    `Esto sube las fotos y actualiza el catálogo en GitHub ahora mismo. ¿Confirmás?`
-  );
-  if (!confirmado) return;
+  if (catalogDirty) { alert('Primero publicá o descartá los cambios pendientes del Catálogo.'); showTab('catalogo'); return; }
+  const totalFotos = groups.reduce((s, g) => s + g.photoIds.length, 0);
+  const totalVideos = groups.filter(g => g.video).length;
+  if (!confirm(`${demoMode ? '🧪 DEMO (no se sube nada)\n\n' : '⚠️ Vas a publicar en tu web:\n\n'}${groups.length} modelo(s), ${totalFotos} foto(s)${totalVideos ? `, ${totalVideos} video(s)` : ''}.\n\n¿Confirmás?`)) return;
 
   const btn = document.getElementById('publishBtn');
-  btn.disabled = true;
-  btn.textContent = 'Publicando...';
+  btn.disabled = true; btn.textContent = 'Publicando...';
   document.getElementById('logBox').innerHTML = '';
-  document.getElementById('logCard').style.display = 'block';
-
   try {
-    log('Leyendo el catálogo actual...', 'pending');
-    const { json: catalogo, sha } = await getProductosJson();
+    log('Leyendo el catálogo actual...');
+    const prod = await getJsonFile('data/productos.json');
+    const catalogo = prod.json;
     let counter = nextNumero(catalogo.productos);
-
     const newEntries = [];
     for (const g of groups) {
       counter++;
       const numero = 'N' + String(counter).padStart(3, '0');
-      const slug = slugify(g.nombre) || 'modelo-' + g.id;
+      // Nombre de archivo único: así nunca choca con una foto vieja del mismo nombre
+      const base = `${slugify(g.nombre) || 'modelo'}-${numero.toLowerCase()}-${stamp()}`;
       const photos = g.photoIds.map(id => pool.find(p => p.id === id)).filter(Boolean);
       const fotoPaths = [];
-
       for (let i = 0; i < photos.length; i++) {
-        const path = `images/${slug}-${i + 1}.jpg`;
-        log(`Subiendo foto ${i + 1} de "${g.nombre}"...`, 'pending');
-        await uploadImage(path, photos[i].dataUrl);
+        const path = `images/${base}-${i + 1}.jpg`;
+        log(`Subiendo foto ${i + 1} de ${photos.length} de "${g.nombre}"...`);
+        await uploadFile(path, photos[i].dataUrl.split(',')[1], null, `Subir foto ${path}`);
         fotoPaths.push(path);
       }
-      log(`✓ "${g.nombre}" — ${photos.length} fotos subidas`, 'ok');
-
-      newEntries.push({
-        numero,
-        nombre: g.nombre,
-        categoria: g.categoria,
-        descripcion: g.detalle,
-        precio: g.precio,
-        fotos: fotoPaths
-      });
+      const entry = { numero, nombre: g.nombre.trim(), categoria: g.categoria, descripcion: g.detalle.trim(), precio: normPrecio(g.precio), fotos: fotoPaths };
+      if (g.video) {
+        const vpath = `videos/${base}.${videoExt(g.video)}`;
+        log(`Subiendo video de "${g.nombre}" (puede tardar un poco)...`);
+        await uploadFile(vpath, await fileToBase64(g.video), null, `Subir video ${vpath}`);
+        entry.videos = [vpath];
+      }
+      log(`✓ "${g.nombre}" listo (${numero})`, 'ok');
+      newEntries.push(entry);
     }
-
     catalogo.productos = catalogo.productos.concat(newEntries);
-    log('Actualizando el catálogo (productos.json)...', 'pending');
-    await saveProductosJson(catalogo, sha);
-    log('✓ ¡Listo! El catálogo se actualizó con ' + newEntries.length + ' modelo(s) nuevo(s).', 'ok');
-    log('La web puede tardar uno o dos minutos en mostrar los cambios.', 'pending');
-
-    groups = [];
-    pool = [];
-    renderPool();
-    renderGroups();
+    log('Actualizando el catálogo...');
+    await saveJsonFile('data/productos.json', catalogo, prod.sha, `Agregar ${newEntries.length} gorra(s) nueva(s) desde el panel`);
+    log(`✓ ¡Listo! Se agregaron ${newEntries.length} modelo(s).${demoMode ? ' (simulado)' : ' La web tarda uno o dos minutos en mostrarlos.'}`, 'ok');
+    toast('¡Publicado! ✓');
+    groups = []; pool = [];
+    renderPool(); renderGroups();
+    if (!demoMode) await reloadAll();
   } catch (err) {
     log('✗ ' + err.message, 'err');
+    log('Las gorras ya subidas no se pierden: corregí el problema y volvé a tocar Publicar.', 'pending');
   } finally {
-    btn.disabled = false;
-    btn.textContent = 'Publicar catálogo';
+    btn.textContent = 'Publicar';
+    updateFooter();
   }
 }
 
+// ======================================================================
+//  CATÁLOGO: editar, vendida, ordenar, fotos y videos
+// ======================================================================
+function markDirty() {
+  if (!catalogDirty) catalogBackup = JSON.stringify(catalogData);
+  catalogDirty = true;
+  updateBars(); updateCounts();
+}
+function renderCatFilter() {
+  const sel = document.getElementById('catFilter');
+  const prev = sel.value;
+  const conteo = {};
+  catalogData.forEach(p => conteo[p.categoria] = (conteo[p.categoria] || 0) + 1);
+  const cats = categoriasParaElegir();
+  catalogData.forEach(p => { if (p.categoria && !cats.includes(p.categoria)) cats.push(p.categoria); });
+  const nVend = catalogData.filter(p => p.vendida).length;
+  sel.innerHTML = `<option value="">Todas (${catalogData.length})</option>` +
+    cats.map(c => `<option value="${esc(c)}">${esc(c)} (${conteo[c] || 0})</option>`).join('') +
+    `<option value="__vendidas">Vendidas (${nVend})</option>`;
+  sel.value = prev;
+}
+function renderCatalogList() {
+  const container = document.getElementById('catalogList');
+  const q = (document.getElementById('catSearch').value || '').toLowerCase().trim();
+  const f = document.getElementById('catFilter').value;
+  const filtrando = !!(q || f);
+  container.innerHTML = '';
+  let shown = 0;
+  catalogData.forEach((p, idx) => {
+    if (f === '__vendidas' ? !p.vendida : (f && p.categoria !== f)) return;
+    if (q && !((p.nombre || '') + ' ' + (p.numero || '') + ' ' + (p.descripcion || '')).toLowerCase().includes(q)) return;
+    shown++;
+    const wrap = document.createElement('div');
+    const thumb = (p.fotos && p.fotos[0]) ? fotoUrl(p.fotos[0]) : '';
+    const nv = (p.videos || []).length;
+    if (expandedIndex === idx) {
+      wrap.innerHTML = renderEditBox(p, idx, thumb);
+    } else {
+      wrap.innerHTML = `
+        <div class="catItem${p.vendida ? ' isSold' : ''}">
+          <img src="${esc(thumb)}" loading="lazy" onerror="this.style.opacity=0.2">
+          <div class="catInfo">
+            <div class="nm">${esc(p.nombre || '(sin nombre)')}</div>
+            <div class="meta">${esc(p.numero || '')} · ${esc(p.categoria || '')} · ${esc(p.precio || '')}</div>
+            <div>${p.vendida ? '<span class="badge sold">Vendida</span>' : ''}${nv ? `<span class="badge vid">▶ ${nv} video</span>` : ''}</div>
+          </div>
+          <div class="catActions">
+            <button class="btn-primary btn-small" onclick="openEdit(${idx})">Editar</button>
+            <button class="btn-secondary btn-small" onclick="toggleVendida(${idx})">${p.vendida ? '↩ Disponible' : '✓ Vendida'}</button>
+          </div>
+        </div>`;
+    }
+    container.appendChild(wrap);
+  });
+  if (!shown) container.innerHTML = `<div class="empty">${catalogData.length ? 'No hay gorras que coincidan con la búsqueda.' : 'Todavía no se cargó el catálogo.'}</div>`;
+  if (filtrando && shown) {
+    const h = document.createElement('div'); h.className = 'hint';
+    h.textContent = 'Para cambiar el orden en la tienda, borrá la búsqueda y elegí "Todas".';
+    container.prepend(h);
+  }
+}
+function renderEditBox(p, idx, thumb) {
+  const fotos = p.fotos || [];
+  const vids = p.videos || [];
+  const filtrando = !!(document.getElementById('catSearch').value || document.getElementById('catFilter').value);
+  return `
+    <div class="editBox">
+      <div class="editHead">
+        <img src="${esc(thumb)}" onerror="this.style.opacity=0.2">
+        <div class="catInfo"><div class="nm">${esc(p.nombre || '(sin nombre)')}</div><div class="meta">${esc(p.numero || '')} · posición ${idx + 1} de ${catalogData.length}</div></div>
+      </div>
+      <label>Fotos (la primera es la portada)</label>
+      <div class="thumbs">
+        ${fotos.map((foto, fIdx) => `
+          <div class="photoItem">
+            <div class="thumb" style="cursor:default;">
+              <img src="${esc(fotoUrl(foto))}" onerror="this.style.opacity=0.2">
+              <div class="removeBtn" onclick="removeCatalogPhoto(${idx},${fIdx})" title="Quitar foto">✕</div>
+              ${fIdx === 0 ? '<div class="coverTag">portada</div>' : ''}
+            </div>
+            <div class="miniRow">
+              <button class="miniBtn" onclick="moveCatalogPhoto(${idx},${fIdx},-1)" ${fIdx === 0 ? 'disabled' : ''}>◀</button>
+              <button class="miniBtn" onclick="moveCatalogPhoto(${idx},${fIdx},1)" ${fIdx === fotos.length - 1 ? 'disabled' : ''}>▶</button>
+            </div>
+            <div class="miniRow">
+              <a class="miniBtn" href="${esc(fotoUrl(foto))}" download target="_blank">⬇</a>
+              <button class="miniBtn" onclick="replaceCatalogPhoto(${idx},${fIdx})" title="Cambiar foto">🔄</button>
+            </div>
+          </div>`).join('')}
+        <div class="photoItem"><button class="addTile" onclick="addCatalogPhoto(${idx})">＋<br>Agregar foto</button></div>
+      </div>
+      <label>Videos de esta gorra</label>
+      ${vids.map((v, vIdx) => `<div class="videoChip">🎬 <span>${esc(v.split('/').pop())}</span><a class="btn-secondary btn-small" href="${esc(fotoUrl(v))}" target="_blank" style="text-decoration:none">Ver</a><button class="btn-danger btn-small" onclick="removeCatalogVideo(${idx},${vIdx})">Quitar</button></div>`).join('')}
+      <button class="btn-secondary btn-small" style="margin-top:6px;" onclick="pickVideo(f => addCatalogVideo(${idx}, f))">🎬 Agregar video</button>
+      <label>Nombre</label>
+      <input type="text" value="${esc(p.nombre)}" oninput="updateCatalogField(${idx},'nombre',this.value)">
+      <div class="row2">
+        <div><label>Categoría</label><select onchange="updateCatalogField(${idx},'categoria',this.value)">${catOptions(p.categoria)}</select></div>
+        <div><label>Precio</label><input type="text" inputmode="numeric" value="${esc(p.precio)}" oninput="updateCatalogField(${idx},'precio',this.value)" onblur="this.value=normPrecio(this.value); updateCatalogField(${idx},'precio',this.value)"></div>
+      </div>
+      <label>Detalle</label>
+      <textarea oninput="updateCatalogField(${idx},'descripcion',this.value)">${esc(p.descripcion)}</textarea>
+      <label class="switch"><input type="checkbox" ${p.vendida ? 'checked' : ''} onchange="toggleVendida(${idx}, this.checked)"> Vendida <span class="hint" style="margin:0;font-weight:400">(sigue en la web con la etiqueta "Vendida" y el botón "Pedir similar")</span></label>
+      <label>Orden en la tienda</label>
+      <div class="btn-row" style="margin-top:0">
+        <button class="btn-secondary btn-small" onclick="moveProduct(${idx}, 'top')" ${idx === 0 || filtrando ? 'disabled' : ''}>⤒ Primera</button>
+        <button class="btn-secondary btn-small" onclick="moveProduct(${idx}, -1)" ${idx === 0 || filtrando ? 'disabled' : ''}>↑ Subir</button>
+        <button class="btn-secondary btn-small" onclick="moveProduct(${idx}, 1)" ${idx === catalogData.length - 1 || filtrando ? 'disabled' : ''}>↓ Bajar</button>
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary btn-small" onclick="expandedIndex=null; renderCatalogList();">Listo</button>
+        <button class="btn-danger btn-small" onclick="deleteCatalogItem(${idx})">Eliminar gorra</button>
+      </div>
+    </div>`;
+}
+function openEdit(idx) { expandedIndex = idx; renderCatalogList(); }
+function updateCatalogField(idx, field, value) { markDirty(); catalogData[idx][field] = value; }
+function toggleVendida(idx, val) {
+  const p = catalogData[idx];
+  markDirty();
+  if (val === undefined ? !p.vendida : val) p.vendida = true; else delete p.vendida;
+  renderCatFilter(); renderCatalogList();
+  toast(p.vendida ? 'Marcada como vendida. Tocá "Publicar cambios".' : 'Marcada como disponible. Tocá "Publicar cambios".');
+}
+function moveProduct(idx, dir) {
+  markDirty();
+  const [p] = catalogData.splice(idx, 1);
+  const to = dir === 'top' ? 0 : Math.max(0, Math.min(catalogData.length, idx + dir));
+  catalogData.splice(to, 0, p);
+  expandedIndex = to;
+  renderCatalogList();
+}
+function deleteCatalogItem(idx) {
+  const p = catalogData[idx];
+  if (!confirm(`¿Eliminar "${p.nombre || 'esta gorra'}" del catálogo?\n\nSi solo se vendió, mejor marcala como "Vendida".`)) return;
+  markDirty();
+  catalogData.splice(idx, 1);
+  expandedIndex = null;
+  renderCatFilter(); renderCatalogList();
+}
+function removeCatalogPhoto(idx, fIdx) {
+  if (!confirm('¿Quitar esta foto de la gorra?')) return;
+  markDirty();
+  catalogData[idx].fotos.splice(fIdx, 1);
+  renderCatalogList();
+}
+function moveCatalogPhoto(idx, fIdx, dir) {
+  const f = catalogData[idx].fotos; const to = fIdx + dir;
+  if (to < 0 || to >= f.length) return;
+  markDirty();
+  [f[fIdx], f[to]] = [f[to], f[fIdx]];
+  renderCatalogList();
+}
+function replaceCatalogPhoto(idx, fIdx) {
+  pickFile('image/*', async file => {
+    setMsg('catalogStatus', 'Subiendo foto nueva...', 'pending');
+    try {
+      const dataUrl = await compressImage(file, 1600, 0.85);
+      const path = catalogData[idx].fotos[fIdx];
+      const sha = await getFileSha(path);
+      await uploadFile(path, dataUrl.split(',')[1], sha, `Reemplazar foto ${path}`);
+      cacheBust[path] = Date.now();
+      setMsg('catalogStatus', '✓ Foto reemplazada. En la web puede tardar uno o dos minutos en verse.', 'ok');
+      renderCatalogList();
+    } catch (err) { setMsg('catalogStatus', '✗ ' + err.message, 'err'); toast(err.message, true); }
+  });
+}
+function addCatalogPhoto(idx) {
+  pickFile('image/*', async file => {
+    setMsg('catalogStatus', 'Subiendo foto nueva...', 'pending');
+    try {
+      const dataUrl = await compressImage(file, 1600, 0.85);
+      const p = catalogData[idx];
+      const path = `images/${slugify(p.nombre || p.numero || 'gorra')}-extra-${stamp()}.jpg`;
+      await uploadFile(path, dataUrl.split(',')[1], null, `Subir foto ${path}`);
+      markDirty();
+      if (!p.fotos) p.fotos = [];
+      p.fotos.push(path);
+      setMsg('catalogStatus', '✓ Foto agregada. Tocá "Publicar cambios" para que aparezca en la web.', 'ok');
+      renderCatalogList();
+    } catch (err) { setMsg('catalogStatus', '✗ ' + err.message, 'err'); toast(err.message, true); }
+  });
+}
+async function addCatalogVideo(idx, file) {
+  setMsg('catalogStatus', 'Subiendo video (puede tardar un poco)...', 'pending');
+  toast('Subiendo video...');
+  try {
+    const p = catalogData[idx];
+    const path = `videos/${slugify(p.nombre || p.numero || 'gorra')}-${stamp()}.${videoExt(file)}`;
+    await uploadFile(path, await fileToBase64(file), null, `Subir video ${path}`);
+    markDirty();
+    if (!p.videos) p.videos = [];
+    p.videos.push(path);
+    setMsg('catalogStatus', '✓ Video subido. Tocá "Publicar cambios" para que aparezca en la web.', 'ok');
+    renderCatalogList();
+  } catch (err) { setMsg('catalogStatus', '✗ ' + err.message, 'err'); toast(err.message, true); }
+}
+function removeCatalogVideo(idx, vIdx) {
+  if (!confirm('¿Quitar este video de la gorra?')) return;
+  markDirty();
+  const p = catalogData[idx];
+  p.videos.splice(vIdx, 1);
+  if (!p.videos.length) delete p.videos;
+  renderCatalogList();
+}
+function discardCatalogChanges() {
+  if (!confirm('¿Descartar todos los cambios sin publicar del catálogo?')) return;
+  if (catalogBackup) catalogData = JSON.parse(catalogBackup);
+  catalogDirty = false; catalogBackup = null; expandedIndex = null;
+  renderAll();
+}
+async function publishCatalogChanges() {
+  const btn = document.getElementById('catalogPublishBtn');
+  btn.disabled = true; btn.textContent = 'Publicando...';
+  try {
+    catalogData.forEach(p => { if (p.precio) p.precio = normPrecio(p.precio); });
+    catalogSha = await saveJsonFile('data/productos.json', { productos: catalogData }, catalogSha, 'Editar catálogo desde el panel');
+    catalogDirty = false; catalogBackup = null;
+    setMsg('catalogStatus', demoMode ? '✓ (demo) Cambios simulados.' : '✓ Cambios publicados. La web se actualiza en uno o dos minutos.', 'ok');
+    toast('Cambios publicados ✓');
+    renderAll();
+  } catch (err) {
+    setMsg('catalogStatus', '✗ ' + err.message, 'err'); toast(err.message, true);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Publicar cambios';
+  }
+}
+
+// ======================================================================
+//  CATEGORÍAS (data/categorias.json) — se guardan al instante
+// ======================================================================
+function conteoCat(c) { return catalogData.filter(p => p.categoria === c).length; }
+function renderCategoriasList() {
+  const el = document.getElementById('categoriasList');
+  const sueltas = [...new Set(catalogData.map(p => p.categoria).filter(c => c && !categorias.includes(c)))];
+  el.innerHTML = categorias.map((c, i) => `
+    <div class="listRow">
+      <div class="grow"><b>${esc(c)}</b><small>${conteoCat(c)} gorra(s)${conteoCat(c) ? '' : ' — sin gorras, no se muestra en la tienda'}</small></div>
+      <button class="iconBtn" onclick="moveCategoria(${i},-1)" ${i === 0 ? 'disabled' : ''} title="Subir">↑</button>
+      <button class="iconBtn" onclick="moveCategoria(${i},1)" ${i === categorias.length - 1 ? 'disabled' : ''} title="Bajar">↓</button>
+      <button class="iconBtn" onclick="renameCategoria(${i})" title="Cambiar nombre">✎</button>
+      <button class="iconBtn del" onclick="removeCategoria(${i})" title="Borrar">✕</button>
+    </div>`).join('') +
+    sueltas.map(c => `
+    <div class="listRow" style="border-style:dashed">
+      <div class="grow"><b>${esc(c)}</b><small>${conteoCat(c)} gorra(s) con una categoría que no está en la lista</small></div>
+      <button class="btn-secondary btn-small" onclick="adoptCategoria(${jsArg(c)})">Agregar a la lista</button>
+    </div>`).join('');
+}
+async function saveCategorias(msg) {
+  categoriasSha = await saveJsonFile('data/categorias.json', { categorias: categorias.map(nombre => ({ nombre })) }, categoriasSha, msg);
+}
+// Aplica un cambio de categorías y lo guarda; si falla, vuelve atrás
+async function changeCategorias(mutar, msg, okText) {
+  const antes = categorias.slice();
+  mutar();
+  renderAll();
+  setMsg('catMsg', 'Guardando...', 'pending');
+  try {
+    await saveCategorias(msg);
+    setMsg('catMsg', okText, 'ok'); toast(okText);
+  } catch (err) {
+    categorias = antes; renderAll();
+    setMsg('catMsg', '✗ ' + err.message, 'err'); toast(err.message, true);
+  }
+}
+function addCategoria() {
+  const input = document.getElementById('newCategoriaInput');
+  const val = input.value.trim().replace(/\s+/g, ' ');
+  if (!val) return;
+  if (categorias.some(c => c.toLowerCase() === val.toLowerCase())) { alert('Esa categoría ya existe.'); return; }
+  input.value = '';
+  changeCategorias(() => categorias.push(val), `Agregar categoría ${val}`, `✓ Categoría "${val}" agregada.`);
+}
+function adoptCategoria(c) { changeCategorias(() => categorias.push(c), `Agregar categoría ${c}`, `✓ "${c}" agregada a la lista.`); }
+function moveCategoria(i, dir) {
+  const j = i + dir;
+  if (j < 0 || j >= categorias.length) return;
+  changeCategorias(() => { [categorias[i], categorias[j]] = [categorias[j], categorias[i]]; }, 'Ordenar categorías', '✓ Orden guardado.');
+}
+async function renameCategoria(i) {
+  const viejo = categorias[i];
+  const nuevo = (prompt(`Nuevo nombre para "${viejo}":`, viejo) || '').trim().replace(/\s+/g, ' ');
+  if (!nuevo || nuevo === viejo) return;
+  if (categorias.some((c, k) => k !== i && c.toLowerCase() === nuevo.toLowerCase())) { alert('Ya existe una categoría con ese nombre.'); return; }
+  const n = conteoCat(viejo);
+  if (n && catalogDirty) { alert('Primero publicá o descartá los cambios pendientes del Catálogo.'); return; }
+  setMsg('catMsg', 'Guardando...', 'pending');
+  try {
+    if (n) {
+      // Cambia también la categoría de las gorras que la usan
+      const prod = await getJsonFile('data/productos.json');
+      prod.json.productos.forEach(p => { if (p.categoria === viejo) p.categoria = nuevo; });
+      catalogSha = await saveJsonFile('data/productos.json', prod.json, prod.sha, `Renombrar categoría ${viejo} a ${nuevo}`);
+      catalogData = prod.json.productos;
+    }
+    categorias[i] = nuevo;
+    await saveCategorias(`Renombrar categoría ${viejo} a ${nuevo}`);
+    renderAll();
+    setMsg('catMsg', `✓ "${viejo}" ahora se llama "${nuevo}"${n ? ` (${n} gorras actualizadas)` : ''}.`, 'ok');
+  } catch (err) {
+    setMsg('catMsg', '✗ ' + err.message, 'err'); toast(err.message, true);
+    reloadAll();
+  }
+}
+async function removeCategoria(i) {
+  const c = categorias[i];
+  const n = conteoCat(c);
+  if (!n) {
+    if (!confirm(`¿Borrar la categoría "${c}"?`)) return;
+    return changeCategorias(() => categorias.splice(i, 1), `Borrar categoría ${c}`, `✓ Categoría "${c}" borrada.`);
+  }
+  const destinos = categorias.filter(x => x !== c);
+  if (!destinos.length) { alert('No podés borrar la única categoría.'); return; }
+  if (catalogDirty) { alert('Primero publicá o descartá los cambios pendientes del Catálogo.'); return; }
+  const destino = prompt(`"${c}" tiene ${n} gorra(s). ¿A qué categoría las paso?\n\nEscribí una de estas: ${destinos.join(', ')}`, destinos.includes('Otras') ? 'Otras' : destinos[0]);
+  if (destino == null) return;
+  const dest = destinos.find(x => x.toLowerCase() === destino.trim().toLowerCase());
+  if (!dest) { alert('Esa categoría no existe. No se borró nada.'); return; }
+  setMsg('catMsg', 'Guardando...', 'pending');
+  try {
+    const prod = await getJsonFile('data/productos.json');
+    prod.json.productos.forEach(p => { if (p.categoria === c) p.categoria = dest; });
+    catalogSha = await saveJsonFile('data/productos.json', prod.json, prod.sha, `Pasar gorras de ${c} a ${dest}`);
+    catalogData = prod.json.productos;
+    categorias.splice(i, 1);
+    await saveCategorias(`Borrar categoría ${c}`);
+    renderAll();
+    setMsg('catMsg', `✓ "${c}" borrada. ${n} gorra(s) pasaron a "${dest}".`, 'ok');
+  } catch (err) {
+    setMsg('catMsg', '✗ ' + err.message, 'err'); toast(err.message, true);
+    reloadAll();
+  }
+}
+
+// ======================================================================
+//  VIDEOS DE LA TIENDA (data/videos.json) — se guardan al instante
+// ======================================================================
+function videoLabel(url) {
+  if (/youtu/.test(url)) return 'YouTube';
+  if (/instagram/.test(url)) return 'Instagram';
+  if (/tiktok/.test(url)) return 'TikTok';
+  if (/^videos\//.test(url)) return 'Video subido';
+  return 'Link';
+}
+function renderVideosList() {
+  const el = document.getElementById('videosList');
+  if (!videosData.length) { el.innerHTML = '<div class="empty">Todavía no hay videos. La sección "Videos" aparece en la web cuando agregás el primero.</div>'; return; }
+  el.innerHTML = videosData.map((v, i) => `
+    <div class="listRow">
+      <div class="grow"><b>${esc(v.titulo || '(sin título)')}</b><small>${videoLabel(v.url)} · <a href="${esc(fotoUrl(v.url))}" target="_blank">ver</a></small></div>
+      <button class="iconBtn" onclick="moveVideo(${i},-1)" ${i === 0 ? 'disabled' : ''}>↑</button>
+      <button class="iconBtn" onclick="moveVideo(${i},1)" ${i === videosData.length - 1 ? 'disabled' : ''}>↓</button>
+      <button class="iconBtn" onclick="editVideoTitle(${i})" title="Cambiar título">✎</button>
+      <button class="iconBtn del" onclick="removeVideo(${i})">✕</button>
+    </div>`).join('');
+}
+async function changeVideos(mutar, msg, okText) {
+  const antes = JSON.stringify(videosData);
+  mutar(); renderVideosList(); updateCounts();
+  setMsg('videoMsg', 'Guardando...', 'pending');
+  try {
+    videosSha = await saveJsonFile('data/videos.json', { videos: videosData }, videosSha, msg);
+    setMsg('videoMsg', okText, 'ok'); toast(okText);
+    return true;
+  } catch (err) {
+    videosData = JSON.parse(antes); renderVideosList(); updateCounts();
+    setMsg('videoMsg', '✗ ' + err.message, 'err'); toast(err.message, true);
+    return false;
+  }
+}
+function addVideoLink() {
+  const url = document.getElementById('vUrl').value.trim();
+  const titulo = document.getElementById('vTitulo').value.trim();
+  if (!/^https?:\/\//.test(url)) { alert('Pegá un link completo (que empiece con https://).'); return; }
+  changeVideos(() => videosData.push({ titulo, url }), 'Agregar video a la tienda', '✓ Video agregado.').then(ok => {
+    if (ok) { document.getElementById('vUrl').value = ''; document.getElementById('vTitulo').value = ''; }
+  });
+}
+async function addVideoFile(file) {
+  const titulo = document.getElementById('vTitulo').value.trim();
+  setMsg('videoMsg', `Subiendo video (${(file.size / 1048576).toFixed(1)} MB, puede tardar)...`, 'pending');
+  try {
+    const path = `videos/${slugify(titulo) || 'video'}-${stamp()}.${videoExt(file)}`;
+    await uploadFile(path, await fileToBase64(file), null, `Subir video ${path}`);
+    const ok = await changeVideos(() => videosData.push({ titulo, url: path }), 'Agregar video a la tienda', '✓ Video subido y agregado.');
+    if (ok) document.getElementById('vTitulo').value = '';
+  } catch (err) { setMsg('videoMsg', '✗ ' + err.message, 'err'); toast(err.message, true); }
+}
+function moveVideo(i, dir) {
+  const j = i + dir; if (j < 0 || j >= videosData.length) return;
+  changeVideos(() => { [videosData[i], videosData[j]] = [videosData[j], videosData[i]]; }, 'Ordenar videos', '✓ Orden guardado.');
+}
+function editVideoTitle(i) {
+  const t = prompt('Título del video:', videosData[i].titulo || '');
+  if (t == null) return;
+  changeVideos(() => { videosData[i].titulo = t.trim(); }, 'Cambiar título de video', '✓ Título guardado.');
+}
+function removeVideo(i) {
+  if (!confirm(`¿Quitar "${videosData[i].titulo || 'este video'}" de la tienda?`)) return;
+  changeVideos(() => videosData.splice(i, 1), 'Quitar video de la tienda', '✓ Video quitado.');
+}
+
+// ======================================================================
+//  Inicio
+// ======================================================================
+renderAll();
 loadConfig();
 
-// ---------- Mostrar cualquier error directo en pantalla (sin necesitar herramientas de desarrollador) ----------
-window.onerror = function(msg, url, line, col, error) {
+// Muestra cualquier error en pantalla (sin necesitar herramientas de desarrollador)
+window.onerror = function(msg, url, line, col) {
   const box = document.createElement('div');
   box.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#b03a2e;color:white;padding:12px;font-size:0.8rem;font-family:monospace;max-height:40vh;overflow-y:auto;';
-  box.innerHTML = `<b>⚠️ ERROR DETECTADO</b><br>${msg}<br>Línea ${line}, columna ${col}<br><button onclick="this.parentElement.remove()" style="margin-top:8px;padding:4px 10px;">Cerrar</button>`;
+  box.innerHTML = `<b>⚠️ ERROR DETECTADO</b><br>${esc(msg)}<br>Línea ${line}, columna ${col}<br><button onclick="this.parentElement.remove()" style="margin-top:8px;padding:4px 10px;">Cerrar</button>`;
   document.body.prepend(box);
   return false;
 };
-
 </script>
 </body>
 </html>

@@ -182,7 +182,7 @@
     {
       "numero": "N015",
       "nombre": "Bugué Nº12",
-      "categoria": "Otras",
+      "categoria": "Bugué",
       "descripcion": "Denim celeste con strass navette Hotfix.",
       "precio": "$35.000",
       "fotos": [
@@ -323,7 +323,7 @@
     {
       "numero": "N028",
       "nombre": "Bugué Nº13",
-      "categoria": "Otras",
+      "categoria": "Bugué",
       "descripcion": "Con galón de strass y perlas.",
       "precio": "$33.000",
       "fotos": [
@@ -366,7 +366,8 @@
         "images/405703.png",
         "images/512768.png",
         "images/512766.png"
-      ]
+      ],
+      "numero": "N104"
     },
     {
       "nombre": "Gorra \"Airbag\" N° 5",
@@ -377,7 +378,8 @@
         "images/405581.jpg",
         "images/405579.jpg",
         "images/405577.jpg"
-      ]
+      ],
+      "numero": "N105"
     },
     {
       "nombre": "Gorra \"Airbag N° 4\"",
@@ -388,7 +390,8 @@
         "images/405567.jpg",
         "images/405565.jpg",
         "images/405569.jpg"
-      ]
+      ],
+      "numero": "N106"
     },
     {
       "numero": "N031",
@@ -1017,7 +1020,7 @@
     {
       "numero": "N083",
       "nombre": "Gorra \"Bugué\" N° 2",
-      "categoria": "Otras",
+      "categoria": "Bugué",
       "descripcion": "Con strass ss16 tornasolado ",
       "precio": "$26000",
       "fotos": [
@@ -1225,7 +1228,7 @@
     {
       "numero": "N101",
       "nombre": "Gorra \"Bugué\" N° 14",
-      "categoria": "Otras",
+      "categoria": "Bugué",
       "descripcion": "Galón de gemas ",
       "precio": "$35000",
       "fotos": [
