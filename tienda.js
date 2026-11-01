@@ -19,6 +19,7 @@ function fotosDe(p){let f=(p.fotos&&p.fotos.length)?p.fotos:[p.foto1,p.foto2,p.f
 function videosDe(p){return (p.videos||[]).filter(Boolean)}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),1800)}
 const ICON_CART='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1.2 11.2a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 7z"/><path d="M9 7V6a3 3 0 0 1 6 0v1"/></svg>';
+const ICON_WA='<svg class="wa-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.27-1.38a9.9 9.9 0 0 0 4.77 1.21h.01c5.46 0 9.91-4.45 9.91-9.91A9.86 9.86 0 0 0 12.04 2zm5.84 14.07c-.25.7-1.45 1.34-2 1.43-.51.08-1.15.11-1.86-.12-.43-.13-.98-.32-1.69-.62-2.97-1.28-4.91-4.27-5.06-4.47-.15-.2-1.21-1.61-1.21-3.07 0-1.46.77-2.18 1.04-2.47.27-.29.6-.37.8-.37.2 0 .4 0 .57.01.18.01.43-.07.67.51.25.6.85 2.07.92 2.22.07.15.12.33.02.53-.1.2-.15.32-.3.49-.15.17-.31.39-.45.52-.15.15-.3.31-.13.6.17.3.77 1.27 1.65 2.06 1.13 1.01 2.09 1.33 2.38 1.48.29.15.46.13.63-.05.17-.18.74-.86.94-1.16.2-.3.4-.25.67-.15.27.1 1.74.82 2.04.97.3.15.5.22.57.35.07.13.07.74-.18 1.44z"/></svg>';
 const ICON_CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>';
 
 // ---------- Carrusel ----------
@@ -51,7 +52,7 @@ function buildCard(p, idx){
     ?`Hola Cintia! Vi la gorra "${p.nombre}" (${numTexto(p)}) que figura vendida. ¿Me harías una similar?`
     :`Hola Cintia! Me interesa la gorra "${p.nombre}" (${numTexto(p)})`;
   const cartBtn=p.vendida?'':`<button class="add-cart" data-num="${escapeHtml(p.numero)}" onclick="toggleCart('${escapeHtml(p.numero)}')" aria-label="Agregar al carrito">${ICON_CART}</button>`;
-  return `<article class="card${p.vendida?' sold':''}" data-cat="${escapeHtml(p.categoria)}" data-idx="${idx}"><span class="tag" style="--rot:${rot}">N&ordm;${escapeHtml(String(p.numero||'').replace(/^N/,''))}</span><div class="card-img">${sold}<div class="carousel" id="card${idx}" onclick="openModal(${idx})">${slides}${dots}</div>${vids}</div><div class="card-body"><h3>${escapeHtml(p.nombre)}</h3><p>${escapeHtml(p.descripcion)}</p><div class="card-foot"><span class="price">${escapeHtml(precioTexto(p.precio))}</span><span class="card-actions"><a class="mini-wa" href="${waLink(waText)}" target="_blank" rel="noopener">${p.vendida?'Pedir similar':'Consultar'}</a>${cartBtn}</span></div></div></article>`;
+  return `<article class="card${p.vendida?' sold':''}" data-cat="${escapeHtml(p.categoria)}" data-idx="${idx}"><span class="tag" style="--rot:${rot}">N&ordm;${escapeHtml(String(p.numero||'').replace(/^N/,''))}</span><div class="card-img">${sold}<div class="carousel" id="card${idx}" onclick="openModal(${idx})">${slides}${dots}</div>${vids}</div><div class="card-body"><h3>${escapeHtml(p.nombre)}</h3><p>${escapeHtml(p.descripcion)}</p><div class="card-foot"><span class="price">${escapeHtml(precioTexto(p.precio))}</span><span class="card-actions"><a class="mini-wa" href="${waLink(waText)}" target="_blank" rel="noopener" aria-label="${p.vendida?'Pedir similar':'Consultar'} por WhatsApp">${ICON_WA}<span class="wa-txt">${p.vendida?'Pedir similar':'Consultar'}</span></a>${cartBtn}</span></div></div></article>`;
 }
 
 // ---------- Filtros de categoría (salen de data/categorias.json) ----------
@@ -112,6 +113,8 @@ function openModal(idx){
     }
   });
   dotsWrap.style.display=items.length>1?'flex':'none';
+  document.getElementById('mPrev').style.display=items.length>1?'':'none';
+  document.getElementById('mNext').style.display=items.length>1?'':'none';
   document.getElementById('modalTitle').textContent=p.nombre||'';
   document.getElementById('modalDesc').textContent=p.descripcion||'';
   document.getElementById('modalPrice').textContent=precioTexto(p.precio);
@@ -133,6 +136,75 @@ function updateModalCartBtn(){
   const p=PRODUCTOS[modalIdx];const mb=document.getElementById('modalCart');
   mb.textContent=getCart().includes(p.numero)?'✓ En el carrito':'🛒 Agregar';
 }
+// ---------- Visor de fotos a pantalla completa (con zoom) ----------
+let vFotos=[],vIdx=0,vZoom=false,vDrag=null,vOx=50,vOy=50;
+function openViewerFromModal(){
+  if(modalIdx==null)return;
+  const mc=document.getElementById('modalCarousel');
+  const slides=[...mc.querySelectorAll('.slide')];
+  const act=slides.findIndex(x=>x.classList.contains('active'));
+  if(slides[act]&&slides[act].querySelector('video'))return;
+  vFotos=fotosDe(PRODUCTOS[modalIdx]);
+  vIdx=Math.max(0,Math.min(act,vFotos.length-1));
+  document.getElementById('viewer').classList.add('open');
+  viewerShow();
+}
+function viewerShow(){
+  const img=document.getElementById('viewerImg');
+  vZoom=false;vOx=50;vOy=50;
+  document.getElementById('viewer').classList.remove('zoomed');
+  img.style.transform='';img.style.transformOrigin='50% 50%';
+  img.src=vFotos[vIdx];
+  const varias=vFotos.length>1;
+  document.getElementById('vPrev').style.display=varias?'':'none';
+  document.getElementById('vNext').style.display=varias?'':'none';
+  document.getElementById('vCount').textContent=varias?(vIdx+1)+' / '+vFotos.length:'';
+  document.getElementById('vHint').textContent='Tocá la foto para hacer zoom'+(varias?' · deslizá para ver las otras':'');
+}
+function viewerGo(d){if(vFotos.length<2)return;vIdx=(vIdx+d+vFotos.length)%vFotos.length;viewerShow()}
+function closeViewer(){document.getElementById('viewer').classList.remove('open');
+  // Al cerrar, la ventana de la gorra queda en la misma foto que se estaba mirando
+  if(modalIdx!=null)goSlide(document.getElementById('modalCarousel'),vIdx);}
+function viewerZoomAt(x,y){
+  const img=document.getElementById('viewerImg');const r=img.getBoundingClientRect();
+  vOx=Math.max(0,Math.min(100,(x-r.left)/r.width*100));vOy=Math.max(0,Math.min(100,(y-r.top)/r.height*100));
+  vZoom=true;document.getElementById('viewer').classList.add('zoomed');
+  img.style.transformOrigin=vOx+'% '+vOy+'%';img.style.transform='scale(2.6)';
+  document.getElementById('vHint').textContent='Arrastrá para mover · tocá de nuevo para alejar';
+}
+(function(){
+  const v=document.getElementById('viewer');if(!v)return;
+  const img=document.getElementById('viewerImg');
+  v.addEventListener('pointerdown',e=>{if(e.target.closest('.v-btn'))return;vDrag={x:e.clientX,y:e.clientY,sx:e.clientX,sy:e.clientY,moved:false,type:e.pointerType};});
+  v.addEventListener('pointermove',e=>{
+    if(vZoom&&e.pointerType==='mouse'&&!vDrag){ // con mouse, la foto sigue al puntero
+      const r=img.getBoundingClientRect();
+      vOx=Math.max(0,Math.min(100,(e.clientX-r.left)/r.width*100));vOy=Math.max(0,Math.min(100,(e.clientY-r.top)/r.height*100));
+      img.style.transformOrigin=vOx+'% '+vOy+'%';return;
+    }
+    if(!vDrag)return;
+    const dx=e.clientX-vDrag.x,dy=e.clientY-vDrag.y;
+    if(Math.hypot(e.clientX-vDrag.sx,e.clientY-vDrag.sy)>8)vDrag.moved=true;
+    if(vZoom&&vDrag.moved){ // arrastrar mueve la foto ampliada
+      const r=img.getBoundingClientRect();
+      vOx=Math.max(0,Math.min(100,vOx-dx/r.width*100));vOy=Math.max(0,Math.min(100,vOy-dy/r.height*100));
+      img.style.transformOrigin=vOx+'% '+vOy+'%';
+      vDrag.x=e.clientX;vDrag.y=e.clientY;
+    }
+  });
+  v.addEventListener('pointerup',e=>{
+    if(!vDrag)return;const d=vDrag;vDrag=null;
+    const dx=e.clientX-d.sx;
+    if(!d.moved){
+      if(e.target===img){if(vZoom)viewerShow();else viewerZoomAt(e.clientX,e.clientY);}
+      else if(!vZoom)closeViewer(); // tocar el fondo negro cierra
+      return;
+    }
+    if(!vZoom&&Math.abs(dx)>50)viewerGo(dx<0?1:-1);
+  });
+  v.addEventListener('pointercancel',()=>{vDrag=null});
+})();
+
 function closeModal(){
   pausarVideos(document.getElementById('modalCarousel'));
   document.getElementById('modalOverlay').classList.remove('open');
@@ -282,4 +354,9 @@ Promise.all([
   document.querySelector('.grid').innerHTML='<p style="padding:40px;text-align:center;color:#7A5C5F">No se pudo cargar el cat&aacute;logo. Revis&aacute; tu conexi&oacute;n e intent&aacute; de nuevo.</p>';
   console.error(err);
 });
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeCart()}});
+document.addEventListener('keydown',e=>{
+  const vOpen=document.getElementById('viewer').classList.contains('open');
+  if(e.key==='Escape'){if(vOpen)closeViewer();else{closeModal();closeCart()}}
+  if(vOpen&&e.key==='ArrowRight')viewerGo(1);
+  if(vOpen&&e.key==='ArrowLeft')viewerGo(-1);
+});
