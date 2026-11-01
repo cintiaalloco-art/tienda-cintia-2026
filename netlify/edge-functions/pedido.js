@@ -8,7 +8,8 @@ function esc(s) {
 }
 function precioNum(p) { const d = String(p || '').replace(/\D/g, ''); return d ? parseInt(d, 10) : 0; }
 function fmt(n) { return '$' + n.toLocaleString('es-AR'); }
-function numTexto(p) { return 'Nº' + String(p.numero || '').replace(/^N/, ''); }
+// Número visible: categoría + número dentro de la categoría (ej. "Airbag Nº16")
+function numTexto(p){return p.nro?`${p.categoria} Nº${p.nro}`:'Nº'+String(p.numero||'').replace(/^N/,'')}
 
 export function altoCollage() { return 600; } // todas las imágenes son cuadradas
 

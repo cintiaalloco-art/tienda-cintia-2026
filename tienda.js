@@ -12,7 +12,8 @@ function escapeHtml(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace
 function precioNum(p){const d=String(p||'').replace(/\D/g,'');return d?parseInt(d,10):0}
 function formatoPrecio(n){return '$'+n.toLocaleString('es-AR')}
 function precioTexto(p){const n=precioNum(p);return n?formatoPrecio(n):(p||'')}
-function numTexto(p){return 'Nº'+String(p.numero||'').replace(/^N/,'')}
+// Número visible: categoría + número dentro de la categoría (ej. "Airbag Nº16")
+function numTexto(p){return p.nro?`${p.categoria} Nº${p.nro}`:'Nº'+String(p.numero||'').replace(/^N/,'')}
 function esVideo(src){return /\.(mp4|mov|webm|m4v)(\?|#|$)/i.test(src||'')}
 // Mensaje para consultar por una gorra. El link va en la 2ª línea: WhatsApp muestra la foto
 // de la gorra en miniatura (la pone netlify/edge-functions/pedido.js) y al tocarlo se ve la gorra.
@@ -59,7 +60,7 @@ function buildCard(p, idx, pre){
   const sold=p.vendida?`<span class="sold-ribbon">Vendida</span>`:'';
   const waText=textoConsulta(p);
   const cartBtn=p.vendida?'':`<button class="add-cart" data-num="${escapeHtml(p.numero)}" onclick="toggleCart('${escapeHtml(p.numero)}')" aria-label="Comprar">${ICON_CART}<span class="ac-txt">Comprar</span></button>`;
-  return `<article class="card${p.vendida?' sold':''}" data-cat="${escapeHtml(p.categoria)}" data-idx="${idx}"><span class="tag" style="--rot:${rot}">N&ordm;${escapeHtml(String(p.numero||'').replace(/^N/,''))}</span><div class="card-img">${sold}<div class="carousel" id="${cid}" onclick="openModal(${idx})">${slides}${dots}</div>${vids}</div><div class="card-body"><h3>${escapeHtml(p.nombre)}</h3><p>${escapeHtml(p.descripcion)}</p><div class="card-foot"><span class="price">${escapeHtml(precioTexto(p.precio))}</span><span class="card-actions"><a class="mini-wa" href="${waLink(waText)}" target="_blank" rel="noopener" aria-label="${p.vendida?'Pedir similar':'Consultar'} por WhatsApp">${ICON_WA}<span class="wa-txt">${p.vendida?'Pedir similar':'Consultar'}</span></a>${cartBtn}</span></div></div></article>`;
+  return `<article class="card${p.vendida?' sold':''}" data-cat="${escapeHtml(p.categoria)}" data-idx="${idx}">${p.nro?`<span class="tag" style="--rot:${rot}">N&ordm;${p.nro}</span>`:''}<div class="card-img">${sold}<div class="carousel" id="${cid}" onclick="openModal(${idx})">${slides}${dots}</div>${vids}</div><div class="card-body"><h3>${escapeHtml(p.nombre)}</h3><p>${escapeHtml(p.descripcion)}</p><div class="card-foot"><span class="price">${escapeHtml(precioTexto(p.precio))}</span><span class="card-actions"><a class="mini-wa" href="${waLink(waText)}" target="_blank" rel="noopener" aria-label="${p.vendida?'Pedir similar':'Consultar'} por WhatsApp">${ICON_WA}<span class="wa-txt">${p.vendida?'Pedir similar':'Consultar'}</span></a>${cartBtn}</span></div></div></article>`;
 }
 
 // ---------- Vistas del catálogo ----------
@@ -288,7 +289,7 @@ function renderCart(){
     list.innerHTML='<div class="cart-empty">Tu carrito está vacío.<br>Tocá 🛒 en las gorras que te gusten.</div>';
     document.getElementById('cartFoot').style.display='none';
   }else{
-    list.innerHTML=items.map(p=>`<div class="cart-item"><img src="${escapeHtml(fotosDe(p)[0])}" alt=""><div class="ci-info"><div class="ci-name">${escapeHtml(p.nombre)}</div><div class="ci-meta">${escapeHtml(numTexto(p))} · ${escapeHtml(p.categoria||'')}</div><div class="ci-price">${escapeHtml(precioTexto(p.precio))}</div></div><button class="ci-remove" onclick="toggleCart('${escapeHtml(p.numero)}')" aria-label="Quitar">✕</button></div>`).join('');
+    list.innerHTML=items.map(p=>`<div class="cart-item"><img src="${escapeHtml(fotosDe(p)[0])}" alt=""><div class="ci-info"><div class="ci-name">${escapeHtml(p.nombre)}</div><div class="ci-meta">${escapeHtml(numTexto(p))}</div><div class="ci-price">${escapeHtml(precioTexto(p.precio))}</div></div><button class="ci-remove" onclick="toggleCart('${escapeHtml(p.numero)}')" aria-label="Quitar">✕</button></div>`).join('');
     document.getElementById('cartFoot').style.display='';
     const total=items.reduce((s,p)=>s+precioNum(p.precio),0);
     const sinPrecio=items.some(p=>!precioNum(p.precio));
@@ -391,6 +392,9 @@ Promise.all([
   // Si alguna gorra tiene una categoría que no está en la lista, igual aparece su botón al final
   PRODUCTOS.forEach(p=>{if(p.categoria&&!nombres.includes(p.categoria))nombres.push(p.categoria)});
   CATEGORIAS=nombres;
+  // Orden: por categoría (orden de la lista) y, dentro de cada una, por su número
+  const ordenCat=c=>{const k=CATEGORIAS.indexOf(c);return k<0?999:k};
+  PRODUCTOS=PRODUCTOS.map((p,i)=>({p,i})).sort((a,b)=>ordenCat(a.p.categoria)-ordenCat(b.p.categoria)||(a.p.nro||9999)-(b.p.nro||9999)||a.i-b.i).map(x=>x.p);
   buildFilters();
   const inicial=new URLSearchParams(location.search).get('cat');
   const valida=inicial&&(inicial==='todas'||CATEGORIAS.includes(inicial))?inicial:'inicio';

@@ -54,7 +54,8 @@ function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'
 function precioNum(p){const d=String(p||'').replace(/\D/g,'');return d?parseInt(d,10):0}
 function fmt(n){return '$'+n.toLocaleString('es-AR')}
 function precioTexto(p){const n=precioNum(p);return n?fmt(n):(p||'')}
-function numTexto(p){return 'Nº'+String(p.numero||'').replace(/^N/,'')}
+// Número visible: categoría + número dentro de la categoría (ej. "Airbag Nº16")
+function numTexto(p){return p.nro?`${p.categoria} Nº${p.nro}`:'Nº'+String(p.numero||'').replace(/^N/,'')}
 const nums=(new URLSearchParams(location.search).get('n')||'').split(',').map(s=>s.trim()).filter(Boolean);
 fetch('data/productos.json?v='+Date.now()).then(r=>r.json()).then(data=>{
   const items=nums.map(n=>(data.productos||[]).find(p=>p.numero===n)).filter(Boolean);

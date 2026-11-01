@@ -192,7 +192,7 @@
       <h2 style="margin:0">Catálogo actual</h2>
       <button class="btn-secondary btn-small" onclick="reloadAll()">↻ Actualizar</button>
     </div>
-    <div class="hint">El orden de esta lista es el orden en la tienda. Tocá <b>Editar</b> para cambiar fotos, videos, datos o marcarla como vendida.</div>
+    <div class="hint">Las gorras se ordenan por categoría y por su número (ej. Airbag Nº16). Tocá <b>Editar</b> para cambiar fotos, videos, datos, el número o marcarla como vendida.</div>
     <div class="catTools" style="margin-top:12px;">
       <input type="search" id="catSearch" placeholder="🔍 Buscar por nombre o número" oninput="renderCatalogList()">
       <select id="catFilter" onchange="renderCatalogList()"></select>
@@ -328,6 +328,15 @@ function videoExt(file) {
   if (/quicktime/.test(file.type)) return 'mov';
   return 'mp4';
 }
+// Número dentro de la categoría (ej. Airbag Nº16). La tienda ordena por categoría y por este número.
+function maxNro(lista, cat) { return lista.filter(p => p.categoria === cat).reduce((m, p) => Math.max(m, parseInt(p.nro, 10) || 0), 0); }
+function ordenarCatalogo() {
+  const k = c => { const i = categorias.indexOf(c); return i < 0 ? 999 : i; };
+  catalogData = catalogData.map((p, i) => ({ p, i }))
+    .sort((a, b) => k(a.p.categoria) - k(b.p.categoria) || (a.p.nro || 9999) - (b.p.nro || 9999) || a.i - b.i)
+    .map(x => x.p);
+}
+function etiqueta(p) { return p.nro ? `${p.categoria} Nº${p.nro}` : (p.categoria || ''); }
 function hasPendingWork() { return pool.length > 0 || catalogDirty; }
 window.addEventListener('beforeunload', e => { if (hasPendingWork()) { e.preventDefault(); e.returnValue = ''; } });
 
@@ -552,6 +561,7 @@ async function reloadAll() {
     categoriasSha = cats ? cats.sha : null;
     videosData = vids ? (vids.json.videos || []) : [];
     videosSha = vids ? vids.sha : null;
+    ordenarCatalogo();
     catalogDirty = false; catalogBackup = null; expandedIndex = null;
     setMsg('catalogStatus', `✓ ${catalogData.length} gorras cargadas.`, 'ok');
   } catch (err) {
@@ -843,7 +853,7 @@ async function publishAll() {
         await uploadFile(path, photos[i].dataUrl.split(',')[1], null, `Subir foto ${path}`);
         fotoPaths.push(path);
       }
-      const entry = { numero, nombre: g.nombre.trim(), categoria: g.categoria, descripcion: g.detalle.trim(), precio: normPrecio(g.precio), fotos: fotoPaths };
+      const entry = { numero, nro: maxNro(catalogo.productos.concat(newEntries), g.categoria) + 1, nombre: g.nombre.trim(), categoria: g.categoria, descripcion: g.detalle.trim(), precio: normPrecio(g.precio), fotos: fotoPaths };
       if (g.video) {
         const vpath = `videos/${base}.${videoExt(g.video)}`;
         log(`Subiendo video de "${g.nombre}" (puede tardar un poco)...`);
@@ -900,7 +910,7 @@ function renderCatalogList() {
   let shown = 0;
   catalogData.forEach((p, idx) => {
     if (f === '__vendidas' ? !p.vendida : (f && p.categoria !== f)) return;
-    if (q && !((p.nombre || '') + ' ' + (p.numero || '') + ' ' + (p.descripcion || '')).toLowerCase().includes(q)) return;
+    if (q && !((p.nombre || '') + ' ' + etiqueta(p) + ' ' + (p.numero || '') + ' ' + (p.descripcion || '')).toLowerCase().includes(q)) return;
     shown++;
     const wrap = document.createElement('div');
     const thumb = (p.fotos && p.fotos[0]) ? fotoUrl(p.fotos[0]) : '';
@@ -913,7 +923,7 @@ function renderCatalogList() {
           <img src="${esc(thumb)}" loading="lazy" onerror="this.style.opacity=0.2">
           <div class="catInfo">
             <div class="nm">${esc(p.nombre || '(sin nombre)')}</div>
-            <div class="meta">${esc(p.numero || '')} · ${esc(p.categoria || '')} · ${esc(p.precio || '')}</div>
+            <div class="meta">${esc(etiqueta(p))} · ${esc(p.precio || '')}</div>
             <div>${p.vendida ? '<span class="badge sold">Vendida</span>' : ''}${nv ? `<span class="badge vid">▶ ${nv} video</span>` : ''}</div>
           </div>
           <div class="catActions">
@@ -925,11 +935,6 @@ function renderCatalogList() {
     container.appendChild(wrap);
   });
   if (!shown) container.innerHTML = `<div class="empty">${catalogData.length ? 'No hay gorras que coincidan con la búsqueda.' : 'Todavía no se cargó el catálogo.'}</div>`;
-  if (filtrando && shown) {
-    const h = document.createElement('div'); h.className = 'hint';
-    h.textContent = 'Para cambiar el orden en la tienda, borrá la búsqueda y elegí "Todas".';
-    container.prepend(h);
-  }
 }
 function renderEditBox(p, idx, thumb) {
   const fotos = p.fotos || [];
@@ -939,7 +944,7 @@ function renderEditBox(p, idx, thumb) {
     <div class="editBox">
       <div class="editHead">
         <img src="${esc(thumb)}" onerror="this.style.opacity=0.2">
-        <div class="catInfo"><div class="nm">${esc(p.nombre || '(sin nombre)')}</div><div class="meta">${esc(p.numero || '')} · posición ${idx + 1} de ${catalogData.length}</div></div>
+        <div class="catInfo"><div class="nm">${esc(p.nombre || '(sin nombre)')}</div><div class="meta">${esc(etiqueta(p))}</div></div>
       </div>
       <label>Fotos (la primera es la portada)</label>
       <div class="thumbs">
@@ -973,12 +978,12 @@ function renderEditBox(p, idx, thumb) {
       <label>Detalle</label>
       <textarea oninput="updateCatalogField(${idx},'descripcion',this.value)">${esc(p.descripcion)}</textarea>
       <label class="switch"><input type="checkbox" ${p.vendida ? 'checked' : ''} onchange="toggleVendida(${idx}, this.checked)"> Vendida <span class="hint" style="margin:0;font-weight:400">(sigue en la web con la etiqueta "Vendida" y el botón "Pedir similar")</span></label>
-      <label>Orden en la tienda</label>
-      <div class="btn-row" style="margin-top:0">
-        <button class="btn-secondary btn-small" onclick="moveProduct(${idx}, 'top')" ${idx === 0 || filtrando ? 'disabled' : ''}>⤒ Primera</button>
-        <button class="btn-secondary btn-small" onclick="moveProduct(${idx}, -1)" ${idx === 0 || filtrando ? 'disabled' : ''}>↑ Subir</button>
-        <button class="btn-secondary btn-small" onclick="moveProduct(${idx}, 1)" ${idx === catalogData.length - 1 || filtrando ? 'disabled' : ''}>↓ Bajar</button>
+      <label>Número en la categoría</label>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <span style="font-weight:600">${esc(p.categoria || '')} Nº</span>
+        <input type="text" inputmode="numeric" style="max-width:90px" value="${esc(p.nro || '')}" onchange="setNro(${idx}, this.value)">
       </div>
+      <div class="hint">En la tienda, las gorras de cada categoría se ordenan por este número.</div>
       <div class="btn-row">
         <button class="btn-primary btn-small" onclick="expandedIndex=null; renderCatalogList();">Listo</button>
         <button class="btn-danger btn-small" onclick="deleteCatalogItem(${idx})">Eliminar gorra</button>
@@ -986,13 +991,36 @@ function renderEditBox(p, idx, thumb) {
     </div>`;
 }
 function openEdit(idx) { expandedIndex = idx; renderCatalogList(); }
-function updateCatalogField(idx, field, value) { markDirty(); catalogData[idx][field] = value; }
+function updateCatalogField(idx, field, value) {
+  markDirty();
+  const p = catalogData[idx];
+  p[field] = value;
+  if (field === 'categoria') {
+    p.nro = maxNro(catalogData.filter(x => x !== p), value) + 1;
+    ordenarCatalogo();
+    expandedIndex = catalogData.indexOf(p);
+    renderCatalogList();
+    toast(`Ahora es ${value} Nº${p.nro}. Tocá "Publicar cambios".`);
+  }
+}
 function toggleVendida(idx, val) {
   const p = catalogData[idx];
   markDirty();
   if (val === undefined ? !p.vendida : val) p.vendida = true; else delete p.vendida;
   renderCatFilter(); renderCatalogList();
   toast(p.vendida ? 'Marcada como vendida. Tocá "Publicar cambios".' : 'Marcada como disponible. Tocá "Publicar cambios".');
+}
+function setNro(idx, val) {
+  const n = parseInt(String(val).replace(/\D/g, ''), 10);
+  if (!n) { toast('Escribí un número válido.', true); renderCatalogList(); return; }
+  const p = catalogData[idx];
+  const otra = catalogData.find(x => x !== p && x.categoria === p.categoria && parseInt(x.nro, 10) === n);
+  if (otra && !confirm(`Ya hay otra gorra ${p.categoria} Nº${n} ("${otra.nombre}"). ¿Usar el mismo número igual?`)) { renderCatalogList(); return; }
+  markDirty();
+  p.nro = n;
+  ordenarCatalogo();
+  expandedIndex = catalogData.indexOf(p);
+  renderCatalogList();
 }
 function moveProduct(idx, dir) {
   markDirty();
@@ -1192,7 +1220,7 @@ async function removeCategoria(i) {
   setMsg('catMsg', 'Guardando...', 'pending');
   try {
     const prod = await getJsonFile('data/productos.json');
-    prod.json.productos.forEach(p => { if (p.categoria === c) p.categoria = dest; });
+    prod.json.productos.forEach(p => { if (p.categoria === c) { p.categoria = dest; p.nro = maxNro(prod.json.productos.filter(x => x !== p && x.categoria === dest), dest) + 1; } });
     catalogSha = await saveJsonFile('data/productos.json', prod.json, prod.sha, `Pasar gorras de ${c} a ${dest}`);
     catalogData = prod.json.productos;
     categorias.splice(i, 1);
