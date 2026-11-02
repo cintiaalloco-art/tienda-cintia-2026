@@ -1299,6 +1299,18 @@
         "images/gora-noor-n-1-n109-mvywemfk-2.jpg",
         "images/gora-noor-n-1-n109-mvywemfk-3.jpg"
       ]
+    },
+    {
+      "numero": "N110",
+      "nombre": "Gorra \"Zeinep\" Nº 3",
+      "categoria": "Zeinep",
+      "descripcion": "Con strass + Guipur",
+      "precio": "$35.000",
+      "fotos": [
+        "images/gorra-zeinep-n-3-n110-mvywyjqd-1.jpg",
+        "images/gorra-zeinep-n-3-n110-mvywyjqd-2.jpg",
+        "images/gorra-zeinep-n-3-n110-mvywyjqd-3.jpg"
+      ]
     }
   ]
 }
