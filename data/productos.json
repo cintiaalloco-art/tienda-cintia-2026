@@ -148,13 +148,12 @@
       "nombre": "Zeinep Nº4",
       "categoria": "Zeinep",
       "descripcion": "Denim celeste con aplique de guipur negro y strass.",
-      "precio": "$33.000",
+      "precio": "$35.000",
       "fotos": [
         "images/zeinep-no4-1.jpg",
         "images/zeinep-no4-2.jpg",
         "images/zeinep-no4-3.jpg"
-      ],
-      "vendida": true
+      ]
     },
     {
       "numero": "N014",
@@ -1040,17 +1039,6 @@
       "precio": "$29.000",
       "fotos": [
         "images/gorra-aria1-1.jpg"
-      ]
-    },
-    {
-      "numero": "N085",
-      "nombre": "Gorra \"Zeinep 3\"",
-      "categoria": "Otras",
-      "descripcion": "Con strass y guipur",
-      "precio": "$30.000",
-      "fotos": [
-        "images/gorra-zeinep-3-1.jpg",
-        "images/gorra-zeinep-3-2.jpg"
       ]
     },
     {
