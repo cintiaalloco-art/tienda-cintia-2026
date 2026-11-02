@@ -653,16 +653,14 @@
     },
     {
       "numero": "N052",
-      "nombre": "Gorra Airbag Sardelli 96 Nº7",
+      "nombre": "Gorra Sardelli 96 Nº 7",
       "categoria": "Airbag",
       "descripcion": "Con Tachas Violetas Hotfix",
       "precio": "$36.000",
       "fotos": [
         "images/gorra-airbag-sardelli-96-no7-1.jpg",
-        "images/gorra-airbag-sardelli-96-no7-2.jpg",
         "images/gorra-airbag-sardelli-96-no7-3.jpg",
-        "images/gorra-airbag-sardelli-96-no7-4.jpg",
-        "images/gorra-airbag-sardelli-96-no7-5.jpg"
+        "images/gorra-airbag-sardelli-96-no7-4.jpg"
       ]
     },
     {
