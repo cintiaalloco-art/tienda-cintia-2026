@@ -1291,6 +1291,18 @@
         "images/gorra-zeinep-n-3-n110-mvywyjqd-2.jpg",
         "images/gorra-zeinep-n-3-n110-mvywyjqd-3.jpg"
       ]
+    },
+    {
+      "numero": "N111",
+      "nombre": "Gorra \"Almita\"",
+      "categoria": "Niñas",
+      "descripcion": "Con apliques + tachas + cordòn",
+      "precio": "$35.000",
+      "fotos": [
+        "images/gorra-almita-n111-mvzma1jf-1.jpg",
+        "images/gorra-almita-n111-mvzma1jf-2.jpg",
+        "images/gorra-almita-n111-mvzma1jf-3.jpg"
+      ]
     }
   ]
 }
