@@ -1303,6 +1303,18 @@
         "images/gorra-almita-n111-mvzma1jf-2.jpg",
         "images/gorra-almita-n111-mvzma1jf-3.jpg"
       ]
+    },
+    {
+      "numero": "N112",
+      "nombre": "Gorra \"Saray\"",
+      "categoria": "Niñas",
+      "descripcion": "Apliques + tachas + strass + cintas",
+      "precio": "$38.000",
+      "fotos": [
+        "images/gorra-saray-n112-mvzo6g3k-1.jpg",
+        "images/gorra-saray-n112-mvzo6g3k-2.jpg",
+        "images/gorra-saray-n112-mvzo6g3k-3.jpg"
+      ]
     }
   ]
 }
