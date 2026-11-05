@@ -10,7 +10,8 @@
         "images/abbie-1.jpg",
         "images/abbie-2.jpg",
         "images/abbie-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N002",
@@ -22,7 +23,8 @@
         "images/vanna-nina-1.jpg",
         "images/vanna-nina-2.jpg",
         "images/vanna-nina-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N003",
@@ -34,7 +36,8 @@
         "images/myla-1.jpg",
         "images/myla-2.jpg",
         "images/myla-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N004",
@@ -46,7 +49,8 @@
         "images/mika-no2-1.jpg",
         "images/mika-no2-2.jpg",
         "images/mika-no2-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N005",
@@ -58,7 +62,8 @@
         "images/roxi-1.jpg",
         "images/roxi-2.jpg",
         "images/roxi-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N006",
@@ -70,7 +75,8 @@
         "images/fuxion-no1-1.jpg",
         "images/fuxion-no1-2.jpg",
         "images/fuxion-no1-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N007",
@@ -82,7 +88,8 @@
         "images/linda-1.jpg",
         "images/linda-2.jpg",
         "images/linda-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N008",
@@ -94,7 +101,8 @@
         "images/niamh-1.jpg",
         "images/niamh-2.jpg",
         "images/niamh-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N009",
@@ -106,7 +114,8 @@
         "images/airbag-lila-1.jpg",
         "images/airbag-lila-2.jpg",
         "images/airbag-lila-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N010",
@@ -117,19 +126,8 @@
       "fotos": [
         "images/eylul-no1-1.jpg",
         "images/eylul-no1-2.jpg"
-      ]
-    },
-    {
-      "numero": "N011",
-      "nombre": "\"Sardelli 96\" N° 1",
-      "categoria": "Sardelli 96",
-      "descripcion": "Negro vintage con letras SARDELLI 96 en strass boreal Hotfix.",
-      "precio": "$36.000",
-      "fotos": [
-        "images/airbag-sardelli-96-1.jpg",
-        "images/airbag-sardelli-96-2.jpg",
-        "images/airbag-sardelli-96-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N012",
@@ -141,7 +139,8 @@
         "images/kandhy-no2-1.jpg",
         "images/kandhy-no2-2.jpg",
         "images/kandhy-no2-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N013",
@@ -153,7 +152,8 @@
         "images/zeinep-no4-1.jpg",
         "images/zeinep-no4-2.jpg",
         "images/zeinep-no4-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N014",
@@ -178,7 +178,8 @@
         "images/airbag-sardelli-96-no2-1.jpg",
         "images/airbag-sardelli-96-no2-2.jpg",
         "images/airbag-sardelli-96-no2-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N015",
@@ -190,7 +191,8 @@
         "images/bugue-no12-1.jpg",
         "images/bugue-no12-2.jpg",
         "images/bugue-no12-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N016",
@@ -202,7 +204,8 @@
         "images/fuxion-no2-1.jpg",
         "images/fuxion-no2-2.jpg",
         "images/fuxion-no2-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N017",
@@ -214,7 +217,8 @@
         "images/kandhy-no3-1.jpg",
         "images/kandhy-no3-2.jpg",
         "images/kandhy-no3-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N019",
@@ -226,7 +230,8 @@
         "images/layca-no3-1.jpg",
         "images/layca-no3-2.jpg",
         "images/layca-no3-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N020",
@@ -238,7 +243,8 @@
         "images/argentina-1.jpg",
         "images/argentina-2.jpg",
         "images/argentina-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N021",
@@ -249,7 +255,8 @@
       "fotos": [
         "images/mia-1.jpg",
         "images/mia-2.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N022",
@@ -261,7 +268,8 @@
         "images/eylul-no2-1.jpg",
         "images/eylul-no2-2.jpg",
         "images/eylul-no2-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N023",
@@ -273,7 +281,8 @@
         "images/calleigh-no2-2.jpg",
         "images/calleigh-no2-3.jpg",
         "images/calleigh-no2-1.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N024",
@@ -285,7 +294,8 @@
         "images/meera-1.jpg",
         "images/meera-2.jpg",
         "images/meera-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N025",
@@ -295,7 +305,8 @@
       "precio": "$26.000",
       "fotos": [
         "images/andy-1.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N026",
@@ -307,7 +318,8 @@
         "images/jaz-no1-1.jpg",
         "images/jaz-no1-2.jpg",
         "images/jaz-no1-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N027",
@@ -319,7 +331,8 @@
         "images/fuxion-no4-1.jpg",
         "images/fuxion-no4-2.jpg",
         "images/fuxion-no4-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N028",
@@ -331,7 +344,8 @@
         "images/bugue-no13-1.jpg",
         "images/bugue-no13-2.jpg",
         "images/bugue-no13-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N030",
@@ -344,7 +358,8 @@
         "images/ciro-2.jpg",
         "images/ciro-3.jpg",
         "images/ciro-4.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N029",
@@ -356,7 +371,8 @@
         "images/fuxion-no7-1.jpg",
         "images/fuxion-no7-2.jpg",
         "images/fuxion-no7-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "nombre": "Gorra \"Airbag\" N° 4",
@@ -368,7 +384,8 @@
         "images/512768.png",
         "images/512766.png"
       ],
-      "numero": "N104"
+      "numero": "N104",
+      "vendida": true
     },
     {
       "nombre": "Gorra \"Airbag\" N° 5",
@@ -380,7 +397,8 @@
         "images/405579.jpg",
         "images/405577.jpg"
       ],
-      "numero": "N105"
+      "numero": "N105",
+      "vendida": true
     },
     {
       "nombre": "Gorra \"Airbag N° 4\"",
@@ -392,7 +410,8 @@
         "images/405565.jpg",
         "images/405569.jpg"
       ],
-      "numero": "N106"
+      "numero": "N106",
+      "vendida": true
     },
     {
       "numero": "N031",
@@ -404,7 +423,8 @@
         "images/gorra-airbag-no2-1.jpg",
         "images/gorra-airbag-no2-2.jpg",
         "images/gorra-airbag-no2-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N032",
@@ -416,7 +436,8 @@
         "images/gorra-airbag-no9-1.jpg",
         "images/gorra-airbag-no9-2.jpg",
         "images/gorra-airbag-no9-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N033",
@@ -429,7 +450,8 @@
         "images/gorra-airbag-no16-2.jpg",
         "images/gorra-airbag-no16-3.jpg",
         "images/gorra-airbag-no16-4.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N034",
@@ -442,7 +464,8 @@
         "images/gorra-airbag-no7-2.jpg",
         "images/gorra-airbag-no7-3.jpg",
         "images/gorra-airbag-no7-4.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N035",
@@ -454,7 +477,8 @@
         "images/gorra-airbag-no8-1.jpg",
         "images/gorra-airbag-no8-2.jpg",
         "images/gorra-airbag-no8-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N036",
@@ -466,7 +490,8 @@
         "images/gorra-airbag-no6-1.jpg",
         "images/gorra-airbag-no6-2.jpg",
         "images/gorra-airbag-no6-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N037",
@@ -482,7 +507,8 @@
         "images/gorra-airbag-no1-5.jpg",
         "images/gorra-airbag-no1-6.jpg",
         "images/gorra-airbag-no1-7.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N038",
@@ -493,7 +519,8 @@
       "fotos": [
         "images/gorra-airbag-no5-1.jpg",
         "images/gorra-airbag-no5-2.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N039",
@@ -503,7 +530,8 @@
       "precio": "$35.000",
       "fotos": [
         "images/gorra-saida-1.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N040",
@@ -515,7 +543,8 @@
         "images/gorra-airbag-no14-1.jpg",
         "images/gorra-airbag-no14-2.jpg",
         "images/gorra-airbag-no14-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N041",
@@ -527,7 +556,8 @@
         "images/gorra-airbag-sardelli-96-no1-1.jpg",
         "images/gorra-airbag-sardelli-96-no1-2.jpg",
         "images/gorra-airbag-sardelli-96-no1-4.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N042",
@@ -539,7 +569,8 @@
         "images/gorra-airbag-kallash-no1-1.jpg",
         "images/gorra-airbag-kallash-no1-2.jpg",
         "images/gorra-airbag-kallash-no1-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N043",
@@ -551,7 +582,8 @@
         "images/gorra-airbag-sardelli-96-no4-1.jpg",
         "images/gorra-airbag-sardelli-96-no4-2.jpg",
         "images/gorra-airbag-sardelli-96-no4-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N044",
@@ -563,7 +595,8 @@
         "images/gorra-airbag-sardelli-96-no3-1.jpg",
         "images/gorra-airbag-sardelli-96-no3-2.jpg",
         "images/gorra-airbag-sardelli-96-no3-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N045",
@@ -575,7 +608,8 @@
         "images/gorra-airbag-no10-1.jpg",
         "images/gorra-airbag-no10-2.jpg",
         "images/gorra-airbag-no10-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N046",
@@ -587,7 +621,8 @@
         "images/gorra-airbag-no12-1.jpg",
         "images/gorra-airbag-no12-2.jpg",
         "images/gorra-airbag-no12-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N047",
@@ -599,7 +634,8 @@
         "images/gorra-airbag-sardelli-96-no2-1.jpg",
         "images/gorra-airbag-sardelli-96-no2-2.jpg",
         "images/gorra-airbag-sardelli-96-no2-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N048",
@@ -611,7 +647,8 @@
         "images/gorra-airbag-sardelli-96-no5-1.jpg",
         "images/gorra-airbag-sardelli-96-no5-2.jpg",
         "images/gorra-airbag-sardelli-96-no5-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N049",
@@ -623,7 +660,8 @@
         "images/gorra-airbag-kalash-no2-1.jpg",
         "images/gorra-airbag-kalash-no2-2.jpg",
         "images/gorra-airbag-kalash-no2-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N050",
@@ -635,7 +673,8 @@
         "images/gorra-airbag-sardelli-96-kalash-no1-1.jpg",
         "images/gorra-airbag-sardelli-96-kalash-no1-2.jpg",
         "images/gorra-airbag-sardelli-96-kalash-no1-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N051",
@@ -648,7 +687,8 @@
         "images/gorra-airbag-sardelli-96-no6-2.jpg",
         "images/gorra-airbag-sardelli-96-no6-3.jpg",
         "images/gorra-airbag-sardelli-96-no6-4.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N052",
@@ -660,7 +700,8 @@
         "images/gorra-airbag-sardelli-96-no7-1.jpg",
         "images/gorra-airbag-sardelli-96-no7-3.jpg",
         "images/gorra-airbag-sardelli-96-no7-4.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N053",
@@ -676,7 +717,8 @@
         "images/gorra-airbag-no15-5.jpg",
         "images/gorra-airbag-no15-6.jpg",
         "images/gorra-airbag-no15-7.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N054",
@@ -688,7 +730,8 @@
         "images/gorra-airbag-no3-1.jpg",
         "images/gorra-airbag-no3-2.jpg",
         "images/gorra-airbag-no3-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N055",
@@ -700,7 +743,8 @@
         "images/gorra-airbag-no19-1.jpg",
         "images/gorra-airbag-no19-2.jpg",
         "images/gorra-airbag-no19-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N056",
@@ -712,7 +756,8 @@
         "images/gorra-airbag-no17-1.jpg",
         "images/gorra-airbag-no17-2.jpg",
         "images/gorra-airbag-no17-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N057",
@@ -724,7 +769,8 @@
         "images/gorra-airbag-sardelli-96-no8-2.jpg",
         "images/gorra-airbag-sardelli-96-no8-4.jpg",
         "images/gorra-airbag-sardelli-96-no8-5.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N058",
@@ -735,7 +781,8 @@
       "fotos": [
         "images/gorra-calleight-no4-1.jpg",
         "images/gorra-calleight-n4-extra-mvydx3yf.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N059",
@@ -747,7 +794,8 @@
         "images/gorra-airbag-estetica-de-guido-1.jpg",
         "images/gorra-airbag-estetica-de-guido-2.jpg",
         "images/gorra-airbag-estetica-de-guido-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N060",
@@ -759,7 +807,8 @@
         "images/gorra-airbag-sardelli-96-no9-2.jpg",
         "images/gorra-airbag-sardelli-96-no9-3.jpg",
         "images/gorra-airbag-sardelli-96-no9-5.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N061",
@@ -774,7 +823,8 @@
         "images/gorra-airbag-argentina-2-4.jpg",
         "images/gorra-airbag-argentina-2-5.jpg",
         "images/gorra-airbag-argentina-2-6.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N062",
@@ -786,7 +836,8 @@
         "images/gorra-airbag-argentina-1.jpg",
         "images/gorra-airbag-argentina-2.jpg",
         "images/gorra-airbag-argentina-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N063",
@@ -800,7 +851,8 @@
         "images/gorra-airbag-no18-3.jpg",
         "images/gorra-airbag-no18-4.jpg",
         "images/gorra-airbag-no18-5.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N064",
@@ -812,7 +864,8 @@
         "images/gorra-akira-1.jpg",
         "images/gorra-akira-2.jpg",
         "images/gorra-akira-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N065",
@@ -824,7 +877,8 @@
         "images/gorra-triana-1.jpg",
         "images/gorra-triana-2.jpg",
         "images/gorra-triana-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N066",
@@ -836,7 +890,8 @@
         "images/gorra-keyla-1.jpg",
         "images/gorra-keyla-2.jpg",
         "images/gorra-keyla-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N068",
@@ -848,7 +903,8 @@
         "images/gorra-aziza-1.jpg",
         "images/gorra-aziza-2.jpg",
         "images/gorra-aziza-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N069",
@@ -860,7 +916,8 @@
         "images/gorra-aria-2-1.jpg",
         "images/gorra-aria-2-2.jpg",
         "images/gorra-aria-2-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N070",
@@ -884,7 +941,8 @@
         "images/gorra-xia-1.jpg",
         "images/gorra-xia-2.jpg",
         "images/gorra-xia-3.jpg"
-      ]
+      ],
+      "vendida": true
     },
     {
       "numero": "N072",
