@@ -1,7 +1,15 @@
 {
   "categorias": [
     {
-      "nombre": "Airbag"
+      "nombre": "Airbag",
+      "subcategorias": [
+        {
+          "nombre": "Sardelli 96"
+        },
+        {
+          "nombre": "Kalash"
+        }
+      ]
     },
     {
       "nombre": "Grace"
@@ -59,9 +67,6 @@
     },
     {
       "nombre": "Niamh"
-    },
-    {
-      "nombre": "Sardelli 96"
     }
   ]
 }

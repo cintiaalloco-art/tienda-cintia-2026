@@ -13,7 +13,7 @@ function precioNum(p){const d=String(p||'').replace(/\D/g,'');return d?parseInt(
 function formatoPrecio(n){return '$'+n.toLocaleString('es-AR')}
 function precioTexto(p){const n=precioNum(p);return n?formatoPrecio(n):(p||'')}
 // Número visible: categoría + número dentro de la categoría (ej. "Airbag Nº16")
-function numTexto(p){return p.nro?`${p.categoria} Nº${p.nro}`:'Nº'+String(p.numero||'').replace(/^N/,'')}
+function numTexto(p){return p.nro?`${p.sub||p.categoria} Nº${p.nro}`:'Nº'+String(p.numero||'').replace(/^N/,'')}
 function esVideo(src){return /\.(mp4|mov|webm|m4v)(\?|#|$)/i.test(src||'')}
 // Mensaje para consultar por una gorra. El link va en la 2ª línea: WhatsApp muestra la foto
 // de la gorra en miniatura (la pone netlify/edge-functions/pedido.js) y al tocarlo se ve la gorra.
@@ -64,13 +64,17 @@ function buildCard(p, idx, pre){
 }
 
 // ---------- Vistas del catálogo ----------
-// "inicio": una fila por categoría con algunas gorras para deslizar + botón "Ver todas".
-// "todas": todas las gorras en el orden del catálogo. Cualquier otro valor: las gorras de esa categoría.
-// La vista va en la dirección (?cat=Airbag / ?cat=todas) para que el botón "atrás" del celular funcione.
+// "inicio": una fila por categoría (y una por cada subcategoría, debajo de su categoría) con algunas
+// gorras para deslizar + botón "Ver todas". "todas": todas las gorras. Si no, una categoría,
+// opcionalmente filtrada por subcategoría (vistaSub; "" = sin subcategoría, null = todas).
+// La vista va en la dirección (?cat=Airbag&sub=Sardelli%2096) para que el botón "atrás" funcione.
 let CATEGORIAS=[];
-let vista='inicio';
+let SUBS={};          // { "Airbag": ["Sardelli 96"] }
+let vista='inicio', vistaSub=null;
 const POR_FILA=8; // gorras que se muestran en cada fila del inicio (después viene "Ver todas")
 function contar(cat){return PRODUCTOS.filter(p=>p.categoria===cat).length}
+function conIdx(f){return PRODUCTOS.map((p,i)=>({p,i})).filter(x=>f(x.p))}
+function jsq(v){return JSON.stringify(v).replace(/"/g,'&quot;')}
 function buildFilters(){
   const bar=document.getElementById('filterBar');
   bar.innerHTML='';
@@ -82,50 +86,83 @@ function buildFilters(){
     bar.appendChild(b);
   };
   mk('inicio','Inicio');
-  // Solo se muestran las categorías que tienen al menos una gorra
+  // Solo se muestran las categorías que tienen al menos una gorra (las subcategorías van adentro)
   CATEGORIAS.forEach(c=>{const n=contar(c);if(n)mk(c,c,n)});
   mk('todas','Todas',PRODUCTOS.length);
 }
-function setVista(v,desdeHistorial){
+function setVista(v,sub,desdeHistorial){
   vista=v||'inicio';
+  vistaSub=(sub===undefined?null:sub);
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.cat===vista));
   const home=document.getElementById('home'),grid=document.querySelector('.grid'),head=document.getElementById('vistaHead');
   if(vista==='inicio'){
     home.style.display='';grid.style.display='none';head.style.display='none';
     home.innerHTML=renderInicio();
-  }else{
-    const lista=PRODUCTOS.map((p,i)=>({p,i})).filter(x=>vista==='todas'||x.p.categoria===vista);
+  }else if(vista==='todas'){
+    const lista=conIdx(()=>true);
     head.style.display='';
-    head.innerHTML=`<button class="vh-back" onclick="setVista('inicio')">‹ Inicio</button><h3>${vista==='todas'?'Todas las gorras':escapeHtml(vista)}</h3><span class="vh-count">${lista.length} gorra${lista.length===1?'':'s'}</span>`;
+    head.innerHTML=`<button class="vh-back" onclick="setVista('inicio')">‹ Inicio</button><h3>Todas las gorras</h3><span class="vh-count">${lista.length} gorras</span>`;
     grid.innerHTML=lista.map(x=>buildCard(x.p,x.i,'g')).join('');
+    home.style.display='none';grid.style.display='';
+  }else{
+    const subs=(SUBS[vista]||[]).filter(sb=>PRODUCTOS.some(p=>p.categoria===vista&&p.sub===sb));
+    const todas=conIdx(p=>p.categoria===vista);
+    const sinSub=todas.filter(x=>!x.p.sub);
+    let titulo=escapeHtml(vista), lista=todas, html='';
+    if(vistaSub){titulo=`<span class="vh-parent">${escapeHtml(vista)} ›</span> ${escapeHtml(vistaSub)}`;lista=todas.filter(x=>x.p.sub===vistaSub)}
+    else if(vistaSub===''){lista=sinSub}
+    // Botones de subcategoría: Todas · Airbag · Sardelli 96
+    const chips=subs.length?`<div class="sub-chips"><button class="sub-chip${vistaSub===null?' on':''}" onclick="setVista(${jsq(vista)},null)">Todas <span>${todas.length}</span></button>${sinSub.length?`<button class="sub-chip${vistaSub===''?' on':''}" onclick="setVista(${jsq(vista)},'')">${escapeHtml(vista)} <span>${sinSub.length}</span></button>`:''}${subs.map(sb=>`<button class="sub-chip${vistaSub===sb?' on':''}" onclick="setVista(${jsq(vista)},${jsq(sb)})">${escapeHtml(sb)} <span>${todas.filter(x=>x.p.sub===sb).length}</span></button>`).join('')}</div>`:'';
+    head.style.display='';
+    head.innerHTML=`<button class="vh-back" onclick="setVista('inicio')">‹ Inicio</button><h3>${titulo}</h3><span class="vh-count">${lista.length} gorra${lista.length===1?'':'s'}</span>${chips}`;
+    if(vistaSub===null&&subs.length){
+      // Todas: primero las de la categoría y después un bloque por subcategoría, con su título
+      html=sinSub.map(x=>buildCard(x.p,x.i,'g')).join('');
+      subs.forEach(sb=>{html+=`<h4 class="grid-sub">${escapeHtml(sb)}</h4>`+todas.filter(x=>x.p.sub===sb).map(x=>buildCard(x.p,x.i,'g')).join('')});
+    }else html=lista.map(x=>buildCard(x.p,x.i,'g')).join('');
+    grid.innerHTML=html;
     home.style.display='none';grid.style.display='';
   }
   renderCart();
   if(!desdeHistorial){
     const url=new URL(location.href);
     if(vista==='inicio')url.searchParams.delete('cat');else url.searchParams.set('cat',vista);
+    if(vistaSub===null)url.searchParams.delete('sub');else url.searchParams.set('sub',vistaSub);
     url.searchParams.delete('g');
-    history.pushState({vista},'',url);
+    history.pushState({vista,sub:vistaSub},'',url);
     const cat=document.getElementById('catalogo');
     if(cat&&window.scrollY>cat.offsetTop)window.scrollTo({top:cat.offsetTop-70,behavior:'smooth'});
   }
 }
+function filaInicio(titulo,padre,items,abrir,cuantas){
+  // Primero las disponibles, después las vendidas
+  const orden=items.filter(x=>!x.p.vendida).concat(items.filter(x=>x.p.vendida)).slice(0,POR_FILA);
+  const nombre=padre?`${padre} › ${titulo}`:titulo;
+  const mas=items.length>orden.length||items.length>2
+    ?`<button class="row-more" onclick="${abrir}"><span class="rm-n">${cuantas}</span><span>Ver todas<br>las de ${escapeHtml(titulo)}</span><span class="rm-arrow">→</span></button>`:'';
+  return `<section class="cat-row${padre?' sub-row':''}"><div class="cat-row-head">${padre?`<span class="cr-parent">${escapeHtml(padre)} ›</span>`:''}<h3>${escapeHtml(titulo)}</h3><span class="cr-count">${cuantas} gorra${cuantas===1?'':'s'}</span><button class="cr-link" onclick="${abrir}">Ver todas ›</button></div><div class="cat-strip">${orden.map(x=>buildCard(x.p,x.i,'s')).join('')}${mas}</div></section>`;
+}
 function renderInicio(){
   const filas=CATEGORIAS.map(c=>{
-    const todas=PRODUCTOS.map((p,i)=>({p,i})).filter(x=>x.p.categoria===c);
+    const todas=conIdx(p=>p.categoria===c);
     if(!todas.length)return '';
-    // Primero las disponibles, después las vendidas
-    const orden=todas.filter(x=>!x.p.vendida).concat(todas.filter(x=>x.p.vendida)).slice(0,POR_FILA);
-    const cs=JSON.stringify(c).replace(/"/g,'&quot;');
-    const mas=todas.length>orden.length||todas.length>2
-      ?`<button class="row-more" onclick="setVista(${cs})"><span class="rm-n">${todas.length}</span><span>Ver todas<br>las de ${escapeHtml(c)}</span><span class="rm-arrow">→</span></button>`:'';
-    return `<section class="cat-row"><div class="cat-row-head"><h3>${escapeHtml(c)}</h3><span class="cr-count">${todas.length} gorra${todas.length===1?'':'s'}</span><button class="cr-link" onclick="setVista(${cs})">Ver todas ›</button></div><div class="cat-strip">${orden.map(x=>buildCard(x.p,x.i,'s')).join('')}${mas}</div></section>`;
+    const sinSub=todas.filter(x=>!x.p.sub);
+    let html='';
+    // Fila de la categoría (sin las de subcategoría); "Ver todas" abre la categoría completa
+    if(sinSub.length)html+=filaInicio(c,'',sinSub,`setVista(${jsq(c)},null)`,todas.length);
+    (SUBS[c]||[]).forEach(sb=>{
+      const items=todas.filter(x=>x.p.sub===sb);
+      if(items.length)html+=filaInicio(sb,sinSub.length?c:'',items,`setVista(${jsq(c)},${jsq(sb)})`,items.length);
+    });
+    return html;
   }).join('');
   return filas+`<button class="see-all" onclick="setVista('todas')">Ver todas las gorras <span>(${PRODUCTOS.length})</span></button>`;
 }
 window.addEventListener('popstate',e=>{
-  const v=(e.state&&e.state.vista)||new URLSearchParams(location.search).get('cat')||'inicio';
-  setVista(v,true);
+  const q=new URLSearchParams(location.search);
+  const v=(e.state&&e.state.vista)||q.get('cat')||'inicio';
+  const sb=e.state&&e.state.sub!==undefined?e.state.sub:q.get('sub');
+  setVista(v,sb,true);
 });
 
 // ---------- Ventana de detalle ----------
@@ -389,17 +426,23 @@ Promise.all([
 ]).then(([data,cats,vids])=>{
   PRODUCTOS=data.productos||[];
   let nombres=(cats.categorias||[]).map(c=>c.nombre);
+  (cats.categorias||[]).forEach(c=>{SUBS[c.nombre]=(c.subcategorias||[]).map(x=>x.nombre||x).filter(Boolean)});
+  // Subcategorías que tengan gorras aunque no estén en la lista
+  PRODUCTOS.forEach(p=>{if(p.sub){const l=SUBS[p.categoria]=SUBS[p.categoria]||[];if(!l.includes(p.sub))l.push(p.sub)}});
   // Si alguna gorra tiene una categoría que no está en la lista, igual aparece su botón al final
   PRODUCTOS.forEach(p=>{if(p.categoria&&!nombres.includes(p.categoria))nombres.push(p.categoria)});
   CATEGORIAS=nombres;
   // Orden: por categoría (orden de la lista) y, dentro de cada una, por su número
   const ordenCat=c=>{const k=CATEGORIAS.indexOf(c);return k<0?999:k};
-  PRODUCTOS=PRODUCTOS.map((p,i)=>({p,i})).sort((a,b)=>ordenCat(a.p.categoria)-ordenCat(b.p.categoria)||(a.p.nro||9999)-(b.p.nro||9999)||a.i-b.i).map(x=>x.p);
+  const ordenSub=p=>p.sub?((SUBS[p.categoria]||[]).indexOf(p.sub)+1||99):0;
+  PRODUCTOS=PRODUCTOS.map((p,i)=>({p,i})).sort((a,b)=>ordenCat(a.p.categoria)-ordenCat(b.p.categoria)||ordenSub(a.p)-ordenSub(b.p)||(a.p.nro||9999)-(b.p.nro||9999)||a.i-b.i).map(x=>x.p);
   buildFilters();
   const inicial=new URLSearchParams(location.search).get('cat');
   const valida=inicial&&(inicial==='todas'||CATEGORIAS.includes(inicial))?inicial:'inicio';
-  history.replaceState({vista:valida},'',location.href);
-  setVista(valida,true);
+  const q=new URLSearchParams(location.search);
+  const subIni=valida!=='inicio'&&valida!=='todas'&&q.has('sub')?q.get('sub'):null;
+  history.replaceState({vista:valida,sub:subIni},'',location.href);
+  setVista(valida,subIni,true);
   buildVideos(vids.videos);
   renderCart();
   startHero();

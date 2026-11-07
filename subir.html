@@ -282,6 +282,7 @@
 const CATEGORIAS_INICIALES = ["Airbag", "Fuxion", "Bugué", "Grace", "Niñas", "Otras"];
 const MAX_VIDEO_MB = 40;
 let categorias = [];          // nombres, en orden (data/categorias.json)
+let subcats = {};             // subcategorías de cada categoría: { Airbag: ['Sardelli 96'] }
 let categoriasSha = null;
 let catalogData = [];         // data/productos.json -> productos
 let catalogSha = null;
@@ -329,14 +330,21 @@ function videoExt(file) {
   return 'mp4';
 }
 // Número dentro de la categoría (ej. Airbag Nº16). La tienda ordena por categoría y por este número.
-function maxNro(lista, cat) { return lista.filter(p => p.categoria === cat).reduce((m, p) => Math.max(m, parseInt(p.nro, 10) || 0), 0); }
+// Las subcategorías (ej. Sardelli 96 dentro de Airbag) tienen su propia numeración.
+function maxNro(lista, cat, sub) { return lista.filter(p => p.categoria === cat && (p.sub || '') === (sub || '')).reduce((m, p) => Math.max(m, parseInt(p.nro, 10) || 0), 0); }
 function ordenarCatalogo() {
   const k = c => { const i = categorias.indexOf(c); return i < 0 ? 999 : i; };
+  const ks = p => p.sub ? ((subcats[p.categoria] || []).indexOf(p.sub) + 1 || 99) : 0;
   catalogData = catalogData.map((p, i) => ({ p, i }))
-    .sort((a, b) => k(a.p.categoria) - k(b.p.categoria) || (a.p.nro || 9999) - (b.p.nro || 9999) || a.i - b.i)
+    .sort((a, b) => k(a.p.categoria) - k(b.p.categoria) || ks(a.p) - ks(b.p) || (a.p.nro || 9999) - (b.p.nro || 9999) || a.i - b.i)
     .map(x => x.p);
 }
-function etiqueta(p) { return p.nro ? `${p.categoria} Nº${p.nro}` : (p.categoria || ''); }
+function nombreCat(p) { return p.sub ? `${p.categoria} › ${p.sub}` : (p.categoria || ''); }
+function etiqueta(p) { return p.nro ? `${p.sub || p.categoria} Nº${p.nro}` + (p.sub ? ` (${p.categoria})` : '') : nombreCat(p); }
+// Valor de los desplegables: "Airbag" o "Airbag||Sardelli 96"
+const SEP = '||';
+function valorCat(cat, sub) { return sub ? cat + SEP + sub : cat; }
+function leerCat(v) { const i = String(v).indexOf(SEP); return i < 0 ? [v, ''] : [v.slice(0, i), v.slice(i + SEP.length)]; }
 function hasPendingWork() { return pool.length > 0 || catalogDirty; }
 window.addEventListener('beforeunload', e => { if (hasPendingWork()) { e.preventDefault(); e.returnValue = ''; } });
 
@@ -558,6 +566,8 @@ async function reloadAll() {
     catalogData = prod.json.productos || [];
     catalogSha = prod.sha;
     categorias = cats ? (cats.json.categorias || []).map(c => c.nombre).filter(Boolean) : CATEGORIAS_INICIALES.slice();
+    subcats = {};
+    if (cats) (cats.json.categorias || []).forEach(c => { const l = (c.subcategorias || []).map(x => x.nombre || x).filter(Boolean); if (l.length) subcats[c.nombre] = l; });
     categoriasSha = cats ? cats.sha : null;
     videosData = vids ? (vids.json.videos || []) : [];
     videosSha = vids ? vids.sha : null;
@@ -580,8 +590,15 @@ function categoriasParaElegir(actual) {
   if (actual && !list.includes(actual)) list.push(actual);
   return list;
 }
-function catOptions(selected) {
-  return categoriasParaElegir(selected).map(c => `<option value="${esc(c)}" ${c === selected ? 'selected' : ''}>${esc(c)}</option>`).join('');
+function catOptions(selected, selSub) {
+  const opts = [];
+  categoriasParaElegir(selected).forEach(c => {
+    opts.push(`<option value="${esc(c)}" ${c === selected && !selSub ? 'selected' : ''}>${esc(c)}</option>`);
+    const subs = (subcats[c] || []).slice();
+    if (c === selected && selSub && !subs.includes(selSub)) subs.push(selSub);
+    subs.forEach(sb => opts.push(`<option value="${esc(valorCat(c, sb))}" ${c === selected && sb === selSub ? 'selected' : ''}>${esc(c)} › ${esc(sb)}</option>`));
+  });
+  return opts.join('');
 }
 
 // ======================================================================
@@ -609,7 +626,9 @@ function autoGroupNew(startIdx) {
   renderPool(); renderGroups();
 }
 function newGroup(photoIds) {
-  return { id: nextGroupId++, photoIds, nombre: '', categoria: categorias.includes(lastCategoria) ? lastCategoria : (categorias[0] || 'Otras'), precio: '', detalle: '', video: null };
+  const [lc, ls] = leerCat(lastCategoria);
+  const ok = categorias.includes(lc) && (!ls || (subcats[lc] || []).includes(ls));
+  return { id: nextGroupId++, photoIds, nombre: '', categoria: ok ? lc : (categorias[0] || 'Otras'), sub: ok ? ls : '', precio: '', detalle: '', video: null };
 }
 function unassignedPhotos() { return pool.filter(p => !groups.some(g => g.photoIds.includes(p.id))); }
 function renderPool() {
@@ -760,7 +779,7 @@ function renderGroups() {
       <div class="row2">
         <div>
           <label>Categoría</label>
-          <select onchange="updateGroup(${g.id},'categoria',this.value)">${catOptions(g.categoria)}</select>
+          <select onchange="updateGroup(${g.id},'categoria',this.value)">${catOptions(g.categoria, g.sub)}</select>
         </div>
         <div>
           <label>Precio</label>
@@ -778,8 +797,10 @@ function setGroupVideo(id, file) { const g = groups.find(x => x.id === id); if (
 function updateGroup(id, field, value) {
   const g = groups.find(x => x.id === id);
   if (!g) return;
-  g[field] = value;
-  if (field === 'categoria') { lastCategoria = value; localStorage.setItem('ultima_categoria', value); }
+  if (field === 'categoria') {
+    lastCategoria = value; localStorage.setItem('ultima_categoria', value);
+    [g.categoria, g.sub] = leerCat(value);
+  } else g[field] = value;
   updateFooter();
   // Actualiza la etiqueta "listo / falta" sin redibujar (para no perder el foco del teclado)
   const el = document.getElementById('thumbs-' + id);
@@ -794,7 +815,7 @@ function updateGroup(id, field, value) {
 }
 function applyToAll() {
   const g0 = groups[0]; if (!g0) return;
-  groups.forEach(g => { g.categoria = g0.categoria; if (g0.precio) g.precio = g0.precio; });
+  groups.forEach(g => { g.categoria = g0.categoria; g.sub = g0.sub; if (g0.precio) g.precio = g0.precio; });
   renderGroups(); toast('Copiado a todos los modelos ✓');
 }
 function removeGroup(id) {
@@ -853,7 +874,8 @@ async function publishAll() {
         await uploadFile(path, photos[i].dataUrl.split(',')[1], null, `Subir foto ${path}`);
         fotoPaths.push(path);
       }
-      const entry = { numero, nro: maxNro(catalogo.productos.concat(newEntries), g.categoria) + 1, nombre: g.nombre.trim(), categoria: g.categoria, descripcion: g.detalle.trim(), precio: normPrecio(g.precio), fotos: fotoPaths };
+      const entry = { numero, nro: maxNro(catalogo.productos.concat(newEntries), g.categoria, g.sub) + 1, nombre: g.nombre.trim(), categoria: g.categoria, descripcion: g.detalle.trim(), precio: normPrecio(g.precio), fotos: fotoPaths };
+      if (g.sub) entry.sub = g.sub;
       if (g.video) {
         const vpath = `videos/${base}.${videoExt(g.video)}`;
         log(`Subiendo video de "${g.nombre}" (puede tardar un poco)...`);
@@ -897,7 +919,8 @@ function renderCatFilter() {
   catalogData.forEach(p => { if (p.categoria && !cats.includes(p.categoria)) cats.push(p.categoria); });
   const nVend = catalogData.filter(p => p.vendida).length;
   sel.innerHTML = `<option value="">Todas (${catalogData.length})</option>` +
-    cats.map(c => `<option value="${esc(c)}">${esc(c)} (${conteo[c] || 0})</option>`).join('') +
+    cats.map(c => `<option value="${esc(c)}">${esc(c)} (${conteo[c] || 0})</option>` +
+      (subcats[c] || []).map(sb => `<option value="${esc('sub:' + valorCat(c, sb))}">&nbsp;&nbsp;${esc(c)} › ${esc(sb)} (${catalogData.filter(p => p.categoria === c && p.sub === sb).length})</option>`).join('')).join('') +
     `<option value="__vendidas">Vendidas (${nVend})</option>`;
   sel.value = prev;
 }
@@ -909,7 +932,9 @@ function renderCatalogList() {
   container.innerHTML = '';
   let shown = 0;
   catalogData.forEach((p, idx) => {
-    if (f === '__vendidas' ? !p.vendida : (f && p.categoria !== f)) return;
+    if (f === '__vendidas') { if (!p.vendida) return; }
+    else if (f.startsWith('sub:')) { const [fc, fs] = leerCat(f.slice(4)); if (p.categoria !== fc || p.sub !== fs) return; }
+    else if (f && p.categoria !== f) return;
     if (q && !((p.nombre || '') + ' ' + etiqueta(p) + ' ' + (p.numero || '') + ' ' + (p.descripcion || '')).toLowerCase().includes(q)) return;
     shown++;
     const wrap = document.createElement('div');
@@ -972,7 +997,7 @@ function renderEditBox(p, idx, thumb) {
       <label>Nombre</label>
       <input type="text" value="${esc(p.nombre)}" oninput="updateCatalogField(${idx},'nombre',this.value)">
       <div class="row2">
-        <div><label>Categoría</label><select onchange="updateCatalogField(${idx},'categoria',this.value)">${catOptions(p.categoria)}</select></div>
+        <div><label>Categoría</label><select onchange="updateCatalogField(${idx},'categoria',this.value)">${catOptions(p.categoria, p.sub)}</select></div>
         <div><label>Precio</label><input type="text" inputmode="numeric" value="${esc(p.precio)}" oninput="updateCatalogField(${idx},'precio',this.value)" onblur="this.value=normPrecio(this.value); updateCatalogField(${idx},'precio',this.value)"></div>
       </div>
       <label>Detalle</label>
@@ -980,7 +1005,7 @@ function renderEditBox(p, idx, thumb) {
       <label class="switch"><input type="checkbox" ${p.vendida ? 'checked' : ''} onchange="toggleVendida(${idx}, this.checked)"> Vendida <span class="hint" style="margin:0;font-weight:400">(sigue en la web con la etiqueta "Vendida" y el botón "Pedir similar")</span></label>
       <label>Número en la categoría</label>
       <div style="display:flex; gap:8px; align-items:center;">
-        <span style="font-weight:600">${esc(p.categoria || '')} Nº</span>
+        <span style="font-weight:600">${esc(p.sub || p.categoria || '')} Nº</span>
         <input type="text" inputmode="numeric" style="max-width:90px" value="${esc(p.nro || '')}" onchange="setNro(${idx}, this.value)">
       </div>
       <div class="hint">En la tienda, las gorras de cada categoría se ordenan por este número.</div>
@@ -994,14 +1019,16 @@ function openEdit(idx) { expandedIndex = idx; renderCatalogList(); }
 function updateCatalogField(idx, field, value) {
   markDirty();
   const p = catalogData[idx];
-  p[field] = value;
   if (field === 'categoria') {
-    p.nro = maxNro(catalogData.filter(x => x !== p), value) + 1;
+    const [cat, sub] = leerCat(value);
+    p.categoria = cat;
+    if (sub) p.sub = sub; else delete p.sub;
+    p.nro = maxNro(catalogData.filter(x => x !== p), cat, sub) + 1;
     ordenarCatalogo();
     expandedIndex = catalogData.indexOf(p);
     renderCatalogList();
-    toast(`Ahora es ${value} Nº${p.nro}. Tocá "Publicar cambios".`);
-  }
+    toast(`Ahora es ${sub || cat} Nº${p.nro}. Tocá "Publicar cambios".`);
+  } else p[field] = value;
 }
 function toggleVendida(idx, val) {
   const p = catalogData[idx];
@@ -1014,8 +1041,8 @@ function setNro(idx, val) {
   const n = parseInt(String(val).replace(/\D/g, ''), 10);
   if (!n) { toast('Escribí un número válido.', true); renderCatalogList(); return; }
   const p = catalogData[idx];
-  const otra = catalogData.find(x => x !== p && x.categoria === p.categoria && parseInt(x.nro, 10) === n);
-  if (otra && !confirm(`Ya hay otra gorra ${p.categoria} Nº${n} ("${otra.nombre}"). ¿Usar el mismo número igual?`)) { renderCatalogList(); return; }
+  const otra = catalogData.find(x => x !== p && x.categoria === p.categoria && (x.sub || '') === (p.sub || '') && parseInt(x.nro, 10) === n);
+  if (otra && !confirm(`Ya hay otra gorra ${p.sub || p.categoria} Nº${n} ("${otra.nombre}"). ¿Usar el mismo número igual?`)) { renderCatalogList(); return; }
   markDirty();
   p.nro = n;
   ordenarCatalogo();
@@ -1140,7 +1167,13 @@ function renderCategoriasList() {
       <button class="iconBtn" onclick="moveCategoria(${i},1)" ${i === categorias.length - 1 ? 'disabled' : ''} title="Bajar">↓</button>
       <button class="iconBtn" onclick="renameCategoria(${i})" title="Cambiar nombre">✎</button>
       <button class="iconBtn del" onclick="removeCategoria(${i})" title="Borrar">✕</button>
-    </div>`).join('') +
+    </div>` + (subcats[c] || []).map((sb, k) => `
+    <div class="listRow" style="margin-left:26px;border-left:3px solid var(--rose)">
+      <div class="grow"><b>› ${esc(sb)}</b><small>subcategoría de ${esc(c)} · ${catalogData.filter(p => p.categoria === c && p.sub === sb).length} gorra(s)</small></div>
+      <button class="iconBtn" onclick="renameSub(${i},${k})" title="Cambiar nombre">✎</button>
+      <button class="iconBtn del" onclick="removeSub(${i},${k})" title="Borrar">✕</button>
+    </div>`).join('') + `
+    <div style="margin:-2px 0 10px 26px"><button class="btn-secondary btn-small" onclick="addSub(${i})">＋ Subcategoría en ${esc(c)}</button></div>`).join('') +
     sueltas.map(c => `
     <div class="listRow" style="border-style:dashed">
       <div class="grow"><b>${esc(c)}</b><small>${conteoCat(c)} gorra(s) con una categoría que no está en la lista</small></div>
@@ -1148,11 +1181,11 @@ function renderCategoriasList() {
     </div>`).join('');
 }
 async function saveCategorias(msg) {
-  categoriasSha = await saveJsonFile('data/categorias.json', { categorias: categorias.map(nombre => ({ nombre })) }, categoriasSha, msg);
+  categoriasSha = await saveJsonFile('data/categorias.json', { categorias: categorias.map(nombre => (subcats[nombre] && subcats[nombre].length ? { nombre, subcategorias: subcats[nombre].map(n => ({ nombre: n })) } : { nombre })) }, categoriasSha, msg);
 }
 // Aplica un cambio de categorías y lo guarda; si falla, vuelve atrás
 async function changeCategorias(mutar, msg, okText) {
-  const antes = categorias.slice();
+  const antes = categorias.slice(), antesSubs = JSON.stringify(subcats);
   mutar();
   renderAll();
   setMsg('catMsg', 'Guardando...', 'pending');
@@ -1160,7 +1193,7 @@ async function changeCategorias(mutar, msg, okText) {
     await saveCategorias(msg);
     setMsg('catMsg', okText, 'ok'); toast(okText);
   } catch (err) {
-    categorias = antes; renderAll();
+    categorias = antes; subcats = JSON.parse(antesSubs); renderAll();
     setMsg('catMsg', '✗ ' + err.message, 'err'); toast(err.message, true);
   }
 }
@@ -1195,6 +1228,7 @@ async function renameCategoria(i) {
       catalogData = prod.json.productos;
     }
     categorias[i] = nuevo;
+    if (subcats[viejo]) { subcats[nuevo] = subcats[viejo]; delete subcats[viejo]; }
     await saveCategorias(`Renombrar categoría ${viejo} a ${nuevo}`);
     renderAll();
     setMsg('catMsg', `✓ "${viejo}" ahora se llama "${nuevo}"${n ? ` (${n} gorras actualizadas)` : ''}.`, 'ok');
@@ -1208,7 +1242,7 @@ async function removeCategoria(i) {
   const n = conteoCat(c);
   if (!n) {
     if (!confirm(`¿Borrar la categoría "${c}"?`)) return;
-    return changeCategorias(() => categorias.splice(i, 1), `Borrar categoría ${c}`, `✓ Categoría "${c}" borrada.`);
+    return changeCategorias(() => { categorias.splice(i, 1); delete subcats[c]; }, `Borrar categoría ${c}`, `✓ Categoría "${c}" borrada.`);
   }
   const destinos = categorias.filter(x => x !== c);
   if (!destinos.length) { alert('No podés borrar la única categoría.'); return; }
@@ -1220,10 +1254,11 @@ async function removeCategoria(i) {
   setMsg('catMsg', 'Guardando...', 'pending');
   try {
     const prod = await getJsonFile('data/productos.json');
-    prod.json.productos.forEach(p => { if (p.categoria === c) { p.categoria = dest; p.nro = maxNro(prod.json.productos.filter(x => x !== p && x.categoria === dest), dest) + 1; } });
+    prod.json.productos.forEach(p => { if (p.categoria === c) { p.categoria = dest; delete p.sub; p.nro = maxNro(prod.json.productos.filter(x => x !== p), dest, '') + 1; } });
     catalogSha = await saveJsonFile('data/productos.json', prod.json, prod.sha, `Pasar gorras de ${c} a ${dest}`);
     catalogData = prod.json.productos;
     categorias.splice(i, 1);
+    delete subcats[c];
     await saveCategorias(`Borrar categoría ${c}`);
     renderAll();
     setMsg('catMsg', `✓ "${c}" borrada. ${n} gorra(s) pasaron a "${dest}".`, 'ok');
@@ -1231,6 +1266,52 @@ async function removeCategoria(i) {
     setMsg('catMsg', '✗ ' + err.message, 'err'); toast(err.message, true);
     reloadAll();
   }
+}
+
+// --- Subcategorías (ej. Sardelli 96 dentro de Airbag) ---
+function addSub(i) {
+  const c = categorias[i];
+  const val = (prompt(`Nombre de la nueva subcategoría dentro de "${c}":`) || '').trim().replace(/\s+/g, ' ');
+  if (!val) return;
+  if ((subcats[c] || []).some(x => x.toLowerCase() === val.toLowerCase())) { alert('Esa subcategoría ya existe.'); return; }
+  changeCategorias(() => { (subcats[c] = subcats[c] || []).push(val); }, `Agregar subcategoría ${val} en ${c}`, `✓ Subcategoría "${val}" agregada en ${c}.`);
+}
+// Cambia las gorras de una subcategoría y guarda todo junto
+async function cambiarGorrasSub(c, sb, cambiar, msg) {
+  const prod = await getJsonFile('data/productos.json');
+  cambiar(prod.json.productos);
+  catalogSha = await saveJsonFile('data/productos.json', prod.json, prod.sha, msg);
+  catalogData = prod.json.productos;
+}
+async function renameSub(i, k) {
+  const c = categorias[i], viejo = subcats[c][k];
+  const nuevo = (prompt(`Nuevo nombre para "${viejo}":`, viejo) || '').trim().replace(/\s+/g, ' ');
+  if (!nuevo || nuevo === viejo) return;
+  const n = catalogData.filter(p => p.categoria === c && p.sub === viejo).length;
+  if (n && catalogDirty) { alert('Primero publicá o descartá los cambios pendientes del Catálogo.'); return; }
+  setMsg('catMsg', 'Guardando...', 'pending');
+  try {
+    if (n) await cambiarGorrasSub(c, viejo, ps => ps.forEach(p => { if (p.categoria === c && p.sub === viejo) p.sub = nuevo; }), `Renombrar subcategoría ${viejo} a ${nuevo}`);
+    subcats[c][k] = nuevo;
+    await saveCategorias(`Renombrar subcategoría ${viejo} a ${nuevo}`);
+    renderAll();
+    setMsg('catMsg', `✓ "${viejo}" ahora se llama "${nuevo}".`, 'ok');
+  } catch (err) { setMsg('catMsg', '✗ ' + err.message, 'err'); toast(err.message, true); reloadAll(); }
+}
+async function removeSub(i, k) {
+  const c = categorias[i], sb = subcats[c][k];
+  const n = catalogData.filter(p => p.categoria === c && p.sub === sb).length;
+  if (!confirm(n ? `¿Borrar la subcategoría "${sb}"?\n\nSus ${n} gorra(s) quedan en "${c}", con números nuevos al final.` : `¿Borrar la subcategoría "${sb}"?`)) return;
+  if (n && catalogDirty) { alert('Primero publicá o descartá los cambios pendientes del Catálogo.'); return; }
+  setMsg('catMsg', 'Guardando...', 'pending');
+  try {
+    if (n) await cambiarGorrasSub(c, sb, ps => ps.forEach(p => { if (p.categoria === c && p.sub === sb) { delete p.sub; p.nro = maxNro(ps.filter(x => x !== p), c, '') + 1; } }), `Pasar gorras de ${sb} a ${c}`);
+    subcats[c].splice(k, 1);
+    if (!subcats[c].length) delete subcats[c];
+    await saveCategorias(`Borrar subcategoría ${sb}`);
+    renderAll();
+    setMsg('catMsg', `✓ Subcategoría "${sb}" borrada.`, 'ok');
+  } catch (err) { setMsg('catMsg', '✗ ' + err.message, 'err'); toast(err.message, true); reloadAll(); }
 }
 
 // ======================================================================
