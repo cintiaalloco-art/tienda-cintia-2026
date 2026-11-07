@@ -327,7 +327,7 @@
     },
     {
       "numero": "N103",
-      "nombre": "Gorra \"Bajos Instintos\" Por @guillerminasesto.prints ",
+      "nombre": "Gorra Bajos Instintos",
       "categoria": "Airbag",
       "descripcion": "Con tachas Hotfix 2mm\n",
       "precio": "$40.000",
@@ -336,7 +336,8 @@
         "images/gorra-bajos-instintos-2.jpg",
         "images/gorra-bajos-instintos-3.jpg"
       ],
-      "nro": 27
+      "nro": 1,
+      "sub": "Por @guillerminasesto.prints"
     },
     {
       "numero": "N041",
