@@ -1451,6 +1451,19 @@
         "images/gorra-meera-n115-mw63x5oz-2.jpg",
         "images/gorra-meera-n115-mw63x5oz-3.jpg"
       ]
+    },
+    {
+      "numero": "N116",
+      "nro": 4,
+      "nombre": "Gorra \"Myna\"",
+      "categoria": "Meera",
+      "descripcion": "Con strass Hotfix",
+      "precio": "$29.000",
+      "fotos": [
+        "images/gorra-myna-n116-mw650trh-1.jpg",
+        "images/gorra-myna-n116-mw650trh-2.jpg",
+        "images/gorra-myna-n116-mw650trh-3.jpg"
+      ]
     }
   ]
 }
