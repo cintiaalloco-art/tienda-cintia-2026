@@ -326,20 +326,6 @@
       "nro": 26
     },
     {
-      "numero": "N103",
-      "nombre": "Gorra Bajos Instintos",
-      "categoria": "Airbag",
-      "descripcion": "Con tachas Hotfix 2mm\n",
-      "precio": "$40.000",
-      "fotos": [
-        "images/gorra-bajos-instintos-1.jpg",
-        "images/gorra-bajos-instintos-2.jpg",
-        "images/gorra-bajos-instintos-3.jpg"
-      ],
-      "nro": 1,
-      "sub": "Por @guillerminasesto.prints"
-    },
-    {
       "numero": "N041",
       "nombre": "Gorra Sardelli 96",
       "categoria": "Airbag",
@@ -352,20 +338,6 @@
       ],
       "sub": "Sardelli 96",
       "nro": 1
-    },
-    {
-      "numero": "N018",
-      "nombre": "Gorra Sardelli 96",
-      "categoria": "Airbag",
-      "descripcion": "Con  tachas lilas Hotfix 2mm.",
-      "precio": "$36.000",
-      "fotos": [
-        "images/airbag-sardelli-96-no2-1.jpg",
-        "images/airbag-sardelli-96-no2-2.jpg",
-        "images/airbag-sardelli-96-no2-3.jpg"
-      ],
-      "sub": "Sardelli 96",
-      "nro": 2
     },
     {
       "numero": "N044",
@@ -481,20 +453,6 @@
       "nro": 10
     },
     {
-      "numero": "N050",
-      "nombre": "Gorra Sardelli 96 Kalash",
-      "categoria": "Airbag",
-      "descripcion": "Con Strass Boreal 2mm Hotfix",
-      "precio": "$36.000",
-      "fotos": [
-        "images/gorra-airbag-sardelli-96-kalash-no1-1.jpg",
-        "images/gorra-airbag-sardelli-96-kalash-no1-2.jpg",
-        "images/gorra-airbag-sardelli-96-kalash-no1-3.jpg"
-      ],
-      "sub": "Kalash",
-      "nro": 3
-    },
-    {
       "numero": "N074",
       "nombre": "Gorra Sardelli 96",
       "categoria": "Airbag",
@@ -549,6 +507,34 @@
       ],
       "sub": "Kalash",
       "nro": 2
+    },
+    {
+      "numero": "N050",
+      "nombre": "Gorra Sardelli 96 Kalash",
+      "categoria": "Airbag",
+      "descripcion": "Con Strass Boreal 2mm Hotfix",
+      "precio": "$36.000",
+      "fotos": [
+        "images/gorra-airbag-sardelli-96-kalash-no1-1.jpg",
+        "images/gorra-airbag-sardelli-96-kalash-no1-2.jpg",
+        "images/gorra-airbag-sardelli-96-kalash-no1-3.jpg"
+      ],
+      "sub": "Kalash",
+      "nro": 3
+    },
+    {
+      "numero": "N103",
+      "nombre": "Gorra Bajos Instintos",
+      "categoria": "Airbag",
+      "descripcion": "Con tachas Hotfix 2mm\n",
+      "precio": "$40.000",
+      "fotos": [
+        "images/gorra-bajos-instintos-1.jpg",
+        "images/gorra-bajos-instintos-2.jpg",
+        "images/gorra-bajos-instintos-3.jpg"
+      ],
+      "nro": 1,
+      "sub": "Por @guillerminasesto.prints"
     },
     {
       "numero": "N088",
