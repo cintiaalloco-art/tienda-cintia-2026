@@ -1264,7 +1264,7 @@
     },
     {
       "numero": "N019",
-      "nombre": "Gorra Layca",
+      "nombre": "Gorra \"Layca\" por Bastian Lagares ",
       "categoria": "Layca",
       "descripcion": "Lila con aplique \"Sweet\" en strass y galón.",
       "precio": "$32.000",
@@ -1274,6 +1274,18 @@
         "images/layca-no3-3.jpg"
       ],
       "nro": 3
+    },
+    {
+      "numero": "N114",
+      "nro": 4,
+      "nombre": "Gorra \"Layca\" Por Bastian Lagares",
+      "categoria": "Layca",
+      "descripcion": "Con galón + aplique",
+      "precio": "$32.000",
+      "fotos": [
+        "images/gorra-layca-por-bastian-lagares-n114-mw63cmw8-1.jpg",
+        "images/gorra-layca-por-bastian-lagares-n114-mw63cmw8-2.jpg"
+      ]
     },
     {
       "numero": "N084",
@@ -1426,18 +1438,6 @@
         "images/niamh-3.jpg"
       ],
       "nro": 3
-    },
-    {
-      "numero": "N114",
-      "nro": 4,
-      "nombre": "Gorra \"Layca\" Por Bastian Lagares",
-      "categoria": "Layca",
-      "descripcion": "Con galón + aplique",
-      "precio": "$32.000",
-      "fotos": [
-        "images/gorra-layca-por-bastian-lagares-n114-mw63cmw8-1.jpg",
-        "images/gorra-layca-por-bastian-lagares-n114-mw63cmw8-2.jpg"
-      ]
     }
   ]
 }
