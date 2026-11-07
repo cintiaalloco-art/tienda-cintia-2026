@@ -1464,6 +1464,19 @@
         "images/gorra-myna-n116-mw650trh-2.jpg",
         "images/gorra-myna-n116-mw650trh-3.jpg"
       ]
+    },
+    {
+      "numero": "N117",
+      "nro": 1,
+      "nombre": "Gorra \" Myna\"",
+      "categoria": "Myna",
+      "descripcion": "Con strass Hotfix",
+      "precio": "$29.000",
+      "fotos": [
+        "images/gorra-myna-n117-mw65h0y7-1.jpg",
+        "images/gorra-myna-n117-mw65h0y7-2.jpg",
+        "images/gorra-myna-n117-mw65h0y7-3.jpg"
+      ]
     }
   ]
 }
