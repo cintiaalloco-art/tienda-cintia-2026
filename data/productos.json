@@ -1477,6 +1477,19 @@
         "images/niamh-3.jpg"
       ],
       "nro": 3
+    },
+    {
+      "numero": "N119",
+      "nro": 24,
+      "nombre": "Gorra \"Nala\"",
+      "categoria": "Otras",
+      "descripcion": "Con galón y aplique de strass",
+      "precio": "$30.000",
+      "fotos": [
+        "images/gorra-nala-n119-mw8we4lm-1.jpg",
+        "images/gorra-nala-n119-mw8we4lm-2.jpg",
+        "images/gorra-nala-n119-mw8we4lm-3.jpg"
+      ]
     }
   ]
 }
