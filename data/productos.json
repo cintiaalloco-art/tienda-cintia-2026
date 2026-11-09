@@ -1490,6 +1490,19 @@
         "images/gorra-nala-n119-mw8we4lm-2.jpg",
         "images/gorra-nala-n119-mw8we4lm-3.jpg"
       ]
+    },
+    {
+      "numero": "N120",
+      "nro": 25,
+      "nombre": "Gorra \"Soda Ecos\"",
+      "categoria": "Otras",
+      "descripcion": "Con tachas Hotfix",
+      "precio": "$30.000",
+      "fotos": [
+        "images/gorra-soda-ecos-n120-mw8wp3n2-1.jpg",
+        "images/gorra-soda-ecos-n120-mw8wp3n2-2.jpg",
+        "images/gorra-soda-ecos-n120-mw8wp3n2-3.jpg"
+      ]
     }
   ]
 }
