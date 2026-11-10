@@ -1490,6 +1490,19 @@
         "images/niamh-3.jpg"
       ],
       "nro": 3
+    },
+    {
+      "numero": "N122",
+      "nro": 25,
+      "nombre": "Gorra \"Noor\"",
+      "categoria": "Otras",
+      "descripcion": "Con apliques",
+      "precio": "$29.000",
+      "fotos": [
+        "images/gorra-noor-n122-mwb3g68b-1.jpg",
+        "images/gorra-noor-n122-mwb3g68b-2.jpg",
+        "images/gorra-noor-n122-mwb3g68b-3.jpg"
+      ]
     }
   ]
 }
