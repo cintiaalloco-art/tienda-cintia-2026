@@ -726,31 +726,6 @@
       "nro": 8
     },
     {
-      "numero": "N098",
-      "nombre": "Gorra de niña \"Saray\"",
-      "categoria": "Niñas",
-      "descripcion": "Apliques + tachas + strass + cintas",
-      "precio": "$38.000",
-      "fotos": [
-        "images/gorra-de-nina-saray-1.jpg",
-        "images/gorra-de-nina-saray-2.jpg"
-      ],
-      "nro": 9
-    },
-    {
-      "numero": "N109",
-      "nombre": "Gora \"Noor\" Nº 1",
-      "categoria": "Niñas",
-      "descripcion": "Con apliques.",
-      "precio": "$29.000",
-      "fotos": [
-        "images/gora-noor-n-1-n109-mvywemfk-1.jpg",
-        "images/gora-noor-n-1-n109-mvywemfk-2.jpg",
-        "images/gora-noor-n-1-n109-mvywemfk-3.jpg"
-      ],
-      "nro": 10
-    },
-    {
       "numero": "N111",
       "nombre": "Gorra \"Almita\"",
       "categoria": "Niñas",
@@ -813,7 +788,6 @@
         "images/gorras-fuxion-n-3-2.jpg",
         "images/gorras-fuxion-n-3-3.jpg"
       ],
-      "vendida": true,
       "nro": 3
     },
     {
