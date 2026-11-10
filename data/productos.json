@@ -1503,6 +1503,19 @@
         "images/gorra-noor-n122-mwb3g68b-2.jpg",
         "images/gorra-noor-n122-mwb3g68b-3.jpg"
       ]
+    },
+    {
+      "numero": "N123",
+      "nro": 26,
+      "nombre": "Gorra \"Noor\"",
+      "categoria": "Otras",
+      "descripcion": "Con apliques",
+      "precio": "$29.000",
+      "fotos": [
+        "images/gorra-noor-n123-mwb3m7ch-1.jpg",
+        "images/gorra-noor-n123-mwb3m7ch-2.jpg",
+        "images/gorra-noor-n123-mwb3m7ch-3.jpg"
+      ]
     }
   ]
 }
