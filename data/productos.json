@@ -1528,6 +1528,19 @@
         "images/gorra-noor-edicion-especial-n124-mwb4279d-1.jpg",
         "images/gorra-noor-edicion-especial-n124-mwb4279d-2.jpg"
       ]
+    },
+    {
+      "numero": "N125",
+      "nro": 28,
+      "nombre": "Gorra  \"Nasly\"",
+      "categoria": "Otras",
+      "descripcion": "Con galón y aplique de strass",
+      "precio": "$34.000",
+      "fotos": [
+        "images/gorra-nasly-n125-mwdp6n1x-1.jpg",
+        "images/gorra-nasly-n125-mwdp6n1x-2.jpg",
+        "images/gorra-nasly-n125-mwdp6n1x-3.jpg"
+      ]
     }
   ]
 }
