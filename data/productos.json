@@ -1541,6 +1541,18 @@
         "images/niamh-3.jpg"
       ],
       "nro": 3
+    },
+    {
+      "numero": "N126",
+      "nro": 16,
+      "nombre": "Gorra \"Asha\"",
+      "categoria": "Niñas",
+      "descripcion": "Con apliques + medias perlas",
+      "precio": "$30.000",
+      "fotos": [
+        "images/gorra-asha-n126-mwvxstc8-1.jpg",
+        "images/gorra-asha-n126-mwvxstc8-2.jpg"
+      ]
     }
   ]
 }
