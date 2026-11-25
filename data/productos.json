@@ -1566,6 +1566,18 @@
         "images/gorra-renata-n127-mwvy2b7e-2.jpg",
         "images/gorra-renata-n127-mwvy2b7e-3.jpg"
       ]
+    },
+    {
+      "numero": "N128",
+      "nro": 2,
+      "nombre": "Gorra \"Nasly\"",
+      "categoria": "Nasly",
+      "descripcion": "Con aplique y galón de strass",
+      "precio": "$34.000",
+      "fotos": [
+        "images/gorra-nasly-n128-mwwndfad-1.jpg",
+        "images/gorra-nasly-n128-mwwndfad-2.jpg"
+      ]
     }
   ]
 }
